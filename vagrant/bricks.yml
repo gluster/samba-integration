@@ -1,0 +1,15 @@
+gluster_infra_volume_groups:
+  - { vgname: 'vg_vdb', pvname: '/dev/vdb' }
+  - { vgname: 'vg_vdc', pvname: '/dev/vdc' }
+
+gluster_infra_thinpools:
+  - {vgname: 'vg_vdb', thinpoolname: 'vg_vdb_thinpool', thinpoolsize: '9G', poolmetadatasize: '100M' }
+  - {vgname: 'vg_vdc', thinpoolname: 'vg_vdc_thinpool', thinpoolsize: '9G', poolmetadatasize: '100M' }
+
+gluster_infra_lv_logicalvols:
+  - { vgname: 'vg_vdb', thinpool: 'vg_vdb_thinpool', lvname: 'vg_vdb_thinlv', lvsize: '9G' }
+  - { vgname: 'vg_vdc', thinpool: 'vg_vdc_thinpool', lvname: 'vg_vdc_thinlv', lvsize: '9G' }
+
+gluster_infra_mount_devices:
+  - { path: '/bricks/brick0', vgname: 'vg_vdb', lvname: 'vg_vdb_thinlv' }
+  - { path: '/bricks/brick1', vgname: 'vg_vdc', lvname: 'vg_vdc_thinlv' }

@@ -18,3 +18,11 @@
   vars:
     gluster_rpms:
       - glusterfs-server
+
+- name: Install basic tools
+  yum:
+   name: "{{ tools }}"
+   state: latest
+  vars:
+    tools:
+      - lvm2
