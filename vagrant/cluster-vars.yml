@@ -13,3 +13,24 @@ gluster_infra_lv_logicalvols:
 gluster_infra_mount_devices:
   - { path: '/bricks/brick0', vgname: 'vg_vdb', lvname: 'vg_vdb_thinlv' }
   - { path: '/bricks/brick1', vgname: 'vg_vdc', lvname: 'vg_vdc_thinlv' }
+
+gluster_infra_fw_ports:
+  - 2049/tcp
+  - 54321/tcp
+  - 5900/tcp
+  - 5900-6923/tcp
+  - 5666/tcp
+  - 16514/tcp
+gluster_infra_fw_permanent: true
+gluster_infra_fw_state: enabled
+gluster_infra_fw_zone: public
+gluster_infra_fw_services:
+  - glusterfs
+
+gluster_cluster_hosts:
+  - storage0
+  - storage1
+gluster_cluster_volume: vol
+gluster_cluster_replica_count: 2
+gluster_cluster_transport: 'tcp'
+gluster_cluster_bricks: '/bricks/brick0/vol,/bricks/brick1/vol'
