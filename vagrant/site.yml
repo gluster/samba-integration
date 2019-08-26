@@ -2,4 +2,4 @@
   become: yes
   become_method: sudo
   roles:
-    - install
+    - node.setup
