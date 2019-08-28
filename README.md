@@ -1,3 +1,3 @@
-# Samba-GlusterFS integration CI tests
+# Samba-GlusterFS CentOS CI tests
 
-Continuous Integration helpers for Samba/CTDB + GlusterFS.
+This branch contains the helper scripts for the gluster_samba-integration job from centos-ci.
