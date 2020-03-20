@@ -74,9 +74,7 @@ scl enable sclo-vagrant1 -- \
 
 # time to run the tests:
 
-make "${TEST_TARGET}"
 # TODO: add real tests to execute
-# When the tests use vagrant, run them like so:
-#echo make "${TEST_TARGET}" | scl enable sclo-vagrant1 bash
+echo make "${TEST_TARGET}" | scl enable sclo-vagrant1 bash
 
 # END
