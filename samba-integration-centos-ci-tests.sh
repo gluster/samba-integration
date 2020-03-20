@@ -12,6 +12,7 @@ set -x
 
 GIT_REPO_NAME="samba-integration"
 GIT_REPO_URL="https://github.com/gluster/${GIT_REPO_NAME}.git"
+TEST_TARGET="test"
 
 # enable additional sources for yum
 # (SCL repository for Vagrant, epel for ansible)
@@ -73,8 +74,9 @@ scl enable sclo-vagrant1 -- \
 
 # time to run the tests:
 
+make "${TEST_TARGET}"
 # TODO: add real tests to execute
-true
+# When the tests use vagrant, run them like so:
 #echo make "${TEST_TARGET}" | scl enable sclo-vagrant1 bash
 
 # END
