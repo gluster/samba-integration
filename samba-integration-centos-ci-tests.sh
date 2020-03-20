@@ -13,6 +13,9 @@ set -x
 GIT_REPO_NAME="samba-integration"
 GIT_REPO_URL="https://github.com/gluster/${GIT_REPO_NAME}.git"
 TEST_TARGET="test"
+SCRIPT_GIT_BRANCH="centos-ci"
+SCRIPT_NAME="$(basename $0)"
+SCRIPT_PATH="$(realpath $0)"
 
 # enable additional sources for yum
 # (SCL repository for Vagrant, epel for ansible)
@@ -60,6 +63,17 @@ then
 	if [ $? -ne 0 ] ; then
 	    echo "Unable to automatically rebase to branch '${ghprbTargetBranch}'. Please rebase your PR!"
 	    exit 1
+	fi
+
+	# If the PR is on the branch that contains this script,
+	# and the script has changed in the PR, make sure we
+	# restart the PR version of the script to test the
+	# proposed changes, since the centos-ci is running
+	# the merged copy.
+	if [ "${ghprbTargetBranch}" = "${SCRIPT_GIT_BRANCH}" ]; then
+		if ! git diff --quiet ./"${SCRIPT_NAME}" "${SCRIPT_PATH}" ; then
+			exec "./${SCRIPT_NAME}"
+		fi
 	fi
 fi
 
