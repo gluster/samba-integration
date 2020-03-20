@@ -56,7 +56,7 @@ then
 	git fetch origin "pull/${ghprbPullId}/head:pr_${ghprbPullId}"
 	git checkout "pr_${ghprbPullId}"
 	
-	git rebase "${ghprbTargetBranch}"
+	git rebase "origin/${ghprbTargetBranch}"
 	if [ $? -ne 0 ] ; then
 	    echo "Unable to automatically rebase to branch '${ghprbTargetBranch}'. Please rebase your PR!"
 	    exit 1
