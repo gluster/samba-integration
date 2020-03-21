@@ -72,6 +72,7 @@ then
 	# the merged copy.
 	if [ "${ghprbTargetBranch}" = "${SCRIPT_GIT_BRANCH}" ]; then
 		if ! git diff --quiet ./"${SCRIPT_NAME}" "${SCRIPT_PATH}" ; then
+			echo "Script changed in PR ==> starting over..."
 			exec "./${SCRIPT_NAME}"
 		fi
 	fi
