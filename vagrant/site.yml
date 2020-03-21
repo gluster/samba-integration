@@ -1,9 +1,0 @@
-- hosts: all
-  become: yes
-  become_method: sudo
-  vars_files:
-    - cluster-vars.yml
-  roles:
-    - node.setup
-    - gluster.infra
-    - gluster.cluster
