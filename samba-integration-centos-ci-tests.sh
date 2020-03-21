@@ -36,8 +36,6 @@ yum -y install \
 	sclo-vagrant1-vagrant-libvirt \
 	git \
 	make \
-	python-py \
-	python-virtualenv \
 	ansible
 
 # Vagrant needs libvirtd running
