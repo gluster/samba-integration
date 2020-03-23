@@ -1,2 +1,4 @@
 *~
 .vagrant
+vagrant/ansible/vagrant_ansible_inventory
+vagrant/vagrant_ansible_inventory
