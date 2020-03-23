@@ -1,0 +1,22 @@
+- name: update packages
+  yum:
+    name: '*'
+    state: latest
+
+- name: Enable EPEL repository
+  yum:
+    name: epel-release
+    state: latest
+
+- name: Enable gluster-ansible copr from sac
+  command: yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/sac/gluster-ansible/repo/epel-7/sac-gluster-ansible-epel-7.repo
+
+- name: Install gluster-ansible
+  yum:
+    name: "gluster-ansible"
+    state: latest
+
+- name: copy ansible playbooks to setup machine
+  synchronize:
+    src: ansible/
+    dest: /home/vagrant/ansible
