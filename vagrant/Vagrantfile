@@ -46,6 +46,10 @@ Vagrant.configure("2") do |config|
       # Based on that, one can run ansible without vagrant.
       setup.vm.provision "no-op", type:'ansible' do |ansible|
         ansible.playbook = "no-op-playbook.yml"
+        ansible.groups = {
+          "admin" => [ "setup" ],
+          "cluster" => (0..NODES-1).map { |i| "storage#{i}" }
+        }
       end
     end
 end
