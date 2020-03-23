@@ -4,6 +4,8 @@
 
 NODES = 2
 DISKS = 2
+NODE_RAM = 1024
+NODE_CPUS = 2
 
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
@@ -21,16 +23,16 @@ Vagrant.configure("2") do |config|
                 storage.vm.provider :virtualbox do |vb|
                     vb.customize [ "createhd", "--filename", "disk-#{i}#{d}.vdi", "--size", 10*1024 ]
                     vb.customize [ "storageattach", :id, "--storagectl", "SATA Controller", "--port", 3+d, "--device", 0, "--type", "hdd", "--medium", "disk-#{i}#{d}.vdi" ]
-                    vb.memory = 1024
-                    vb.cpus = 2
+                    vb.memory = NODE_RAM
+                    vb.cpus = NODE_CPUS
                 end
 
                 driverletters = ('b'..'z').to_a
                 storage.vm.provider :libvirt do  |lv|
                     lv.storage_pool_name = "home-libvirt"
                     lv.storage :file, :device => "vd#{driverletters[d]}", :path => "disk-#{i}#{d}.disk", :size => '10G'
-                    lv.memory = 1024
-                    lv.cpus = 2
+                    lv.memory = NODE_RAM
+                    lv.cpus = NODE_CPUS
                 end
             end
         end
