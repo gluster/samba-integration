@@ -1,0 +1,5 @@
+- name: start vagrant vms
+  command: vagrant up --no-provision
+
+- name: provision vagrant vms
+  command: vagrant provision

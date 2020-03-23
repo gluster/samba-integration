@@ -1,0 +1,29 @@
+- name: copy vagrant generated inventory file - local machine
+  copy:
+    src: .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
+    dest: ./vagrant_ansible_inventory
+
+- name: addapt inventory - ssh options
+  blockinfile:
+    path: ./vagrant_ansible_inventory
+    block: |
+      [all:vars]
+      ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+- name: copy vagrant generated inventory file - setup machine
+  copy:
+    src: .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
+    dest: ./ansible/vagrant_ansible_inventory
+
+- name: adapt inventory - correct ssh key
+  replace:
+    path: ./ansible/vagrant_ansible_inventory
+    regexp: "ansible_ssh_private_key_file='.*/\\.vagrant\\.d/insecure_private_key'"
+    replace: "ansible_ssh_private_key_file='/home/vagrant/ansible/vagrant_insecure_private_ssh_key'"
+
+- name: adapt inventory - ssh options
+  blockinfile:
+    path: ./ansible/vagrant_ansible_inventory
+    block: |
+      [all:vars]
+      ansible_ssh_common_args='-o StrictHostKeyChecking=no'
