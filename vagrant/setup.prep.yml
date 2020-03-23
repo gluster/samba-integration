@@ -1,0 +1,8 @@
+#
+# prepare the setup machine
+#
+- hosts: setup
+  become: yes
+  become_method: sudo
+  roles:
+    - setup.prep
