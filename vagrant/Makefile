@@ -6,4 +6,7 @@ local:
 setup.prep: local
 	@ansible-playbook --inventory=$(INVENTORY) setup.prep.yml
 
-.PHONY: local setup.prep
+setup.cluster: setup.prep
+	@ansible-playbook --inventory=$(INVENTORY) setup.run.yml
+
+.PHONY: local setup.prep setup.cluster

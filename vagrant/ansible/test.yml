@@ -1,0 +1,5 @@
+- hosts: cluster
+  become: yes
+  become_method: sudo
+  roles:
+    - node.test
