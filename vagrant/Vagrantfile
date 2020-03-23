@@ -35,4 +35,15 @@ Vagrant.configure("2") do |config|
             end
         end
     end
+
+    # setup vm:
+    # We will runn all our setup playbooks from there.
+    config.vm.define "setup" do |setup|
+      setup.vm.hostname = "setup"
+      # Run a no-op playbook to create the inventory file.
+      # Based on that, one can run ansible without vagrant.
+      setup.vm.provision "no-op", type:'ansible' do |ansible|
+        ansible.playbook = "no-op-playbook.yml"
+      end
+    end
 end
