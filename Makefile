@@ -1,3 +1,3 @@
 .PHONY: test
 test:
-	@true
+	@$(MAKE) -C vagrant setup.cluster
