@@ -1,0 +1,6 @@
+- hosts: localhost
+  connection: local
+  become: no
+  roles:
+    - local.vagrant
+    - local.prep
