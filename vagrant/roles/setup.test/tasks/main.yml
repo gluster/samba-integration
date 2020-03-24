@@ -1,2 +1,10 @@
+- name: cat /etc/resolv.conf
+  command: cat /etc/resolv.conf
+  register: resolv_conf_contents
+
+- name: content of /etc/resolv.conf
+  debug:
+    var: resolv_conf_contents.stdout_lines
+
 - name: test playbook node connectivity on the setup machine
   command: ansible-playbook -i /home/vagrant/ansible/vagrant_ansible_inventory /home/vagrant/ansible/test.yml 
