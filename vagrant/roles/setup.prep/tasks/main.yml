@@ -20,3 +20,8 @@
   synchronize:
     src: ansible/
     dest: /home/vagrant/ansible
+
+- name: ensure permissions on ssh key file
+  file:
+    path: /home/vagrant/ansible/vagrant_insecure_private_ssh_key
+    mode: u=rw,g=,o=
