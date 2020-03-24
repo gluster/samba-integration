@@ -1,5 +1,2 @@
-- name: test playbook node connectivity on the setup machine
-  command: ansible-playbook -i /home/vagrant/ansible/vagrant_ansible_inventory /home/vagrant/ansible/test.yml 
-
 - name: run the setup playbook on the setup machine
   command: ansible-playbook -i /home/vagrant/ansible/vagrant_ansible_inventory /home/vagrant/ansible/setup-cluster.yml 
