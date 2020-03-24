@@ -14,7 +14,20 @@ Vagrant.configure("2") do |config|
     config.vm.provider :libvirt do |v,override|
         override.vm.box = "centos/7"
         override.vm.synced_folder '.', '/vagrant', disabled: true
-        v.qemu_use_session = false
+
+        # We can not use qemu_use_session universally.
+        # - On Fedora 31, it is required for me to start.
+        # - But on centos7, it must not be set.
+        # The best workarount I found is to put this setting into
+        # your ~/.vagrant.d/Vagrantfile like so:
+        # ```
+        # Vagrant.configure("2") do |config|
+        #   config.vm.provider :libvirt do |libvirt|
+        #     libvirt.qemu_use_session = false
+        #   end
+        # end
+        # ```
+        #v.qemu_use_session = false
     end
 
     (0..NODES-1).each do |i|
