@@ -2,6 +2,14 @@
   include_vars:
     file: cluster-vars.yml
 
+- name: get hostname
+  command: hostname
+  register: output
+
+- name: print hostname
+  debug:
+    var: output.stdout
+
 - name: Test node reachability
   # note: `net_ping` module does not work unless we put
   # `ansible_network_os` into the inventory...
