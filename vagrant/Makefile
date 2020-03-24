@@ -8,6 +8,9 @@ setup.prep.only:
 
 setup.prep: local setup.prep.only
 
+setup.prep.copy:
+	@ansible-playbook --inventory=$(INVENTORY) --start-at-task "copy ansible playbooks to setup machine" setup.prep.yml
+
 setup.test.only:
 	@ansible-playbook --inventory=$(INVENTORY) setup.test.yml
 
