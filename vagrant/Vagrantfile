@@ -9,6 +9,8 @@ NODE_CPUS = 2
 NETWORK_BASE = "192.168.122"
 #LIBVIRT_STORAGE_POOL = "data"
 
+SETUP_IP = "#{NETWORK_BASE}.200"
+
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
     config.vm.provider :libvirt do |v,override|
@@ -59,6 +61,7 @@ Vagrant.configure("2") do |config|
     # We will runn all our setup playbooks from there.
     config.vm.define "setup" do |setup|
       setup.vm.hostname = "setup"
+      setup.vm.network :private_network, ip: "#{SETUP_IP}"
       # Run a no-op playbook to create the inventory file.
       # Based on that, one can run ansible without vagrant.
       setup.vm.provision "no-op", type:'ansible' do |ansible|
