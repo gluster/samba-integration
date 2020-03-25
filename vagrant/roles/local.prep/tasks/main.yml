@@ -27,3 +27,23 @@
     block: |
       [all:vars]
       ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+- name: dump ssh config
+  command: vagrant ssh-config
+  register: output
+
+- name: store ssh-config in file
+  copy:
+    content: "{{ output.stdout }}\n"
+    dest: ./ssh-config-host
+
+- name: copy ssh-config for setup
+  copy:
+   src: ./ssh-config-host
+   dest: ./ansible/ssh-config-setup
+
+- name: modify ssh-config-setup
+  replace:
+    path: ./ansible/ssh-config-setup
+    regexp: "IdentityFile .*\\.vagrant\\.d/insecure_private_key"
+    replace: "IdentityFile /home/vagrant/ansible/vagrant_insecure_private_ssh_key"
