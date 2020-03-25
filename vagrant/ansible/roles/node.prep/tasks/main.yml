@@ -1,0 +1,4 @@
+- name: copy ssh config
+  copy:
+    src: ssh-config-setup
+    dest: /home/vagrant/.ssh/config
