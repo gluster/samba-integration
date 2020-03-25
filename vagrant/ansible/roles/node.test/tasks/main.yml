@@ -16,3 +16,9 @@
   command: "ping -c 1 {{ item }}"
   loop:
     "{{ gluster_cluster_hosts }}"
+
+# this is the way gluster-ansible accesses the nodes
+- name: Test ssh to nodes via node address
+  command: /bin/true
+  delegate_to: "{{ item }}"
+  with_items: "{{ gluster_cluster_hosts }}"
