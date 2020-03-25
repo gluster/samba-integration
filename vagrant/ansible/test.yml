@@ -1,5 +1,0 @@
-- hosts: cluster
-  become: yes
-  become_method: sudo
-  roles:
-    - local.test

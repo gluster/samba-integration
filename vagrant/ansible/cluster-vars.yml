@@ -28,6 +28,9 @@ gluster_infra_fw_services:
   - glusterfs
 
 gluster_cluster_hosts:
+  #
+  # TODO: generate the list of nodes from vagrant/ansible
+  #
   - storage0
   - storage1
 gluster_cluster_volume: vol
