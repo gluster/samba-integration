@@ -10,12 +10,12 @@
   debug:
     var: output.stdout
 
-- name: Test node reachability
-  # note: `net_ping` module does not work unless we put
-  # `ansible_network_os` into the inventory...
-  command: "ping -c 1 {{ item }}"
-  loop:
-    "{{ gluster_cluster_hosts }}"
+#- name: Test node reachability
+#  # note: `net_ping` module does not work unless we put
+#  # `ansible_network_os` into the inventory...
+#  command: "ping -c 1 {{ item }}"
+#  loop:
+#    "{{ gluster_cluster_hosts }}"
 
 # this is the way gluster-ansible accesses the nodes
 - name: Test ssh to nodes via node address
