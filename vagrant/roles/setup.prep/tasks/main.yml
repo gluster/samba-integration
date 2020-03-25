@@ -25,3 +25,8 @@
   file:
     path: /home/vagrant/ansible/vagrant_insecure_private_ssh_key
     mode: u=rw,g=,o=
+
+- name: copy ssh config in place
+  copy:
+   src: ansible/ssh-config-setup
+   dest: /home/vagrant/.ssh/config
