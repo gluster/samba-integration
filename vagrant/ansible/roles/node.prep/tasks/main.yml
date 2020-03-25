@@ -12,3 +12,8 @@
   copy:
     src: ssh-config-setup
     dest: /home/vagrant/.ssh/config
+
+- name: copy /etc/hosts
+  copy:
+    src: etc-hosts
+    dest: /etc/hosts
