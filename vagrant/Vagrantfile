@@ -30,6 +30,15 @@ Vagrant.configure("2") do |config|
         # end
         # ```
         #v.qemu_use_session = false
+
+        # change cpu mode to passthrough as workaround for problems in the ci,
+        # refer to bugs:
+        # https://bugzilla.redhat.com/show_bug.cgi?id=1467599
+        # https://bugzilla.redhat.com/show_bug.cgi?id=1386223#c10
+        # vagrant-libvirt/vagrant-libvirt#667
+        # taken from:
+        # https://github.com/heketi/heketi/pull/1008
+        v.cpu_mode = 'host-passthrough'
     end
 
     (0..NODES-1).each do |i|
