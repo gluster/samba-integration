@@ -4,6 +4,8 @@
   vars_files:
     - cluster-vars.yml
   roles:
+    - node.prep
+    - node.test
     - node.setup
     - gluster.infra
     - gluster.cluster
