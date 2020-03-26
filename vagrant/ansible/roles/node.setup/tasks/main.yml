@@ -26,3 +26,5 @@
   vars:
     tools:
       - lvm2
+      - firewalld
+      - libselinux-python
