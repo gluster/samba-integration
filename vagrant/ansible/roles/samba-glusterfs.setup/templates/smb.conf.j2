@@ -1,0 +1,19 @@
+[global]
+netbios name = {{ samba_netbios_name }}
+clustering = yes
+passdb backend = tdbsam
+
+host msdfs = yes
+msdfs root = yes
+msdfs shuffle referrals = yes
+
+client signing = auto
+
+kernel share modes = No
+map archive = No
+posix locking = No
+
+load printers = no
+printcap name = /dev/null
+disable spoolss = yes
+printing = bsd

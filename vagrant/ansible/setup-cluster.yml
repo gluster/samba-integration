@@ -10,3 +10,4 @@
     - gluster.infra
     - gluster.cluster
     - ctdb.setup
+    - samba-glusterfs.setup

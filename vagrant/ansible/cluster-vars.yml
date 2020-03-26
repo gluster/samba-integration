@@ -48,3 +48,8 @@ gluster_cluster_bricks: '/bricks/brick0/vol,/bricks/brick1/vol'
 gluster_features_ctdb_nodes: 192.168.122.100,192.168.122.101
 gluster_features_ctdb_publicaddr: '192.168.123.10/24 eth2,192.168.123.11/24 eth2'
 gluster_features_ctdb_volume: ctdb
+
+samba_netbios_name: "GLUSTERTEST"
+samba_users:
+  - { username: 'test1', password: 'x', uid: '2001' }
+  - { username: 'test2', password: 'x', uid: '2002' }
