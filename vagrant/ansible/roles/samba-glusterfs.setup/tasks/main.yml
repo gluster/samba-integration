@@ -1,0 +1,80 @@
+---
+- name: Install samba and samba-vfs-glusterfs packages
+  yum:
+    name:
+      - samba
+      - samba-vfs-glusterfs
+    state: present
+
+- name: Enable firewall for samba
+  firewalld:
+    service: samba
+    permanent: yes
+    state: enabled
+
+- name: Install libsemanage-python. This is needed for the seboolean ansible command
+  yum: name=libsemanage-python state=present
+
+- name: Selinux - Allow Samba to access glusterfs services
+  seboolean:
+    name: samba_load_libgfapi
+    state: yes
+    persistent: yes
+
+- name: Copy over smb.conf
+  template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Set Volume options and restart volume in a single host
+  block:
+  - name: Setup Gluster volume settings
+    gluster_volume:
+      state: present
+      name: "{{ gluster_cluster_volume }}"
+      options:
+        {
+          server.allow-insecure: 'on',
+          performance.cache-samba-metadata: 'on',
+          storage.batch-fsync-delay-usec: '0',
+          user.smb: 'on'
+        }
+  run_once: true
+
+- name: Mount glusterfs using fuse mount and set world writable permissions
+  block:
+    - name: Mount gluster volume using glusterfs
+      mount:
+        path: /mnt-fuse
+        src: 'localhost:/vol'
+        fstype: glusterfs
+        state: mounted
+
+    - name: Set permission of share root to 0777
+      file:
+        path: /mnt-fuse
+        mode: '0777'
+
+    - name: Unmount mounted fuse glusterfs mount
+      mount:
+        path: /mnt-fuse
+        state: absent
+  run_once: true
+
+- name: Create test users
+  user:
+    name: "{{ item.username }}"
+    uid: "{{ item.uid }}"
+    state: present
+  with_items: "{{ samba_users }}"
+
+- name: Create test users with smbpasswd
+  shell: (echo {{ item.password }}; echo {{ item.password }})|smbpasswd -a {{ item.username }}
+  with_items: "{{ samba_users }}"
+  run_once: yes
+
+- name: Enable smbd service
+  service: name=smb state=started enabled=yes
