@@ -7,4 +7,4 @@
     var: resolv_conf_contents.stdout_lines
 
 - name: test playbook node connectivity on the setup machine
-  command: ansible-playbook -i /home/vagrant/ansible/vagrant_ansible_inventory /home/vagrant/ansible/test.local.yml 
+  command: ansible-playbook -i /home/vagrant/ansible/vagrant_ansible_inventory /home/vagrant/ansible/test.local.yml
