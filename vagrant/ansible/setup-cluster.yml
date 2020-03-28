@@ -6,6 +6,6 @@
   roles:
     - node.prep
     - node.test
-    - gluster.prep
+    - glusterfs.setup
     - ctdb.setup
     - samba-glusterfs.setup
