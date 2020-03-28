@@ -7,7 +7,5 @@
     - node.prep
     - node.test
     - gluster.prep
-    - gluster.infra
-    - gluster.cluster
     - ctdb.setup
     - samba-glusterfs.setup

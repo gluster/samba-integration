@@ -8,3 +8,10 @@
   vars:
     gluster_rpms:
       - glusterfs-server
+
+- include_role:
+    name: gluster.infra
+
+- include_role:
+    name: gluster.cluster
+
