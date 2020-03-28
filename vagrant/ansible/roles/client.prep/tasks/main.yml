@@ -1,0 +1,55 @@
+- name: Enable GlusterFS nightly rpms repository
+  command: yum-config-manager --add-repo http://artifacts.ci.centos.org/gluster/nightly/master.repo
+
+- name: Install required packages
+  yum:
+    name:
+      - glusterfs-fuse
+      - cifs-utils
+    state: latest
+
+- debug:
+    msg: "{{ ctdb_network_public_interfaces }}"
+
+- name: Set variables to be used later
+  set_fact:
+    num_hosts: "{{ ctdb_network_public_interfaces | length }}"
+    num_users: "{{ samba_users | length }}"
+    testhost0: "{{ ctdb_network_public_interfaces[0] }}"
+
+- name: Make directory to contain share mount points
+  file:
+    path: /test-mnt
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Add fuse mount share
+  mount:
+    path: /test-mnt/fuse
+    src: "{{ testhost0 }}:vol"
+    fstype: glusterfs
+    state: present
+
+- name: Add test hosts to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ ctdb_network_public_interfaces[item|int] }} testhost{{ item }}"
+    regexp: "^{{ ctdb_network_public_interfaces[item|int] }} "
+    insertafter: EOF
+  with_sequence: start=0 end={{ num_hosts |int -1 }}
+
+- name: Create folders for each directory
+  file:
+    path: "/test-mnt/testhost{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  with_sequence: start=0 end={{ num_hosts |int -1 }}
+
+- include_tasks: "mkdir_usermounts.yml"
+  with_sequence: start=0 end={{ num_hosts |int -1 }}
+  loop_control:
+    loop_var: testhost_num
