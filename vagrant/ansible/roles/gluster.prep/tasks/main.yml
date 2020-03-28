@@ -1,0 +1,10 @@
+- name: Enable GlusterFS nightly rpms repository
+  command: yum-config-manager --add-repo http://artifacts.ci.centos.org/gluster/nightly/master.repo
+
+- name: Install GlusterFS rpms
+  yum:
+    name: "{{ gluster_rpms }}"
+    state: latest
+  vars:
+    gluster_rpms:
+      - glusterfs-server
