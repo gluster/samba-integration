@@ -3,3 +3,6 @@ prep.dirs:
 
 tarball:
 	@ansible-playbook --inventory localhost, ./ansible/make.tarball.yml
+
+srpm:
+	@ansible-playbook --inventory localhost, ./ansible/build.srpm.yml
