@@ -1,0 +1,18 @@
+- name: create samba.spec from template
+  template:
+    src: "{{ spec_dir }}/samba.spec.j2"
+    dest: "{{ spec_dir }}/samba.spec"
+
+- name: make srpm
+  command: rpmbuild --define "_sourcedir {{ spec_dir }}" --define "_srcrpmdir {{ srpm_dir }}" -bs ./samba.spec
+  args:
+    chdir: "{{ spec_dir }}"
+
+- name: get srpm name
+  shell: ls samba-{{ samba_rpm_version }}-*.src.rpm
+  args:
+    chdir: "{{ srpm_dir }}"
+  register: lscmd
+
+- set_fact:
+    samba_srpm: "{{ lscmd.stdout }}"
