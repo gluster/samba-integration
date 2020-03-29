@@ -1,0 +1,8 @@
+- hosts: clients
+  become: yes
+  become_method: sudo
+  vars_files:
+    - cluster-vars.yml
+  roles:
+    - common.prep
+    - client.prep
