@@ -1,0 +1,45 @@
+- set_fact:
+    version_file: "{{ code_dir }}/VERSION"
+
+- name: clone samba repository
+  git:
+    repo: 'https://git.samba.org/samba.git'
+    dest: "{{ code_dir }}"
+    force: yes
+
+- name: git hash
+  command: git log -1 --format=%h
+  args:
+    chdir: "{{ code_dir }}"
+  register: githashcmd
+
+- set_fact:
+    githash: "{{ githashcmd.stdout }}"
+
+- name: git date
+  command: git log -1 --format=format:%cd --date=format:'%Y%m%d.%H%M%S'
+  args:
+    chdir: "{{ code_dir }}"
+  register: gitdatecmd
+
+- set_fact:
+    gitdate: "{{ gitdatecmd.stdout }}"
+
+- set_fact:
+    samba_rpm_version: "{{ gitdate }}.{{ githash }}"
+
+- set_fact:
+    samba_prefix: "samba-{{ samba_rpm_version }}"
+
+- set_fact:
+    samba_tarball: "{{ spec_dir}}/{{ samba_prefix }}.tar.gz"
+
+# `make dist` would be the preferred way of creating the tarball
+# but it uses the version generated from the VERSION file which
+# is not suitable for rpm building if we add the vendor suffix.
+# Therefore using `git archive` (for now)...
+#
+- name: make tarball
+  command: git archive --prefix={{ samba_prefix }}/ --output={{ samba_tarball }} HEAD
+  args:
+    chdir: "{{ code_dir }}"
