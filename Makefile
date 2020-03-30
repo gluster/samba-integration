@@ -6,3 +6,6 @@ tarball:
 
 srpm:
 	@ansible-playbook --inventory localhost, ./ansible/build.srpm.yml
+
+rpms.centos8:
+	@ansible-playbook --inventory localhost, ./ansible/build.rpms.centos8.yml
