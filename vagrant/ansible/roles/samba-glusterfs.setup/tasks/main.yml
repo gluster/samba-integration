@@ -75,6 +75,3 @@
   shell: (echo {{ item.password }}; echo {{ item.password }})|smbpasswd -a {{ item.username }}
   with_items: "{{ samba_users }}"
   run_once: yes
-
-- name: Enable smbd service
-  service: name=smb state=started enabled=yes
