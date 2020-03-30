@@ -1,8 +1,26 @@
 ---
+- name: Check for required variables
+  block:
+    - fail:
+        msg: "Please provide required variable: ctdb_network_private_interfaces"
+      when: ctdb_network_private_interfaces is undefined
+    - fail:
+        msg: "Please provide these required variable: ctdb_network_public_interfaces"
+      when: ctdb_network_public_interfaces is undefined
+    - fail:
+        msg: "Please provide these required variable: ctdb_network_public_interface_subnet_mask"
+      when: ctdb_network_public_interface_subnet_mask is undefined
+    - fail:
+        msg: "Please provide these required variable: ctdb_network_public_interface_name"
+      when: ctdb_network_public_interface_name is undefined
+    - fail:
+        msg: "Please provide these required variable: ctdb_glusterfs_volume"
+      when: ctdb_glusterfs_volume is undefined
+
 - name: Create the ctdb replicated volume
   gluster_volume:
     state: present
-    name: "{{ gluster_features_ctdb_volume }}"
+    name: "{{ ctdb_glusterfs_volume }}"
     bricks: '{{ ctdb_brick_location }}/ctdb'
     cluster: "{{ gluster_cluster_hosts }}"
     replicas: "{{ gluster_cluster_replica_count }}"
@@ -67,6 +85,10 @@
 
 - include_role:
     name: gluster.features
+  vars:
+    gluster_features_ctdb_nodes: "{{ ctdb_network_private_interfaces | join(',') }}"
+    gluster_features_ctdb_publicaddr: "{{ ctdb_network_public_interfaces | map('regex_replace','(^.*$)','\\1/' + ctdb_network_public_interface_subnet_mask + ' ' + ctdb_network_public_interface_name) | list |join (',') }}"
+    gluster_features_ctdb_volume: "{{ ctdb_glusterfs_volume }}"
 
 - name: Restart ctdb
   service: name=ctdb state=restarted enabled=yes
