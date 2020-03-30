@@ -45,9 +45,15 @@ gluster_cluster_transport: 'tcp'
 gluster_cluster_bricks: '/bricks/brick0/vol,/bricks/brick1/vol'
 
 #Autogenerate these values containing ip addresses
-gluster_features_ctdb_nodes: 192.168.122.100,192.168.122.101
-gluster_features_ctdb_publicaddr: '192.168.123.10/24 eth2,192.168.123.11/24 eth2'
-gluster_features_ctdb_volume: ctdb
+ctdb_network_private_interfaces:
+  - "192.168.122.100"
+  - "192.168.122.101"
+ctdb_network_public_interfaces:
+  - "192.168.123.10"
+  - "192.168.123.11"
+ctdb_network_public_interface_subnet_mask: "24"
+ctdb_network_public_interface_name: "eth2"
+ctdb_glusterfs_volume: "ctdb"
 
 samba_netbios_name: "GLUSTERTEST"
 samba_users:
