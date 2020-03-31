@@ -1,8 +1,3 @@
-- name: update packages
-  yum:
-    name: '*'
-    state: latest
-
 - name: Enable EPEL repository
   yum:
     name: epel-release
