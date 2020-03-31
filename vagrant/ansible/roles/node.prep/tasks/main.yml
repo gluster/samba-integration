@@ -17,3 +17,18 @@
   copy:
     src: etc-hosts
     dest: /etc/hosts
+
+- name: Enable EPEL repository
+  yum:
+    name: epel-release
+    state: latest
+
+- name: Install basic tools
+  yum:
+   name: "{{ tools }}"
+   state: latest
+  vars:
+    tools:
+      - lvm2
+      - firewalld
+      - libselinux-python

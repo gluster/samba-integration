@@ -6,7 +6,6 @@
   roles:
     - node.prep
     - node.test
-    - node.setup
     - gluster.prep
     - gluster.infra
     - gluster.cluster
