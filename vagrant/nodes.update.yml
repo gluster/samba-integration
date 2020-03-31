@@ -1,0 +1,11 @@
+#
+# Update all nodes
+#
+- hosts: all
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: Perform a complete update
+      yum:
+        name: '*'
+        state: latest
