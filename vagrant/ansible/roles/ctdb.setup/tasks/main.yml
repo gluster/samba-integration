@@ -17,7 +17,6 @@
   firewalld:
     service: ctdb
     permanent: yes
-    state: present
     state: enabled
 
 - name: Add recovery lock to ctdb.conf
