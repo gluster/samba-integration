@@ -1,0 +1,10 @@
+- hosts: localhost
+  connection: local
+  become: no
+  vars_files:
+    - vars.yml
+  roles:
+    - prep.dirs
+    - make.tarball
+    - make.srpm
+    - build.rpms.centos7

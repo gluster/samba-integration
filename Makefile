@@ -9,3 +9,6 @@ srpm:
 
 rpms.centos8:
 	@ansible-playbook --inventory localhost, ./ansible/build.rpms.centos8.yml
+
+rpms.centos7:
+	@ansible-playbook --inventory localhost, ./ansible/build.rpms.centos7.yml
