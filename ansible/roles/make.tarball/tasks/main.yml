@@ -17,13 +17,16 @@
     githash: "{{ githashcmd.stdout }}"
 
 - name: git date
-  command: git log -1 --format=format:%cd --date=format:'%Y%m%d.%H%M%S'
+  # older git (on centos7) don't support --date=format: ...
+  #command: git log -1 --format=format:%cd --date=format:'%Y%m%d.%H%M%S'
+  command: git log -1 --format=format:%cd --date=iso
   args:
     chdir: "{{ code_dir }}"
   register: gitdatecmd
 
 - set_fact:
-    gitdate: "{{ gitdatecmd.stdout }}"
+    # with --date=format:, the regex_replace filters would not be needed
+    gitdate: "{{ gitdatecmd.stdout | regex_replace('-', '') | regex_replace(' [^ ]*$', '') | regex_replace('\\:', '') | regex_replace(' ', '.') }}"
 
 - set_fact:
     samba_rpm_version: "{{ gitdate }}.{{ githash }}"
