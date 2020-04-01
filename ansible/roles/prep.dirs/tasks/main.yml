@@ -23,3 +23,29 @@
 - file:
     path: "{{ rpms_dir }}"
     state: directory
+
+- file:
+    path: "{{ mock_dir }}"
+    state: directory
+
+- name: copy mock config files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ mock_dir }}"
+  loop:
+    - /etc/mock/epel-7-x86_64.cfg
+    - epel-7-sergiomb.tpl
+    - /etc/mock/epel-8-x86_64.cfg
+    - centos-8-Devel.tpl
+
+- name: adapt epel-7 mock config to use additional template
+  lineinfile:
+    path: "{{ mock_dir }}/epel-7-x86_64.cfg"
+    insertafter: EOF
+    line: "include('{{ mock_dir }}/epel-7-sergiomb.tpl')"
+
+- name: adapt epel-8 mock config to use additional template
+  lineinfile:
+    path: "{{ mock_dir }}/epel-8-x86_64.cfg"
+    insertafter: EOF
+    line: "include('{{ mock_dir }}/centos-8-Devel.tpl')"
