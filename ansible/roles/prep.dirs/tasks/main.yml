@@ -1,0 +1,25 @@
+- name: Create code directory
+  file:
+    path: "{{ code_dir }}"
+    state: directory
+
+# make sure to clear the packaging dirctory to have a clean slate
+- file:
+    path: "{{ spec_dir }}"
+    state: "{{ item }}"
+  loop:
+    - absent
+    - directory
+
+- name: copy packaging information
+  synchronize:
+    src: ../packaging/
+    dest: "{{ spec_dir }}"
+
+- file:
+    path: "{{ srpm_dir }}"
+    state: directory
+
+- file:
+    path: "{{ rpms_dir }}"
+    state: directory

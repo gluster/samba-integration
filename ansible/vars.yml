@@ -1,0 +1,5 @@
+build_dir: /tmp/samba-build
+code_dir: "{{ build_dir }}/code"
+spec_dir: "{{ build_dir }}/spec"
+srpm_dir: "{{ build_dir }}/srpms"
+rpms_dir: "{{ build_dir }}/rpms"
