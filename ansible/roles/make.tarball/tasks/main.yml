@@ -3,9 +3,13 @@
 
 - name: clone samba repository
   git:
-    repo: 'https://git.samba.org/samba.git'
+    # use the gitlab copy of the Samba git repo to allow for
+    # shallow clones, in order to spare time and bandwidth.
+    #repo: 'https://git.samba.org/samba.git'
+    repo: https://gitlab.com/samba-team/samba.git
     dest: "{{ code_dir }}"
     force: yes
+    depth: 1
 
 - name: git hash
   command: git log -1 --format=%h
