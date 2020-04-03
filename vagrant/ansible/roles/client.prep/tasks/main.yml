@@ -53,3 +53,11 @@
   with_sequence: start=0 end={{ num_hosts |int -1 }}
   loop_control:
     loop_var: testhost_num
+
+- name: Create a README file
+  template:
+    src: README.j2
+    dest: /root/README
+    owner: root
+    group: root
+    mode: '0644'
