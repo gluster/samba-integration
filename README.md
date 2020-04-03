@@ -1,3 +1,5 @@
+[![Build Status](https://ci.centos.org/buildStatus/icon?job=gluster_samba-integration)](https://ci.centos.org/view/Gluster/job/gluster_samba-integration/)
+
 # Samba-Gluster Integration Test Environment
 
 The purpose of this project is to provide a generic mechanism to set up a
