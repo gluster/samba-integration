@@ -298,6 +298,12 @@ Requires: libwbclient = %{samba_depver}
 Provides: samba4-client = %{samba_depver}
 Obsoletes: samba4-client < %{samba_depver}
 
+Provides: ldb-tools = %{samba_depver}
+Obsoletes: ldb-tools < %{samba_depver}
+
+Provides: tdb-tools = %{samba_depver}
+Obsoletes: tdb-tools < %{samba_depver}
+
 Requires(post): %{_sbindir}/update-alternatives
 Requires(postun): %{_sbindir}/update-alternatives
 
