@@ -28,3 +28,25 @@
       - lvm2
       - firewalld
       - libselinux-python
+
+- name: add copr to get compat-gnutls34 (needed for centos 7)
+  block:
+
+    - name: Install yum copr plugin
+      yum:
+        name: yum-plugin-copr
+        state: latest
+
+    - name: add copr to get compat-gnutls34
+      command: yum -y copr enable sergiomb/SambaAD
+
+    - name: modify copr repo to only use it for compat-gnutls packages
+      lineinfile:
+        dest: /etc/yum.repos.d/_copr_sergiomb-SambaAD.repo
+        line: "includepkgs=compat-gnutls34.* compat-nettle32.*"
+        insertafter: '\[copr:copr.fedorainfracloud.org:sergiomb:SambaAD\]'
+
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+
+- name: Enable Samba nightly rpms repository
+  command: yum-config-manager --add-repo http://artifacts.ci.centos.org/gluster/nightly-samba/samba-nightly-master.repo
