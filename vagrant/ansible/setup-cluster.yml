@@ -5,7 +5,6 @@
     - cluster-vars.yml
   roles:
     - common.prep
-    - node.test
     - node.prep
     - gluster.infra
     - gluster.cluster
