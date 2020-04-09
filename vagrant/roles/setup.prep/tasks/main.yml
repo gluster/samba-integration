@@ -8,8 +8,16 @@
     name: epel-release
     state: latest
 
-- name: Enable gluster-ansible copr from sac
-  command: yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/sac/gluster-ansible/repo/epel-7/sac-gluster-ansible-epel-7.repo
+- name: add copr to get gluster-ansible from sac
+  block:
+
+    - name: Install yum copr plugin
+      yum:
+        name: yum-plugin-copr
+        state: latest
+
+    - name: add copr to get gluster-ansible
+      command: yum -y copr enable sac/gluster-ansible
 
 - name: Install gluster-ansible
   yum:
