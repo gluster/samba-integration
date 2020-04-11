@@ -1338,6 +1338,7 @@ fi
 %{_libdir}/samba/vfs/virusfilter.so
 %{_libdir}/samba/vfs/worm.so
 %{_libdir}/samba/vfs/xattr_tdb.so
+%{_libdir}/samba/vfs/widelinks.so
 
 %{_unitdir}/nmb.service
 %{_unitdir}/smb.service
@@ -1387,6 +1388,7 @@ fi
 %{_mandir}/man8/vfs_virusfilter.8*
 %{_mandir}/man8/vfs_worm.8*
 %{_mandir}/man8/vfs_xattr_tdb.8*
+%{_mandir}/man8/vfs_widelinks.8*
 
 %if ! %{with_vfs_glusterfs}
 %exclude %{_mandir}/man8/vfs_glusterfs.8*
