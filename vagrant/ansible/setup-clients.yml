@@ -6,3 +6,5 @@
   roles:
     - common.prep
     - client.prep
+    - client.test.prep
+    - client.test

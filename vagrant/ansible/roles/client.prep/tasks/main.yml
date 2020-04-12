@@ -8,6 +8,7 @@
       - cifs-utils
       - samba-test
       - python-pip
+      - git
     state: latest
 
 - name: Install Python yaml package
