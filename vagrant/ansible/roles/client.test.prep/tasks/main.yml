@@ -1,0 +1,19 @@
+---
+- name: Fetch the latest samba-integration-tests repo
+  git:
+    repo: 'https://github.com/gluster/samba-integration.git'
+    version: tests
+    dest: /root/samba-integration-tests
+
+- name: Create a symlink for test-info.yml file
+  file:
+    src: /root/test-info.yml
+    dest: /root/samba-integration-tests/test-info.yml
+    owner: root
+    group: root
+    state: link
+
+- name: Run tests
+  command:
+    chdir: /root/samba-integration-tests
+    cmd: make test
