@@ -7,7 +7,12 @@
       - glusterfs-fuse
       - cifs-utils
       - samba-test
+      - python-pip
     state: latest
+
+- name: Install Python yaml package
+  pip:
+    name: PyYAML
 
 - debug:
     msg: "{{ ctdb_network_public_interfaces }}"
