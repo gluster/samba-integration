@@ -44,43 +44,29 @@
     regexp: "recovery lock"
     insertafter: '\[cluster\]'
 
-# Check bz 1656777
-- name: Temporary workaround the bugs in the ctdb package provided with centos 7.
-  block:
-    - name: Create missing directories for ctdb package
-      file:
-        path: "{{ item }}"
-        state: directory
-        owner: root
-        group: root
-      with_items:
-        - /etc/ctdb/events/legacy
-        - /var/lib/ctdb/state
-        - /var/lib/ctdb/persistent/
-        - /var/lib/ctdb/volatile/
+- name: Install libsemanage-python. This is needed for the seboolean ansible command
+  yum: name=libsemanage-python state=present
 
-    - name: Apply SELinux file context to new directories
-      command: restorecon -irv /etc/ctdb/events/legacy /var/lib/ctdb/state
+- name: SELinux - Allow CTDB to access recovery lockfile from FUSE mount
+  seboolean:
+    name: use_fusefs_home_dirs
+    state: yes
+    persistent: yes
 
-    - name: Put SELinux in permissive mode, logging actions that would be blocked.
-      selinux:
-        policy: targeted
-        state: permissive
+- name: Enable check consistency of databases during startup
+  command: '/bin/ctdb event script enable legacy 00.ctdb'
 
-    - name: Enable check consistency of databases during startup
-      command: '/bin/ctdb event script enable legacy 00.ctdb'
+- name: Enable check consistency of databases during startup
+  command: '/bin/ctdb event script enable legacy 01.reclock'
 
-    - name: Enable check consistency of databases during startup
-      command: '/bin/ctdb event script enable legacy 01.reclock'
+- name: Enable monitor system resources
+  command: '/bin/ctdb event script enable legacy 05.system'
 
-    - name: Enable monitor system resources
-      command: '/bin/ctdb event script enable legacy 05.system'
+- name: Enable network interface management by ctdb
+  command: '/bin/ctdb event script enable legacy 10.interface'
 
-    - name: Enable network interface management by ctdb
-      command: '/bin/ctdb event script enable legacy 10.interface'
-
-    - name: Enable samba management by ctdb
-      command: '/bin/ctdb event script enable legacy 50.samba'
+- name: Enable samba management by ctdb
+  command: '/bin/ctdb event script enable legacy 50.samba'
 
 - include_role:
     name: gluster.features

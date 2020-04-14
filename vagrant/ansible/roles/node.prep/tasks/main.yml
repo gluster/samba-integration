@@ -1,19 +1,62 @@
-- name: create ansible directory (for ssh key)
-  file:
-    path: /home/vagrant/ansible
-    state: directory
+- name: Check for node connectivity
+  block:
+    - name: read list of nodes from file cluster_nodes.yml
+      include_vars:
+        file: cluster-vars.yml
 
-- name: copy ssh key
-  copy:
-    src: /home/vagrant/ansible/vagrant_insecure_private_ssh_key
-    dest: /home/vagrant/ansible/vagrant_insecure_private_ssh_key
+    - name: get hostname
+      command: hostname
+      register: output
 
-- name: copy ssh config
-  copy:
-    src: ssh-config-setup
-    dest: /home/vagrant/.ssh/config
+    - name: print hostname
+      debug:
+        var: output.stdout
 
-- name: copy /etc/hosts
-  copy:
-    src: etc-hosts
-    dest: /etc/hosts
+    # this is the way gluster-ansible accesses the nodes
+    - name: Test ssh to nodes via node address
+      command: /bin/true
+      delegate_to: "{{ item }}"
+      with_items: "{{ gluster_cluster_hosts }}"
+
+- name: Enable GlusterFS nightly rpms repository
+  command: yum-config-manager --add-repo http://artifacts.ci.centos.org/gluster/nightly/master.repo
+
+- name: Install GlusterFS rpms
+  yum:
+    name: "{{ gluster_rpms }}"
+    state: latest
+  vars:
+    gluster_rpms:
+      - glusterfs-server
+
+- name: Install basic tools
+  yum:
+   name: "{{ tools }}"
+   state: latest
+  vars:
+    tools:
+      - lvm2
+      - firewalld
+      - libselinux-python
+
+- name: add copr to get compat-gnutls34 (needed for centos 7)
+  block:
+
+    - name: Install yum copr plugin
+      yum:
+        name: yum-plugin-copr
+        state: latest
+
+    - name: add copr to get compat-gnutls34
+      command: yum -y copr enable sergiomb/SambaAD
+
+    - name: modify copr repo to only use it for compat-gnutls packages
+      lineinfile:
+        dest: /etc/yum.repos.d/_copr_sergiomb-SambaAD.repo
+        line: "includepkgs=compat-gnutls34.* compat-nettle32.*"
+        insertafter: '\[copr:copr.fedorainfracloud.org:sergiomb:SambaAD\]'
+
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+
+- name: Enable Samba nightly rpms repository
+  command: yum-config-manager --add-repo http://artifacts.ci.centos.org/gluster/nightly-samba/samba-nightly-master.repo

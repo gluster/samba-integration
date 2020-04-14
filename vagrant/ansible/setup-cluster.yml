@@ -4,10 +4,8 @@
   vars_files:
     - cluster-vars.yml
   roles:
+    - common.prep
     - node.prep
-    - node.test
-    - node.setup
-    - gluster.infra
-    - gluster.cluster
+    - glusterfs.setup
     - ctdb.setup
     - samba-glusterfs.setup
