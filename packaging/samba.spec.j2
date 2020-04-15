@@ -323,6 +323,27 @@ Requires: libwbclient = %{samba_depver}
 %endif
 Requires: krb5-libs >= %{required_mit_krb5}
 
+Provides: python3-talloc = %{samba_depver}
+Obsoletes: python3-talloc < %{samba_depver}
+Provides: pytalloc = %{samba_depver}
+Obsoletes: pytalloc < %{samba_depver}
+
+Provides: python3-tdb = %{samba_depver}
+Obsoletes: python3-tdb < %{samba_depver}
+Provides: python-tdb = %{samba_depver}
+Obsoletes: python-tdb < %{samba_depver}
+
+Provides: python3-tevent = %{samba_depver}
+Obsoletes: python3-tevent < %{samba_depver}
+Provides: python-tevent = %{samba_depver}
+Obsoletes: python-tevent < %{samba_depver}
+
+Provides: python3-ldb = %{samba_depver}
+Obsoletes: python3-ldb < %{samba_depver}
+Provides: pyldb = %{samba_depver}
+Obsoletes: pyldb < %{samba_depver}
+
+
 %description client-libs
 The samba-client-libs package contains internal libraries needed by the
 SMB/CIFS clients.
