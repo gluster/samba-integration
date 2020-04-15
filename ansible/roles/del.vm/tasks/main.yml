@@ -1,0 +1,5 @@
+---
+- name: delete {{ vm }} vm
+  command: vagrant destroy {{ vm }}
+  args:
+    chdir: ../vagrant
