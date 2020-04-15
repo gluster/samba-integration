@@ -21,3 +21,13 @@ del.vm.centos7:
 
 test.rpms.centos7: prep.vm.centos7
 	@ansible-playbook --inventory ./ansible/vagrant_ansible_inventory.centos7 ./ansible/test.rpms.centos7.yml
+
+
+prep.vm.centos8:
+	@ansible-playbook --inventory localhost, ./ansible/prep.vm.centos8.yml
+
+del.vm.centos8:
+	@ansible-playbook --inventory localhost, ./ansible/del.vm.centos8.yml
+
+test.rpms.centos8: prep.vm.centos8
+	@ansible-playbook --inventory ./ansible/vagrant_ansible_inventory.centos8 ./ansible/test.rpms.centos8.yml
