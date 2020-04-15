@@ -1,0 +1,8 @@
+---
+- hosts: centos7
+  become: yes
+  become_method: sudo
+  vars_files:
+    - vars.yml
+  roles:
+    - test.rpms.centos

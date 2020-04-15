@@ -1,0 +1,22 @@
+---
+- name: bring up {{ vm }} vm
+  command: vagrant up --no-provision {{ vm }}
+  args:
+    chdir: ../vagrant
+
+- name: generate ansible inventory
+  command: vagrant provision {{ vm }}
+  args:
+    chdir: ../vagrant
+
+- name: copy vagrant generated inventory file
+  copy:
+    src: ../vagrant/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
+    dest: "./vagrant_ansible_inventory.{{ vm }}"
+
+- name: adapt inventory - ssh options
+  blockinfile:
+    path: "./vagrant_ansible_inventory.{{ vm }}"
+    block: |
+      [all:vars]
+      ansible_ssh_common_args='-o StrictHostKeyChecking=no'

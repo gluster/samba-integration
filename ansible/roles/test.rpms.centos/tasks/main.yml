@@ -1,0 +1,63 @@
+---
+- name: Perform a complete update
+  yum:
+    name: '*'
+    state: latest
+
+- name: Enable EPEL repository
+  yum:
+    name: epel-release
+    state: latest
+
+- name: add copr to get compat-gnutls34 (needed for centos 7)
+  block:
+
+    - name: Install yum copr plugin
+      yum:
+        name: yum-plugin-copr
+        state: latest
+
+    - name: add copr to get compat-gnutls34
+      command: yum -y copr enable sergiomb/SambaAD
+      args:
+        warn: false
+
+    - name: modify copr repo to only use it for compat-gnutls packages
+      lineinfile:
+        dest: /etc/yum.repos.d/_copr_sergiomb-SambaAD.repo
+        line: "includepkgs=compat-gnutls34.* compat-nettle32.*"
+        insertafter: '\[copr:copr.fedorainfracloud.org:sergiomb:SambaAD\]'
+
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+
+- name : install createrepo package
+  yum:
+    name: createrepo_c
+    state: latest
+
+- name: sync test build rpm directory
+  synchronize:
+    src: "{{ rpms_dir }}/"
+    dest: "/tmp/testbuild"
+
+- name: create yum repo from test build
+  command: createrepo_c .
+  args:
+    chdir: "/tmp/testbuild/master/{{ ansible_distribution_major_version }}/x86_64"
+
+- name: enable test build yum repository
+  yum_repository:
+    name: samba-mater-test-rpms
+    description: Samba master test rpms repository
+    baseurl: "file:///tmp/testbuild/master/$releasever/$basearch"
+    enabled: yes
+    gpgcheck: no
+
+- name: try installing our samba packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - samba
+    - samba-test
+    - samba-vfs-glusterfs
