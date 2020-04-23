@@ -6,6 +6,7 @@
     name:
       - glusterfs-fuse
       - cifs-utils
+      - samba-test
     state: latest
 
 - debug:
