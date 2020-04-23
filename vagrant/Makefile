@@ -1,4 +1,5 @@
 INVENTORY := ./vagrant_ansible_inventory
+VSSH := ssh -F ansible/ssh-config-setup -i /root/.vagrant.d/insecure_private_key
 
 local:
 	@ansible-playbook --inventory localhost, local.yml
@@ -18,7 +19,7 @@ setup.test.only:
 	@ansible-playbook --inventory=$(INVENTORY) setup.test.yml
 
 setup.cluster.only:
-	@ansible-playbook --inventory=$(INVENTORY) setup.run.yml
+	@$(VSSH) setup "make -C /home/vagrant/ansible setup.cluster"
 
 setup.cluster: setup.prep setup.test.only setup.cluster.only
 
