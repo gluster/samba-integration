@@ -67,25 +67,37 @@ fi
 # - prefetch vm image
 #
 
-# enable additional sources for yum
-# (SCL repository for Vagrant, epel for ansible)
-yum -y install centos-release-scl epel-release
+# enable additional sources for yum:
+# - epel for ansible
+yum -y install epel-release
 
 # Install additional packages
-#
-# note: adding sclo-vagrant1-vagrant explicitly seems to fix
-#   issues where libvirt fails to bring up the vm with errors like this:
-#   "Call to virDomainCreateWithFlags failed: the CPU is incompatible with host
-#    CPU: Host CPU does not provide required features: svm" (or vmx)
 #
 yum -y install \
 	qemu-kvm \
 	qemu-kvm-tools \
 	qemu-img \
-	sclo-vagrant1-vagrant \
-	sclo-vagrant1-vagrant-libvirt \
 	make \
-	ansible
+	ansible \
+	libvirt \
+	libvirt-devel
+
+# "Development Tools" and libvirt-devel are needed to run
+# "vagrant plugin install"
+yum -y group install "Development Tools"
+
+# download the vagrant RPM
+#
+curl -O -# https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.rpm
+
+# yum install fails if the package is already installed and updated to the
+# latest version. The pattern of (install || update) is a trick to prevent
+# installation from failing when we have entered the script for the second time.
+# It may look a bit weird, but is the easiest way I found to make sure
+# we install the package and have it at the desired version.
+yum -y install ./vagrant_2.2.7_x86_64.rpm || yum -y update ./vagrant_2.2.7_x86_64.rpm
+
+vagrant plugin install vagrant-libvirt
 
 # Vagrant needs libvirtd running
 systemctl start libvirtd
@@ -99,8 +111,7 @@ virsh capabilities
 # in order to get proper version metadata & caching support.
 # (The echo is becuase of "set -e" and that an existing box will cause
 #  vagrant to return non-zero.)
-scl enable sclo-vagrant1 -- \
-	vagrant box add "https://vagrantcloud.com/centos/7" --provider "libvirt" \
+vagrant box add "https://vagrantcloud.com/centos/7" --provider "libvirt" \
 	|| echo "Warning: the vagrant box may already exist OR an error occured"
 
 #
@@ -109,6 +120,6 @@ scl enable sclo-vagrant1 -- \
 # run the tests
 #
 
-echo make "${TEST_TARGET}" | scl enable sclo-vagrant1 bash
+make "${TEST_TARGET}"
 
 # END
