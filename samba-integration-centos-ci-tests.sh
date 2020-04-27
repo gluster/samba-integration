@@ -17,33 +17,14 @@ SCRIPT_GIT_BRANCH="centos-ci"
 SCRIPT_NAME="$(basename $0)"
 SCRIPT_PATH="$(realpath $0)"
 
-# enable additional sources for yum
-# (SCL repository for Vagrant, epel for ansible)
-yum -y install centos-release-scl epel-release
-
-# Install additional packages
 #
-# note: adding sclo-vagrant1-vagrant explicitly seems to fix
-#   issues where libvirt fails to bring up the vm with errors like this:
-#   "Call to virDomainCreateWithFlags failed: the CPU is incompatible with host
-#    CPU: Host CPU does not provide required features: svm" (or vmx)
+# === Phase 1 ============================================================
 #
-yum -y install \
-	qemu-kvm \
-	qemu-kvm-tools \
-	qemu-img \
-	sclo-vagrant1-vagrant \
-	sclo-vagrant1-vagrant-libvirt \
-	git \
-	make \
-	ansible
+# Install git, fetch the git repo and possibly restart updated script if
+# we are detecting that we are running on a PR that changes this script.
+#
 
-# Vagrant needs libvirtd running
-systemctl start libvirtd
-
-# Log the virsh capabilites so that we know the
-# environment in case something goes wrong.
-virsh capabilities
+yum -y install git
 
 rm -rf tests
 mkdir tests
@@ -76,6 +57,43 @@ then
 	fi
 fi
 
+
+#
+# === Phase 2 ============================================================
+#
+# Prepare the system:
+# - install packages
+# - start libvirt
+# - prefetch vm image
+#
+
+# enable additional sources for yum
+# (SCL repository for Vagrant, epel for ansible)
+yum -y install centos-release-scl epel-release
+
+# Install additional packages
+#
+# note: adding sclo-vagrant1-vagrant explicitly seems to fix
+#   issues where libvirt fails to bring up the vm with errors like this:
+#   "Call to virDomainCreateWithFlags failed: the CPU is incompatible with host
+#    CPU: Host CPU does not provide required features: svm" (or vmx)
+#
+yum -y install \
+	qemu-kvm \
+	qemu-kvm-tools \
+	qemu-img \
+	sclo-vagrant1-vagrant \
+	sclo-vagrant1-vagrant-libvirt \
+	make \
+	ansible
+
+# Vagrant needs libvirtd running
+systemctl start libvirtd
+
+# Log the virsh capabilites so that we know the
+# environment in case something goes wrong.
+virsh capabilities
+
 # Prefetch the centos/7 vagrant box.
 # We use the vagrant cloud rather than fetching directly from centos
 # in order to get proper version metadata & caching support.
@@ -85,7 +103,11 @@ scl enable sclo-vagrant1 -- \
 	vagrant box add "https://vagrantcloud.com/centos/7" --provider "libvirt" \
 	|| echo "Warning: the vagrant box may already exist OR an error occured"
 
-# time to run the tests:
+#
+# === Phase 3 ============================================================
+#
+# run the tests
+#
 
 echo make "${TEST_TARGET}" | scl enable sclo-vagrant1 bash
 
