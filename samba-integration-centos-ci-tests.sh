@@ -86,16 +86,16 @@ yum -y install \
 # "vagrant plugin install"
 yum -y group install "Development Tools"
 
-# download the vagrant RPM
+# yum install fails if the package is already installed at the desired
+# version, so we check whether vagrant is already installed at that
+# version. This is important to check when the script is invoked a
+# couple of times in a row to prevent it from failing. As a positive
+# side effect, it also avoids duplicate downloads of the RPM.
 #
-curl -O -# https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.rpm
-
-# yum install fails if the package is already installed and updated to the
-# latest version. The pattern of (install || update) is a trick to prevent
-# installation from failing when we have entered the script for the second time.
-# It may look a bit weird, but is the easiest way I found to make sure
-# we install the package and have it at the desired version.
-yum -y install ./vagrant_2.2.7_x86_64.rpm || yum -y update ./vagrant_2.2.7_x86_64.rpm
+if ! rpm -q vagrant-2.2.7
+then
+	yum -y install https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.rpm
+fi
 
 vagrant plugin install vagrant-libvirt
 
