@@ -1,3 +1,4 @@
-# Samba-GlusterFS integration CI tests
+# Samba-GlusterFS integration tests
 
-Continuous Integration helpers for Samba/CTDB + GlusterFS.
+This branch contains the actual tests for the cluster nodes and are run on the client machines.
+
