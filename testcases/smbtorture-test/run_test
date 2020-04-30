@@ -1,0 +1,4 @@
+#!/bin/bash
+
+test_dir=$(cd `dirname $0` && pwd)
+$test_dir/smbtorture-test.py $1 $test_dir/smbtorture-tests-info.yml
