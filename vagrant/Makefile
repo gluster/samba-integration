@@ -1,5 +1,5 @@
 INVENTORY := ./vagrant_ansible_inventory
-VSSH := ssh -F ansible/ssh-config-setup -i /root/.vagrant.d/insecure_private_key
+VSSH := ssh -F ssh-config-host
 
 local:
 	@ansible-playbook --inventory localhost, local.yml
