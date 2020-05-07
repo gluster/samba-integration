@@ -23,4 +23,9 @@ setup.cluster.only:
 
 setup.cluster: setup.prep setup.test.only setup.cluster.only
 
-.PHONY: local hosts.update.only setup.prep.only setup.prep setup.test.only setup.cluster.only setup.cluster
+setup.clients:
+	@$(VSSH) setup "make -C /home/vagrant/ansible setup.clients"
+
+setup.site: setup.cluster setup.clients
+
+.PHONY: local hosts.update.only setup.prep.only setup.prep setup.test.only setup.cluster.only setup.cluster setup.clients setup.site
