@@ -28,4 +28,7 @@ setup.clients:
 
 setup.site: setup.cluster setup.clients
 
-.PHONY: local hosts.update.only setup.prep.only setup.prep setup.test.only setup.cluster.only setup.cluster setup.clients setup.site
+client1.test:
+	@$(VSSH) client1 "sudo make -C /root/samba-integration-tests test"
+
+.PHONY: local hosts.update.only setup.prep.only setup.prep setup.test.only setup.cluster.only setup.cluster setup.clients setup.site client1.test
