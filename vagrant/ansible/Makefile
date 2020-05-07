@@ -7,4 +7,9 @@ setup.test:
 setup.cluster:
 	@ansible-playbook -i $(INVENTORY) ./setup-cluster.yml
 
-.PHONY: setup.cluster
+setup.clients:
+	@ansible-playbook -i $(INVENTORY) ./setup-clients.yml
+
+setup.site: setup.cluster setup.clients
+
+.PHONY: setup.cluster setup.clients setup.site
