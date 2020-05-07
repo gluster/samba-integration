@@ -1,4 +1,6 @@
 *~
 .vagrant
 vagrant/ansible/vagrant_ansible_inventory
+vagrant/ansible/ssh-config-setup
 vagrant/vagrant_ansible_inventory
+vagrant/ssh-config-host
