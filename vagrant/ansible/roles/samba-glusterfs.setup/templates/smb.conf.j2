@@ -1,25 +1,16 @@
 [global]
 netbios name = {{ samba_netbios_name }}
 clustering = yes
-passdb backend = tdbsam
 log file = /var/log/samba/log.%m
 max log size = 0
 server string = Samba server version %v
 workgroup = MYGROUP
 security = user
 
-client signing = auto
-
 kernel share modes = No
 map archive = No
-map hidden = no
-map read only = no
 posix locking = No
 kernel change notify = no
-kernel oplocks = no
-
-max protocol = SMB3
-store dos attributes = yes
 
 load printers = no
 printcap name = /dev/null
