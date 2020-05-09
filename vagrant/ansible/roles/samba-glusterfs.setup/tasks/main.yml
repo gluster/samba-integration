@@ -37,9 +37,17 @@
       name: "{{ gluster_cluster_volume }}"
       options:
         {
-          server.allow-insecure: 'on',
+          features.cache-invalidation: 'on',
+          features.cache-invalidation-timeout: '600',
           performance.cache-samba-metadata: 'on',
-          storage.batch-fsync-delay-usec: '0',
+          performance.stat-prefetch: 'on',
+          performance.cache-invalidation: 'on',
+          performance.md-cache-timeout: '600',
+          network.inode-lru-limit: '200000',
+          performance.nl-cache: 'on',
+          performance.nl-cache-timeout: '600',
+          performance.readdir-ahead: 'on',
+          performance.parallel-readdir: 'on',
           user.smb: 'on'
         }
   run_once: true
