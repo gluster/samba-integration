@@ -18,9 +18,6 @@
       delegate_to: "{{ item }}"
       with_items: "{{ gluster_cluster_hosts }}"
 
-- name: Enable GlusterFS nightly rpms repository
-  command: yum-config-manager --add-repo http://artifacts.ci.centos.org/gluster/nightly/master.repo
-
 - name: Install GlusterFS rpms
   yum:
     name: "{{ gluster_rpms }}"
