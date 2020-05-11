@@ -13,7 +13,3 @@
     group: root
     state: link
 
-- name: Run tests
-  command:
-    chdir: /root/samba-integration-tests
-    cmd: make test
