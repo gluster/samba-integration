@@ -8,6 +8,16 @@
     name: epel-release
     state: latest
 
+- name: Install Python2 pip
+  yum:
+    name: python2-pip
+    state: installed
+
+- name: Install pip jinja2 library
+  pip:
+    name: jinja2
+    state: latest
+
 - name: add copr to get gluster-ansible from sac
   block:
 
