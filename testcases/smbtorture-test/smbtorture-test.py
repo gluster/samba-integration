@@ -10,7 +10,7 @@ smbtorture_exec = "/bin/smbtorture"
 output = testhelper.get_tmp_file("/tmp")
 
 def smbtorture(mount_params, test, output):
-    cmd = "%s --user=%s%%%s //%s/%s %s >%s 2>&1" % (
+    cmd = "%s --target=samba3 --user=%s%%%s //%s/%s %s >%s 2>&1" % (
                                             smbtorture_exec,
                                             mount_params["username"],
                                             mount_params["password"],
