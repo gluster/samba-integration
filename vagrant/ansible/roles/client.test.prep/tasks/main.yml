@@ -1,8 +1,8 @@
 ---
-- name: Fetch the latest samba-integration-tests repo
+- name: Fetching tests repo
   git:
-    repo: 'https://github.com/gluster/samba-integration.git'
-    version: tests
+    repo: "{{ test_repo }}"
+    version: "{{ test_repo_branch }}"
     dest: /root/samba-integration-tests
 
 - name: Create a symlink for test-info.yml file
