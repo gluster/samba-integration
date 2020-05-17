@@ -1,4 +1,7 @@
 ---
+- debug:
+    msg: "Preparing to checkout from test repo: {{ test_repo }}, branch {{test_repo_branch}}"
+
 - name: Fetching tests repo
   git:
     repo: "{{ test_repo }}"
