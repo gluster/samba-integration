@@ -31,9 +31,12 @@ setup.cluster: setup.prep setup.test.only setup.cluster.only
 setup.clients:
 	@$(VSSH) setup "${SSH_EXTRA_VARS} make -C /home/vagrant/ansible setup.clients"
 
-setup.site: setup.cluster setup.clients
+client.test:
+	@$(VSSH) setup "${SSH_EXTRA_VARS} make -C /home/vagrant/ansible client.test"
+
+setup.site: setup.cluster setup.clients client.test
 
 client1.test:
 	@$(VSSH) client1 "sudo make -C /root/samba-integration-tests test"
 
-.PHONY: local hosts.update.only setup.prep.only setup.prep setup.test.only setup.cluster.only setup.cluster setup.clients setup.site client1.test
+.PHONY: local hosts.update.only setup.prep.only setup.prep setup.test.only setup.cluster.only setup.cluster setup.clients client.test setup.site client1.test

@@ -13,6 +13,9 @@ setup.cluster:
 setup.clients:
 	@ansible-playbook -i $(INVENTORY) ${ANSIBLE_EXTRA_VARS} ./setup-clients.yml
 
-setup.site: setup.cluster setup.clients
+client.test:
+	@ansible-playbook -i $(INVENTORY) ${ANSIBLE_EXTRA_VARS} ./client-test.yml
+
+setup.site: setup.cluster setup.clients client.test
 
 .PHONY: setup.cluster setup.clients setup.site
