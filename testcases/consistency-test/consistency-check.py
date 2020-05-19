@@ -1,6 +1,10 @@
 #!/bin/python
 
-# Test mounts a cifs share, creates a new file on it, writes to it, deletes the file and unmounts
+# This test first mounts a cifs share, creates a new file on it,
+# writes to it, and unmounts the share, and then tests that it
+# can get exactly the data written into the file through various
+# possible ways of mounting the share (combinations of users and
+# ip addresses).
 
 import testhelper
 import os, sys
