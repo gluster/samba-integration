@@ -29,27 +29,25 @@
     group: root
     mode: '0644'
 
-- name: Set Volume options and restart volume in a single host
-  block:
-  - name: Setup Gluster volume settings
-    gluster_volume:
-      state: present
-      name: "{{ gluster_cluster_volume }}"
-      options:
-        {
-          features.cache-invalidation: 'on',
-          features.cache-invalidation-timeout: '600',
-          performance.cache-samba-metadata: 'on',
-          performance.stat-prefetch: 'on',
-          performance.cache-invalidation: 'on',
-          performance.md-cache-timeout: '600',
-          network.inode-lru-limit: '200000',
-          performance.nl-cache: 'on',
-          performance.nl-cache-timeout: '600',
-          performance.readdir-ahead: 'on',
-          performance.parallel-readdir: 'on',
-          user.smb: 'on'
-        }
+- name: Set volume options
+  gluster_volume:
+    state: present
+    name: "{{ gluster_cluster_volume }}"
+    options:
+      {
+        features.cache-invalidation: 'on',
+        features.cache-invalidation-timeout: '600',
+        performance.cache-samba-metadata: 'on',
+        performance.stat-prefetch: 'on',
+        performance.cache-invalidation: 'on',
+        performance.md-cache-timeout: '600',
+        network.inode-lru-limit: '200000',
+        performance.nl-cache: 'on',
+        performance.nl-cache-timeout: '600',
+        performance.readdir-ahead: 'on',
+        performance.parallel-readdir: 'on',
+        user.smb: 'on'
+      }
   run_once: true
 
 - name: Mount glusterfs using fuse mount and set world writable permissions
