@@ -1,0 +1,5 @@
+Scripts and modules copied over from the samba source tree.
+
+At the time of copy, the samba head is at
+ddd8ae51f8c smb2_server: do async shutdown for pending multi-channel requests
+
