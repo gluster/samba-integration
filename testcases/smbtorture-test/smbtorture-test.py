@@ -25,7 +25,11 @@ def smbtorture(mount_params, test, output):
                                          )
 
     filter_subunit_options_str = "--fail-on-empty --prefix='samba3.'"
-    filter_subunit_cmd = "%s %s" % (filter_subunit_exec, filter_subunit_options_str)
+    filter_subunit_filters = "--expected-failures=" + script_root + "/selftest/knownfail"
+    filter_subunit_filters = filter_subunit_filters + " --expected-failures=" + script_root + "/selftest/knownfail.d"
+    filter_subunit_filters = filter_subunit_filters + " --flapping=" + script_root + "/selftest/flapping"
+    filter_subunit_filters = filter_subunit_filters + " --flapping=" + script_root + "/selftest/flapping.d"
+    filter_subunit_cmd = "%s %s %s" % (filter_subunit_exec, filter_subunit_options_str, filter_subunit_filters)
 
     cmd = "%s|%s > %s" % (
                             smbtorture_cmd,
