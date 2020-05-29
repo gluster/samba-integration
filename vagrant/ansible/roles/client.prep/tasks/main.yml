@@ -15,21 +15,6 @@
 - debug:
     msg: "{{ ctdb_network_public_interfaces }}"
 
-- name: Make directory to contain share mount points
-  file:
-    path: /test-mnt
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
-
-- name: Add fuse mount share
-  mount:
-    path: /test-mnt/fuse
-    src: "{{ testhost0 }}:vol"
-    fstype: glusterfs
-    state: present
-
 - name: Create a README file
   template:
     src: README.j2
