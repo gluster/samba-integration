@@ -46,7 +46,6 @@
         performance.nl-cache-timeout: '600',
         performance.readdir-ahead: 'on',
         performance.parallel-readdir: 'on',
-        user.smb: 'on'
       }
   run_once: true
 
@@ -69,12 +68,6 @@
         path: /mnt-fuse
         state: absent
   run_once: true
-
-- name: Add acl_xattr VFS module
-  lineinfile:
-    dest: /etc/samba/smb.conf
-    line: "vfs objects = acl_xattr glusterfs"
-    regexp: "vfs objects"
 
 - name: Create test users
   user:

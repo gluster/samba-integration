@@ -31,5 +31,5 @@
     private_interfaces: "{{ ctdb_network_private_interfaces }}"
     public_interfaces: "{{ ctdb_network_public_interfaces }}"
     exported_sharenames:
-      - "gluster-vol"
+      - "{{ samba_share }}"
     test_users: "{{ samba_users }}"
