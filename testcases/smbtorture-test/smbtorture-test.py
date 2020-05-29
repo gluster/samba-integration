@@ -58,11 +58,10 @@ with open(smbtorture_tests_info_file) as f:
 
 #First the expected pass tests
 print("")
-for test in smbtorture_info:
-    torture_test = list(test.keys())[0]
+for torture_test in smbtorture_info:
     print("\t{:<20}".format(torture_test)),
     ret = smbtorture(mount_params, torture_test, output)
-    if (ret != test[torture_test]["expected_ret"]):
+    if (ret == False):
         print("{:>10}".format("[Failed]"))
         print("\n")
         with open(output) as f:

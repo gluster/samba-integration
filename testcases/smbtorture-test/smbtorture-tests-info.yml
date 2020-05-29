@@ -1,7 +1,3 @@
 ---
-- smb2.rw:
-    expected_ret: True
-
-- smb2.read:
-    expected_ret: True
-
+- smb2.rw
+- smb2.read
