@@ -28,6 +28,9 @@
     name: epel-release
     state: latest
 
+- name: Exclude glusterfs* for all repos except for the ones added after this point
+  command: yum-config-manager --setopt=\*.exclude=glusterfs\* --save
+
 - name: Enable GlusterFS nightly rpms repository
   command: yum-config-manager --add-repo http://artifacts.ci.centos.org/gluster/nightly/master.repo
 
