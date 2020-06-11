@@ -225,8 +225,8 @@ BuildRequires: zlib-devel >= 1.2.3
 BuildRequires: pkgconfig(libsystemd)
 
 %if %{with_vfs_glusterfs}
-BuildRequires: glusterfs-api-devel >= 3.4.0.16
-BuildRequires: glusterfs-devel >= 3.4.0.16
+BuildRequires: libgfapi-devel >= 3.4.0.16
+BuildRequires: libglusterfs-devel >= 3.4.0.16
 %endif
 
 %if %{with_vfs_cephfs}
@@ -492,7 +492,7 @@ Samba VFS module for Ceph distributed storage system integration.
 %if %{with_vfs_glusterfs}
 %package vfs-glusterfs
 Summary: Samba VFS module for GlusterFS
-Requires: glusterfs-api >= 3.4.0.16
+Requires: libgfapi0 >= 3.4.0.16
 Requires: glusterfs >= 3.4.0.16
 Requires: %{name} = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
