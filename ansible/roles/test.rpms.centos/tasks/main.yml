@@ -53,6 +53,9 @@
     enabled: yes
     gpgcheck: no
 
+- name: Enable GlusterFS nightly rpms repository
+  command: yum-config-manager --add-repo http://artifacts.ci.centos.org/gluster/nightly/master.repo
+
 - name: try installing our samba packages
   yum:
     name: "{{ item }}"
