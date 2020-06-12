@@ -9,6 +9,7 @@ import yaml
 script_root = os.path.dirname(os.path.realpath(__file__))
 smbtorture_exec = "/bin/smbtorture"
 filter_subunit_exec = "/usr/bin/python3 " + script_root + "/selftest/filter-subunit"
+format_subunit_exec ="/usr/bin/python3 " + script_root + "/selftest/format-subunit"
 
 output = testhelper.get_tmp_file("/tmp")
 
@@ -31,11 +32,14 @@ def smbtorture(mount_params, test, output):
     filter_subunit_filters = filter_subunit_filters + " --flapping=" + script_root + "/selftest/flapping.d"
     filter_subunit_cmd = "%s %s %s" % (filter_subunit_exec, filter_subunit_options_str, filter_subunit_filters)
 
-    cmd = "%s|%s > %s" % (
-                            smbtorture_cmd,
-                            filter_subunit_cmd,
-                            output
-                         )
+    format_subunit_cmd = "%s --immediate" % (format_subunit_exec)
+
+    cmd = "%s|%s|%s > %s" % (
+                                smbtorture_cmd,
+                                filter_subunit_cmd,
+                                format_subunit_exec,
+                                output
+                            )
     ret = os.system(cmd)
     return ret == 0
 
