@@ -37,15 +37,22 @@
     - epel-7-sergiomb.tpl
     - /etc/mock/epel-8-x86_64.cfg
     - centos-8-Devel.tpl
+    - glusterfs-nightly-repo.tpl
 
 - name: adapt epel-7 mock config to use additional template
   lineinfile:
     path: "{{ mock_dir }}/epel-7-x86_64.cfg"
     insertafter: EOF
-    line: "include('{{ mock_dir }}/epel-7-sergiomb.tpl')"
+    line: "{{ item }}"
+  with_items:
+    - "include('{{ mock_dir }}/epel-7-sergiomb.tpl')"
+    - "include('{{ mock_dir }}/glusterfs-nightly-repo.tpl')"
 
 - name: adapt epel-8 mock config to use additional template
   lineinfile:
     path: "{{ mock_dir }}/epel-8-x86_64.cfg"
     insertafter: EOF
-    line: "include('{{ mock_dir }}/centos-8-Devel.tpl')"
+    line: "{{ item }}"
+  with_items:
+    - "include('{{ mock_dir }}/centos-8-Devel.tpl')"
+    - "include('{{ mock_dir }}/glusterfs-nightly-repo.tpl')"
