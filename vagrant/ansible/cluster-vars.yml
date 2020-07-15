@@ -3,20 +3,30 @@ ctdb_brick_location: '/bricks/ctdb-brick'
 gluster_infra_volume_groups:
   - { vgname: 'vg_vdb', pvname: '/dev/vdb' }
   - { vgname: 'vg_vdc', pvname: '/dev/vdc' }
+  - { vgname: 'vg_vdd', pvname: '/dev/vdd' }
 
 gluster_infra_thinpools:
   - {vgname: 'vg_vdb', thinpoolname: 'vg_vdb_thinpool', thinpoolsize: '9G', poolmetadatasize: '100M' }
   - {vgname: 'vg_vdc', thinpoolname: 'vg_vdc_thinpool', thinpoolsize: '9G', poolmetadatasize: '100M' }
+  - {vgname: 'vg_vdd', thinpoolname: 'vg_vdd_thinpool', thinpoolsize: '9G', poolmetadatasize: '100M' }
 
 gluster_infra_lv_logicalvols:
-  - { vgname: 'vg_vdb', thinpool: 'vg_vdb_thinpool', lvname: 'vg_vdb_thinlv', lvsize: '9G' }
-  - { vgname: 'vg_vdc', thinpool: 'vg_vdc_thinpool', lvname: 'vg_vdc_thinlv', lvsize: '9G' }
-  - { vgname: 'vg_vdc', thinpool: 'vg_vdc_thinpool', lvname: 'ctdblv', lvsize: '20M' }
+  - { vgname: 'vg_vdb', thinpool: 'vg_vdb_thinpool', lvname: 'ctdblv', lvsize: '20M' }
+  - { vgname: 'vg_vdb', thinpool: 'vg_vdb_thinpool', lvname: 'vg_vdb_a', lvsize: '4G' }
+  - { vgname: 'vg_vdb', thinpool: 'vg_vdb_thinpool', lvname: 'vg_vdb_b', lvsize: '4G' }
+  - { vgname: 'vg_vdc', thinpool: 'vg_vdc_thinpool', lvname: 'vg_vdc_a', lvsize: '4G' }
+  - { vgname: 'vg_vdc', thinpool: 'vg_vdc_thinpool', lvname: 'vg_vdc_b', lvsize: '4G' }
+  - { vgname: 'vg_vdd', thinpool: 'vg_vdd_thinpool', lvname: 'vg_vdd_a', lvsize: '4G' }
+  - { vgname: 'vg_vdd', thinpool: 'vg_vdd_thinpool', lvname: 'vg_vdd_b', lvsize: '4G' }
 
 gluster_infra_mount_devices:
-  - { path: '/bricks/brick0', vgname: 'vg_vdb', lvname: 'vg_vdb_thinlv' }
-  - { path: '/bricks/brick1', vgname: 'vg_vdc', lvname: 'vg_vdc_thinlv' }
-  - { path: "{{ ctdb_brick_location }}", vgname: 'vg_vdc', lvname: 'ctdblv' }
+  - { path: '/bricks/brick0', vgname: 'vg_vdb', lvname: 'vg_vdb_a' }
+  - { path: '/bricks/brick1', vgname: 'vg_vdc', lvname: 'vg_vdc_a' }
+  - { path: '/bricks/brick2', vgname: 'vg_vdd', lvname: 'vg_vdd_a' }
+  - { path: '/bricks/brick3', vgname: 'vg_vdb', lvname: 'vg_vdb_b' }
+  - { path: '/bricks/brick4', vgname: 'vg_vdc', lvname: 'vg_vdc_b' }
+  - { path: '/bricks/brick5', vgname: 'vg_vdd', lvname: 'vg_vdd_b' }
+  - { path: "{{ ctdb_brick_location }}", vgname: 'vg_vdb', lvname: 'ctdblv' }
 
 gluster_infra_fw_ports:
   - 2049/tcp
