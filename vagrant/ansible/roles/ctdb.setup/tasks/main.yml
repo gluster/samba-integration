@@ -22,7 +22,7 @@
     state: present
     name: "{{ ctdb_glusterfs_volume }}"
     bricks: '{{ ctdb_brick_location }}/ctdb'
-    cluster: "{{ gluster_cluster_hosts }}"
+    cluster: "{{ cluster_hosts }}"
     replicas: "{{ gluster_cluster_replica_count }}"
   run_once: yes
 
