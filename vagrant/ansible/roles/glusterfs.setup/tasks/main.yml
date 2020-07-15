@@ -3,3 +3,5 @@
 
 - include_role:
     name: gluster.cluster
+  vars:
+    gluster_cluster_hosts: "{{ cluster_hosts }}"
