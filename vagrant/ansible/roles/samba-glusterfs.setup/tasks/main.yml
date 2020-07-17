@@ -21,13 +21,38 @@
     state: yes
     persistent: yes
 
-- name: Copy over smb.conf
+- name: Create fresh directory /etc/samba/smb.shares to contain share definition
+  block:
+    - file:
+        path: /etc/samba/smb.shares/
+        state: absent
+    - file:
+        path: /etc/samba/smb.shares/
+        state: directory
+        mode: '0755'
+
+- name: Create smb.conf
   template:
     src: smb.conf.j2
     dest: /etc/samba/smb.conf
     owner: root
     group: root
     mode: '0644'
+
+- name: Add share configuration
+  block:
+    - name: Create share conf file
+      template:
+        src: smb_share.conf.j2
+        dest: "/etc/samba/smb.shares/{{ samba_share }}.conf"
+  vars:
+    cluster_volume: "{{ gluster_cluster_volume }}"
+
+- name: Include share configuration into smb.conf
+  lineinfile:
+    path: "/etc/samba/smb.conf"
+    line: "include = /etc/samba/smb.shares/{{ samba_share }}.conf"
+    insertafter: EOF
 
 - name: Set volume options
   gluster_volume:
