@@ -63,7 +63,8 @@ ctdb_network_public_interfaces:
   - "192.168.123.11"
 ctdb_network_public_interface_subnet_mask: "24"
 ctdb_network_public_interface_name: "eth2"
-ctdb_glusterfs_volume: "ctdb"
+ctdb_cluster_volume: "ctdb"
+ctdb_cluster_replica_count: "{{ cluster_hosts|length }}"
 
 samba_netbios_name: "GLUSTERTEST"
 samba_users:
