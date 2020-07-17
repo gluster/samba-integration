@@ -1,6 +1,12 @@
 - include_role:
     name: gluster.infra
 
+- name: Enable firewall rules for gluster
+  firewalld: service=glusterfs permanent=yes state=enabled
+
+- name: Ensure glusterd service is enabled
+  service: name=glusterd state=started enabled=yes
+
 - include_role:
     name: gluster.cluster
   vars:
