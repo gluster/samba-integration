@@ -8,9 +8,17 @@
       - git
     state: latest
 
-- name: Install Python yaml package
+#This is a temporary section while we move scripts to use python 3
+- name: Install Python 2 modules
   pip:
-    name: PyYAML
+    name:
+      - PyYAML
+
+- name: Install Python 3 modules
+  pip:
+    executable: /usr/bin/pip3
+    name:
+      - PyYAML
 
 - debug:
     msg: "{{ ctdb_network_public_interfaces }}"
