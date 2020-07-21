@@ -13,6 +13,7 @@
     executable: /usr/bin/pip3
     name:
       - PyYAML
+      - iso8601
 
 - debug:
     msg: "{{ ctdb_network_public_interfaces }}"
