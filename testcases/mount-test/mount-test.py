@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/env python3
 
 # Test mounts a cifs share, creates a new file on it, writes to it, deletes the file and unmounts
 
