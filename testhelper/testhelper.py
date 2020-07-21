@@ -71,7 +71,7 @@ def get_mount_parameter(test_info, share, combonum):
     """
     if (combonum > get_total_mount_parameter_combinations(test_info)):
         assert False, "Invalid combination number"
-    num_public = combonum / len(test_info["test_users"])
+    num_public = int(combonum / len(test_info["test_users"]))
     num_users = combonum % len(test_info["test_users"])
     return gen_mount_params(
         test_info["public_interfaces"][num_public],
