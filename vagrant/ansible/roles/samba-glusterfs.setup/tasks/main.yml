@@ -55,23 +55,10 @@
     insertafter: EOF
 
 - name: Mount glusterfs using fuse mount and set world writable permissions
-  block:
-    - name: Mount gluster volume using glusterfs
-      mount:
-        path: /mnt-fuse
-        src: "localhost:/{{ replicated_cluster_volume }}"
-        fstype: glusterfs
-        state: mounted
-
-    - name: Set permission of share root to 0777
-      file:
-        path: /mnt-fuse
-        mode: '0777'
-
-    - name: Unmount mounted fuse glusterfs mount
-      mount:
-        path: /mnt-fuse
-        state: absent
+  include_tasks:
+    file: "fix_share_permissions.yml"
+  vars:
+    volume: "localhost:/{{ replicated_cluster_volume }}"
   run_once: true
 
 - name: Create test users
