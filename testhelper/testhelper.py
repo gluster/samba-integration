@@ -80,3 +80,25 @@ def get_mount_parameter(test_info, share, combonum):
         test_info["test_users"][num_users]["password"]
     )
 
+def get_num_shares(test_info):
+    """ Get number of exported shares
+
+    Parameters:
+    test_info: Dict containing the parsed yml file.
+
+    Returns:
+    int: number of exported shares
+    """
+    return len(test_info["exported_sharenames"])
+
+def get_share(test_info, share_num):
+    """ Get exported share name
+
+    Parameters:
+    test_info: Dict containing the parsed yml file.
+    share_num: The index within the exported sharenames list
+
+    Returns:
+    str: exported sharename in index share_num
+    """
+    return test_info["exported_sharenames"][share_num]
