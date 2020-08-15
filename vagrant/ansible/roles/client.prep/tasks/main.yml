@@ -33,6 +33,5 @@
   vars:
     private_interfaces: "{{ ctdb_network_private_interfaces }}"
     public_interfaces: "{{ ctdb_network_public_interfaces }}"
-    exported_sharenames:
-      - "{{ samba_share }}"
+    exported_sharenames: "{{ samba_shares| map(attribute='share_name') | list }}"
     test_users: "{{ samba_users }}"

@@ -45,20 +45,23 @@
       template:
         src: smb_share.conf.j2
         dest: "/etc/samba/smb.shares/{{ samba_share }}.conf"
-  vars:
-    cluster_volume: "{{ replicated_cluster_volume }}"
-
-- name: Include share configuration into smb.conf
-  lineinfile:
-    path: "/etc/samba/smb.conf"
-    line: "include = /etc/samba/smb.shares/{{ samba_share }}.conf"
-    insertafter: EOF
+      vars:
+        cluster_volume: "{{ item.cluster_volume }}"
+        samba_share: "{{ item.share_name }}"
+      with_items: "{{ samba_shares }}"
+    - name: Include share configuration into smb.conf
+      lineinfile:
+        path: "/etc/samba/smb.conf"
+        line: "include = /etc/samba/smb.shares/{{ item.share_name }}.conf"
+        insertafter: EOF
+      with_items: "{{ samba_shares }}"
 
 - name: Mount glusterfs using fuse mount and set world writable permissions
   include_tasks:
     file: "fix_share_permissions.yml"
   vars:
-    volume: "localhost:/{{ replicated_cluster_volume }}"
+    volume: "localhost:/{{ item.cluster_volume }}"
+  with_items: "{{ samba_shares }}"
   run_once: true
 
 - name: Create test users
