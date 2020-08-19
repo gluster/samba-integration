@@ -7,7 +7,10 @@
 - name: Ensure glusterd service is enabled
   service: name=glusterd state=started enabled=yes
 
-- include_role:
-    name: gluster.cluster
+- include_tasks:
+    file: "new_volume.yml"
   vars:
-    gluster_cluster_hosts: "{{ cluster_hosts }}"
+    cluster_volume: "{{ replicate_cluster_volume }}"
+    cluster_bricks: "{{ replicate_cluster_bricks }}"
+    cluster_replica_count: "{{ replicate_cluster_replica_count }}"
+    cluster_type: "replicate"
