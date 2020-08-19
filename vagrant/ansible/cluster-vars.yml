@@ -23,9 +23,9 @@ gluster_infra_mount_devices:
   - { path: '/bricks/brick-repl-0', vgname: 'vg_vdb', lvname: 'vg_vdb_a' }
   - { path: '/bricks/brick-repl-1', vgname: 'vg_vdc', lvname: 'vg_vdc_a' }
   - { path: '/bricks/brick-repl-2', vgname: 'vg_vdd', lvname: 'vg_vdd_a' }
-  - { path: '/bricks/brick3', vgname: 'vg_vdb', lvname: 'vg_vdb_b' }
-  - { path: '/bricks/brick4', vgname: 'vg_vdc', lvname: 'vg_vdc_b' }
-  - { path: '/bricks/brick5', vgname: 'vg_vdd', lvname: 'vg_vdd_b' }
+  - { path: '/bricks/brick-disp-0', vgname: 'vg_vdb', lvname: 'vg_vdb_b' }
+  - { path: '/bricks/brick-disp-1', vgname: 'vg_vdc', lvname: 'vg_vdc_b' }
+  - { path: '/bricks/brick-disp-2', vgname: 'vg_vdd', lvname: 'vg_vdd_b' }
   - { path: "{{ ctdb_brick_location }}", vgname: 'vg_vdb', lvname: 'ctdblv' }
 
 gluster_infra_fw_ports:
@@ -54,6 +54,10 @@ replicate_cluster_volume: "vol-replicate"
 replicate_cluster_replica_count: "{{ cluster_hosts|length }}"
 replicate_cluster_bricks: '/bricks/brick-repl-0/vol,/bricks/brick-repl-1/vol,/bricks/brick-repl-2/vol'
 
+disperse_cluster_volume: "vol-disperse"
+disperse_cluster_disperse_count: 3
+disperse_cluster_bricks: '/bricks/brick-disp-0/vol,/bricks/brick-disp-1/vol,/bricks/brick-disp-2/vol'
+
 #Autogenerate these values containing ip addresses
 ctdb_network_private_interfaces:
   - "192.168.122.100"
@@ -73,3 +77,4 @@ samba_users:
 
 samba_shares:
   - { cluster_volume: "vol-replicate", share_name: "gluster-vol-replicate" }
+  - { cluster_volume: "vol-disperse", share_name: "gluster-vol-disperse" }
