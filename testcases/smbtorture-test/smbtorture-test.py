@@ -56,7 +56,6 @@ smbtorture_tests_info_file = sys.argv[2]
 with open(smbtorture_tests_info_file) as f:
     smbtorture_info = yaml.safe_load(f)
 
-#First the expected pass tests
 print("")
 for torture_test in smbtorture_info:
     print("\t{:<20}".format(torture_test)),
