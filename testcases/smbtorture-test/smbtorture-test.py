@@ -57,14 +57,17 @@ smbtorture_tests_info_file = sys.argv[2]
 with open(smbtorture_tests_info_file) as f:
     smbtorture_info = yaml.safe_load(f)
 
-print("")
-for torture_test in smbtorture_info:
-    print("\t{:<20}".format(torture_test)),
-    ret = smbtorture(mount_params, torture_test, output)
-    if (ret == False):
-        print("{:>10}".format("[Failed]"))
-        print("\n")
-        with open(output) as f:
-            print(f.read())
-        assert False
-    print("{:>10}".format("[OK]"))
+for sharenum in range(testhelper.get_num_shares(test_info)):
+    mount_params["share"] = testhelper.get_share(test_info, sharenum)
+    print("")
+    print("share: %s" % (mount_params["share"]))
+    for torture_test in smbtorture_info:
+        print("\t{:<20}".format(torture_test)),
+        ret = smbtorture(mount_params, torture_test, output)
+        if (ret == False):
+            print("{:>10}".format("[Failed]"))
+            print("\n")
+            with open(output) as f:
+                print(f.read())
+            assert False
+        print("{:>10}".format("[OK]"))
