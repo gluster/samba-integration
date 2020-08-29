@@ -83,11 +83,13 @@
 ^samba4.raw.rename.*.osxrename
 ^samba4.raw.rename.*.directory rename
 ^samba4.rpc.winreg.*security
-^samba4.local.registry.(dir|ldb).check hive security
-^samba4.local.registry.local.security
+^samba4.local.registry.*.(dir|ldb).check hive security
+^samba4.local.registry.*.local.security
 ^samba4.rpc.wkssvc
 ^samba4.rpc.handles.*.lsarpc-shared
-^samba4.rpc.epmapper
+^samba4.rpc.epmapper.*.Lookup_simple
+^samba4.rpc.epmapper.*.Map_simple
+^samba4.rpc.epmapper.*.Map_full
 ^samba4.rpc.lsalookup on ncalrpc
 ^samba4.rpc.lsalookup on ncacn_np
 ^samba4.rpc.lsalookup with seal,padcheck
@@ -158,7 +160,7 @@
 ^samba4.smb2.oplock.levelii500\(.*\)$ # samba 4 oplocks are a mess
 ^samba4.smb2.oplock.levelii502\(.*\)$ # samba 4 oplocks are a mess
 ^samba4.smb2.oplock.brl1\(.*\)$ # samba 4 oplocks are a mess
-^samba4.smb2.oplock.batch22\(.*\)$ # samba 4 oplocks are a mess
+^samba4.smb2.oplock.batch22.\(.*\)$ # samba 4 oplocks are a mess
 ^samba4.smb2.oplock.batch19\(.*\)$ # samba 4 oplocks are a mess
 ^samba4.smb2.oplock.batch12\(.*\)$ # samba 4 oplocks are a mess
 ^samba4.smb2.oplock.batch11\(.*\)$ # samba 4 oplocks are a mess
@@ -211,10 +213,11 @@
 ^samba3.smb2.session.*reauth5 # some special anonymous checks?
 ^samba3.smb2.compound.interim2 # wrong return code (STATUS_CANCELLED)
 ^samba3.smb2.compound.aio.interim2 # wrong return code (STATUS_CANCELLED)
-^samba3.smb2.replay.channel-sequence
-^samba3.smb2.replay.replay3
-^samba3.smb2.replay.replay4
-^samba3.smb2.lock.*replay
+^samba3.smb2.replay.replay3 # This requires multi-chanel
+^samba3.smb2.replay.replay4 # This requires multi-chanel
+^samba3.smb2.lock.replay_smb3_specification_multi # This requires multi-chanel
+^samba3.smb2.lock.replay_smb3_specification_durable\(nt4_dc\) # Requires durable handles
+^samba3.smb2.lock.*replay_broken_windows # This tests the windows behaviour
 ^samba3.smb2.lease.statopen3
 ^samba3.smb2.lease.unlink # we currently do not downgrade RH lease to R after unlink
 ^samba3.smb2.multichannel
