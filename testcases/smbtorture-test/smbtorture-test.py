@@ -30,6 +30,7 @@ def smbtorture(mount_params, test, output):
     filter_subunit_filters = filter_subunit_filters + " --expected-failures=" + script_root + "/selftest/knownfail.d"
     filter_subunit_filters = filter_subunit_filters + " --flapping=" + script_root + "/selftest/flapping"
     filter_subunit_filters = filter_subunit_filters + " --flapping=" + script_root + "/selftest/flapping.d"
+    filter_subunit_filters = filter_subunit_filters + " --flapping=" + script_root + "/selftest/flapping.gluster"
     filter_subunit_cmd = "%s %s %s" % (filter_subunit_exec, filter_subunit_options_str, filter_subunit_filters)
 
     format_subunit_cmd = "%s --immediate" % (format_subunit_exec)
