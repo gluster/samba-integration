@@ -1,0 +1,2 @@
+# https://bugzilla.samba.org/show_bug.cgi?id=14486
+^samba3.smb2.rw.rw1
