@@ -1,3 +1,24 @@
 ---
 - smb2.rw
 - smb2.read
+- smb2.bench-oplock
+- smb2.check-sharemode
+- smb2.compound_find
+- smb2.connect
+- smb2.credits
+- smb2.deny
+- smb2.lock
+- smb2.mangle
+- smb2.maximum_allowed
+- smb2.mkdir
+- smb2.multichannel
+- smb2.notify-inotify
+- smb2.rename
+- smb2.replay
+- smb2.sdread
+- smb2.secleak
+- smb2.session-id
+- smb2.sharemode
+- smb2.tcon
+- smb2.twrp
+- smb2.winattr
