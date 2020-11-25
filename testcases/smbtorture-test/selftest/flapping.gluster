@@ -1,0 +1,6 @@
+#https://github.com/gluster/samba-integration/issues/118
+^samba3.smb2.durable-open-disconnect.open-oplock-disconnect
+^samba3.smb2.openattr
+^samba3.smb2.session.*
+^samba3.smb2.create.aclfile
+
