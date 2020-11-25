@@ -22,3 +22,7 @@
 - smb2.tcon
 - smb2.twrp
 - smb2.winattr
+- smb2.durable-open-disconnect
+- smb2.openattr
+- smb2.session
+- smb2.create
