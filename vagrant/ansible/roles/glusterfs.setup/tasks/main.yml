@@ -1,0 +1,30 @@
+- include_role:
+    name: gluster.infra
+
+- name: Enable firewall rules for gluster
+  firewalld: service=glusterfs permanent=yes state=enabled
+
+# https://github.com/gluster/samba-integration/issues/123
+- name: Install glusterfs-geo-replication package.
+  yum:
+    name: glusterfs-geo-replication
+    state: latest
+
+- name: Ensure glusterd service is enabled
+  service: name=glusterd state=started enabled=yes
+
+- include_tasks:
+    file: "new_volume.yml"
+  vars:
+    cluster_volume: "{{ replicate_cluster_volume }}"
+    cluster_bricks: "{{ replicate_cluster_bricks }}"
+    cluster_replica_count: "{{ replicate_cluster_replica_count }}"
+    cluster_type: "replicate"
+
+- include_tasks:
+    file: "new_volume.yml"
+  vars:
+    cluster_volume: "{{ disperse_cluster_volume }}"
+    cluster_bricks: "{{ disperse_cluster_bricks }}"
+    cluster_disperse_count: "{{ disperse_cluster_disperse_count }}"
+    cluster_type: "disperse"

@@ -3,7 +3,7 @@
 #
 
 NODES = 2
-DISKS = 2
+DISKS = 3
 NODE_RAM = 1024
 NODE_CPUS = 2
 PRIVATE_NETWORK_BASE = "192.168.122"
@@ -11,6 +11,7 @@ PUBLIC_NETWORK_BASE = "192.168.123"
 #LIBVIRT_STORAGE_POOL = "data"
 
 SETUP_IP = "#{PRIVATE_NETWORK_BASE}.200"
+CLIENT_IP = "#{PUBLIC_NETWORK_BASE}.5"
 
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
@@ -68,6 +69,14 @@ Vagrant.configure("2") do |config|
         end
     end
 
+
+    # Client vm:
+    # This VM will connect to the cluster over the public ip addresses
+    config.vm.define "client1" do |setup|
+      setup.vm.hostname = "client1"
+      setup.vm.network :private_network, ip: "#{CLIENT_IP}"
+    end
+
     # setup vm:
     # We will runn all our setup playbooks from there.
     config.vm.define "setup" do |setup|
@@ -79,8 +88,10 @@ Vagrant.configure("2") do |config|
         ansible.playbook = "no-op-playbook.yml"
         ansible.groups = {
           "admin" => [ "setup" ],
+          "clients" => [ "client1" ],
           "cluster" => (0..NODES-1).map { |i| "storage#{i}" }
         }
       end
     end
+
 end

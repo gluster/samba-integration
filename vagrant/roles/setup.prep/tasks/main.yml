@@ -8,8 +8,26 @@
     name: epel-release
     state: latest
 
-- name: Enable gluster-ansible copr from sac
-  command: yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/sac/gluster-ansible/repo/epel-7/sac-gluster-ansible-epel-7.repo
+- name: Install Python2 pip
+  yum:
+    name: python2-pip
+    state: installed
+
+- name: Install pip jinja2 library
+  pip:
+    name: jinja2
+    state: latest
+
+- name: add copr to get gluster-ansible from sac
+  block:
+
+    - name: Install yum copr plugin
+      yum:
+        name: yum-plugin-copr
+        state: latest
+
+    - name: add copr to get gluster-ansible
+      command: yum -y copr enable sac/gluster-ansible
 
 - name: Install gluster-ansible
   yum:
@@ -25,8 +43,13 @@
   file:
     path: /home/vagrant/ansible/vagrant_insecure_private_ssh_key
     mode: u=rw,g=,o=
+    owner: vagrant
+    group: vagrant
 
 - name: copy ssh config in place
   copy:
-   src: ansible/ssh-config-setup
-   dest: /home/vagrant/.ssh/config
+    src: ansible/ssh-config-setup
+    dest: /home/vagrant/.ssh/config
+    mode: 0600
+    owner: vagrant
+    group: vagrant

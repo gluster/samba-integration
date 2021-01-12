@@ -1,0 +1,41 @@
+- name: Create Replicate Volumes
+  gluster_volume:
+    state: present
+    name: "{{ cluster_volume }}"
+    bricks: '{{ cluster_bricks }}'
+    cluster: "{{ cluster_hosts }}"
+    replicas: "{{ cluster_replica_count }}"
+  run_once: yes
+  when: cluster_type == 'replicate'
+
+- name: Create Dispersed Volumes
+  gluster_volume:
+    state: present
+    name: "{{ cluster_volume }}"
+    bricks: "{{ cluster_bricks }}"
+    cluster: "{{ cluster_hosts }}"
+    disperses: "{{ cluster_disperse_count }}"
+    force: yes
+  run_once: yes
+  when: cluster_type == 'disperse'
+
+- name: Set volume options
+  gluster_volume:
+    state: present
+    name: "{{ cluster_volume }}"
+    options:
+      {
+        features.cache-invalidation: 'on',
+        features.cache-invalidation-timeout: '600',
+        performance.cache-samba-metadata: 'on',
+        performance.stat-prefetch: 'on',
+        performance.cache-invalidation: 'on',
+        performance.md-cache-timeout: '600',
+        network.inode-lru-limit: '200000',
+        performance.nl-cache: 'on',
+        performance.nl-cache-timeout: '600',
+        performance.readdir-ahead: 'on',
+        performance.parallel-readdir: 'on',
+      }
+  run_once: true
+

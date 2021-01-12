@@ -1,0 +1,37 @@
+- name: Install required packages
+  yum:
+    name:
+      - glusterfs-fuse
+      - cifs-utils
+      - samba-test
+      - python-pip
+      - git
+    state: latest
+
+- name: Install Python 3 modules
+  pip:
+    executable: /usr/bin/pip3
+    name:
+      - PyYAML
+      - iso8601
+
+- debug:
+    msg: "{{ ctdb_network_public_interfaces }}"
+
+- name: Create a README file
+  template:
+    src: README.j2
+    dest: /root/README
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Create the test-info.yml file with test cluster information
+  template:
+    src: test-info.yml.j2
+    dest: /root/test-info.yml
+  vars:
+    private_interfaces: "{{ ctdb_network_private_interfaces }}"
+    public_interfaces: "{{ ctdb_network_public_interfaces }}"
+    exported_sharenames: "{{ samba_shares| map(attribute='share_name') | list }}"
+    test_users: "{{ samba_users }}"

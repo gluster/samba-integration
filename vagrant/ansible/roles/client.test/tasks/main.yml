@@ -1,0 +1,5 @@
+---
+- name: Run tests
+  command:
+    chdir: /root/samba-integration-tests
+    cmd: make test

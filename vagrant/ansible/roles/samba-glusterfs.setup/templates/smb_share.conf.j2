@@ -1,0 +1,9 @@
+[{{ samba_share }}]
+comment = For samba share of volume {{ cluster_volume }}
+vfs objects = acl_xattr glusterfs
+glusterfs:volume = {{ cluster_volume }}
+glusterfs:logfile = /var/log/samba/{{ samba_share }}.%M.log
+glusterfs:loglevel = 7
+path = /
+read only = no
+

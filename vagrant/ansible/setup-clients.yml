@@ -1,11 +1,8 @@
-- hosts: cluster
+- hosts: clients
   become: yes
   become_method: sudo
   vars_files:
     - cluster-vars.yml
   roles:
     - common.prep
-    - node.prep
-    - glusterfs.setup
-    - ctdb.setup
-    - samba-glusterfs.setup
+    - client.prep

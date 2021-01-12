@@ -3,20 +3,30 @@ ctdb_brick_location: '/bricks/ctdb-brick'
 gluster_infra_volume_groups:
   - { vgname: 'vg_vdb', pvname: '/dev/vdb' }
   - { vgname: 'vg_vdc', pvname: '/dev/vdc' }
+  - { vgname: 'vg_vdd', pvname: '/dev/vdd' }
 
 gluster_infra_thinpools:
   - {vgname: 'vg_vdb', thinpoolname: 'vg_vdb_thinpool', thinpoolsize: '9G', poolmetadatasize: '100M' }
   - {vgname: 'vg_vdc', thinpoolname: 'vg_vdc_thinpool', thinpoolsize: '9G', poolmetadatasize: '100M' }
+  - {vgname: 'vg_vdd', thinpoolname: 'vg_vdd_thinpool', thinpoolsize: '9G', poolmetadatasize: '100M' }
 
 gluster_infra_lv_logicalvols:
-  - { vgname: 'vg_vdb', thinpool: 'vg_vdb_thinpool', lvname: 'vg_vdb_thinlv', lvsize: '9G' }
-  - { vgname: 'vg_vdc', thinpool: 'vg_vdc_thinpool', lvname: 'vg_vdc_thinlv', lvsize: '9G' }
-  - { vgname: 'vg_vdc', thinpool: 'vg_vdc_thinpool', lvname: 'ctdblv', lvsize: '20M' }
+  - { vgname: 'vg_vdb', thinpool: 'vg_vdb_thinpool', lvname: 'ctdblv', lvsize: '20M' }
+  - { vgname: 'vg_vdb', thinpool: 'vg_vdb_thinpool', lvname: 'vg_vdb_a', lvsize: '4G' }
+  - { vgname: 'vg_vdb', thinpool: 'vg_vdb_thinpool', lvname: 'vg_vdb_b', lvsize: '4G' }
+  - { vgname: 'vg_vdc', thinpool: 'vg_vdc_thinpool', lvname: 'vg_vdc_a', lvsize: '4G' }
+  - { vgname: 'vg_vdc', thinpool: 'vg_vdc_thinpool', lvname: 'vg_vdc_b', lvsize: '4G' }
+  - { vgname: 'vg_vdd', thinpool: 'vg_vdd_thinpool', lvname: 'vg_vdd_a', lvsize: '4G' }
+  - { vgname: 'vg_vdd', thinpool: 'vg_vdd_thinpool', lvname: 'vg_vdd_b', lvsize: '4G' }
 
 gluster_infra_mount_devices:
-  - { path: '/bricks/brick0', vgname: 'vg_vdb', lvname: 'vg_vdb_thinlv' }
-  - { path: '/bricks/brick1', vgname: 'vg_vdc', lvname: 'vg_vdc_thinlv' }
-  - { path: "{{ ctdb_brick_location }}", vgname: 'vg_vdc', lvname: 'ctdblv' }
+  - { path: '/bricks/brick-repl-0', vgname: 'vg_vdb', lvname: 'vg_vdb_a' }
+  - { path: '/bricks/brick-repl-1', vgname: 'vg_vdc', lvname: 'vg_vdc_a' }
+  - { path: '/bricks/brick-repl-2', vgname: 'vg_vdd', lvname: 'vg_vdd_a' }
+  - { path: '/bricks/brick-disp-0', vgname: 'vg_vdb', lvname: 'vg_vdb_b' }
+  - { path: '/bricks/brick-disp-1', vgname: 'vg_vdc', lvname: 'vg_vdc_b' }
+  - { path: '/bricks/brick-disp-2', vgname: 'vg_vdd', lvname: 'vg_vdd_b' }
+  - { path: "{{ ctdb_brick_location }}", vgname: 'vg_vdb', lvname: 'ctdblv' }
 
 gluster_infra_fw_ports:
   - 2049/tcp
@@ -33,23 +43,38 @@ gluster_infra_fw_zone: public
 gluster_infra_fw_services:
   - glusterfs
 
-gluster_cluster_hosts:
+cluster_hosts:
   #
   # TODO: generate the list of nodes from vagrant/ansible
   #
   - storage0
   - storage1
-gluster_cluster_volume: vol
-gluster_cluster_replica_count: 2
-gluster_cluster_transport: 'tcp'
-gluster_cluster_bricks: '/bricks/brick0/vol,/bricks/brick1/vol'
+
+replicate_cluster_volume: "vol-replicate"
+replicate_cluster_replica_count: "{{ cluster_hosts|length }}"
+replicate_cluster_bricks: '/bricks/brick-repl-0/vol,/bricks/brick-repl-1/vol,/bricks/brick-repl-2/vol'
+
+disperse_cluster_volume: "vol-disperse"
+disperse_cluster_disperse_count: 3
+disperse_cluster_bricks: '/bricks/brick-disp-0/vol,/bricks/brick-disp-1/vol,/bricks/brick-disp-2/vol'
 
 #Autogenerate these values containing ip addresses
-gluster_features_ctdb_nodes: 192.168.122.100,192.168.122.101
-gluster_features_ctdb_publicaddr: '192.168.123.10/24 eth2,192.168.123.11/24 eth2'
-gluster_features_ctdb_volume: ctdb
+ctdb_network_private_interfaces:
+  - "192.168.122.100"
+  - "192.168.122.101"
+ctdb_network_public_interfaces:
+  - "192.168.123.10"
+  - "192.168.123.11"
+ctdb_network_public_interface_subnet_mask: "24"
+ctdb_network_public_interface_name: "eth2"
+ctdb_cluster_volume: "ctdb"
+ctdb_cluster_replica_count: "{{ cluster_hosts|length }}"
 
 samba_netbios_name: "GLUSTERTEST"
 samba_users:
   - { username: 'test1', password: 'x', uid: '2001' }
   - { username: 'test2', password: 'x', uid: '2002' }
+
+samba_shares:
+  - { cluster_volume: "vol-replicate", share_name: "gluster-vol-replicate" }
+  - { cluster_volume: "vol-disperse", share_name: "gluster-vol-disperse" }

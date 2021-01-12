@@ -21,7 +21,17 @@
     state: yes
     persistent: yes
 
-- name: Copy over smb.conf
+- name: Create fresh directory /etc/samba/smb.shares to contain share definition
+  block:
+    - file:
+        path: /etc/samba/smb.shares/
+        state: absent
+    - file:
+        path: /etc/samba/smb.shares/
+        state: directory
+        mode: '0755'
+
+- name: Create smb.conf
   template:
     src: smb.conf.j2
     dest: /etc/samba/smb.conf
@@ -29,39 +39,29 @@
     group: root
     mode: '0644'
 
-- name: Set Volume options and restart volume in a single host
+- name: Add share configuration
   block:
-  - name: Setup Gluster volume settings
-    gluster_volume:
-      state: present
-      name: "{{ gluster_cluster_volume }}"
-      options:
-        {
-          server.allow-insecure: 'on',
-          performance.cache-samba-metadata: 'on',
-          storage.batch-fsync-delay-usec: '0',
-          user.smb: 'on'
-        }
-  run_once: true
+    - name: Create share conf file
+      template:
+        src: smb_share.conf.j2
+        dest: "/etc/samba/smb.shares/{{ samba_share }}.conf"
+      vars:
+        cluster_volume: "{{ item.cluster_volume }}"
+        samba_share: "{{ item.share_name }}"
+      with_items: "{{ samba_shares }}"
+    - name: Include share configuration into smb.conf
+      lineinfile:
+        path: "/etc/samba/smb.conf"
+        line: "include = /etc/samba/smb.shares/{{ item.share_name }}.conf"
+        insertafter: EOF
+      with_items: "{{ samba_shares }}"
 
 - name: Mount glusterfs using fuse mount and set world writable permissions
-  block:
-    - name: Mount gluster volume using glusterfs
-      mount:
-        path: /mnt-fuse
-        src: 'localhost:/vol'
-        fstype: glusterfs
-        state: mounted
-
-    - name: Set permission of share root to 0777
-      file:
-        path: /mnt-fuse
-        mode: '0777'
-
-    - name: Unmount mounted fuse glusterfs mount
-      mount:
-        path: /mnt-fuse
-        state: absent
+  include_tasks:
+    file: "fix_share_permissions.yml"
+  vars:
+    volume: "localhost:/{{ item.cluster_volume }}"
+  with_items: "{{ samba_shares }}"
   run_once: true
 
 - name: Create test users
