@@ -35,11 +35,11 @@ def smbtorture(mount_params, test, output):
 
     format_subunit_cmd = "%s --immediate" % (format_subunit_exec)
 
-    cmd = "%s|%s|%s > %s" % (
+    cmd = "%s|%s|/usr/bin/tee %s|%s >/dev/null" % (
                                 smbtorture_cmd,
                                 filter_subunit_cmd,
+                                output,
                                 format_subunit_exec,
-                                output
                             )
     ret = os.system(cmd)
     return ret == 0
