@@ -66,8 +66,10 @@ for sharenum in range(testhelper.get_num_shares(test_info)):
         ret = smbtorture(mount_params, torture_test, output)
         if (ret == False):
             print("{:>10}".format("[Failed]"))
-            print("\n")
+            print("\n\n")
+            print("--Output Start--")
             with open(output) as f:
                 print(f.read())
+            print("--Output End--")
             assert False
         print("{:>10}".format("[OK]"))
