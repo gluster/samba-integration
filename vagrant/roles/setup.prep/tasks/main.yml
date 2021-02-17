@@ -1,38 +1,6 @@
-- name: update packages
-  yum:
-    name: '*'
-    state: latest
-
-- name: Enable EPEL repository
-  yum:
-    name: epel-release
-    state: latest
-
-- name: Install Python2 pip
-  yum:
-    name: python2-pip
-    state: installed
-
-- name: Install pip jinja2 library
-  pip:
-    name: jinja2
-    state: latest
-
-- name: add copr to get gluster-ansible from sac
-  block:
-
-    - name: Install yum copr plugin
-      yum:
-        name: yum-plugin-copr
-        state: latest
-
-    - name: add copr to get gluster-ansible
-      command: yum -y copr enable sac/gluster-ansible
-
-- name: Install gluster-ansible
-  yum:
-    name: "gluster-ansible"
-    state: latest
+- name: Run distro specific tasks for setup.prep
+  include_tasks:
+    file: "{{ distro.actions_file }}"
 
 - name: copy ansible playbooks to setup machine
   synchronize:
