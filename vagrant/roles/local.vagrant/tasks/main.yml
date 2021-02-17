@@ -1,3 +1,8 @@
+- name: Setup Vagrant file
+  template:
+    src: Vagrantfile.j2
+    dest: Vagrantfile
+
 - name: start vagrant vms
   command: vagrant up --no-provision
 
