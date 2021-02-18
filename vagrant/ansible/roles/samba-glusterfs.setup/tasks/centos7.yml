@@ -1,0 +1,16 @@
+---
+- name: Install samba and samba-vfs-glusterfs packages
+  yum:
+    name:
+      - samba
+      - samba-vfs-glusterfs
+    state: present
+
+- name: Install libsemanage-python. This is needed for the seboolean ansible command
+  yum: name=libsemanage-python state=present
+
+- name: Selinux - Allow Samba to access glusterfs services
+  seboolean:
+    name: samba_load_libgfapi
+    state: yes
+    persistent: yes
