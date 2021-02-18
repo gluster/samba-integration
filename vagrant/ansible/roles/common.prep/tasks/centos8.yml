@@ -13,3 +13,6 @@
 
 - name: Enable Samba nightly rpms repository
   command: yum-config-manager --add-repo http://artifacts.ci.centos.org/gluster/nightly-samba/samba-nightly-master.repo
+
+- name: Restart systemd
+  command: kill -TERM 1
