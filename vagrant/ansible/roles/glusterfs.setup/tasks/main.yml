@@ -1,14 +1,12 @@
+- name: Run distro specific tasks for glusterfs.setup
+  include_tasks:
+    file: "{{ distro.actions_file }}"
+
 - include_role:
     name: gluster.infra
 
 - name: Enable firewall rules for gluster
   firewalld: service=glusterfs permanent=yes state=enabled
-
-# https://github.com/gluster/samba-integration/issues/123
-- name: Install glusterfs-geo-replication package.
-  yum:
-    name: glusterfs-geo-replication
-    state: latest
 
 - name: Ensure glusterd service is enabled
   service: name=glusterd state=started enabled=yes
