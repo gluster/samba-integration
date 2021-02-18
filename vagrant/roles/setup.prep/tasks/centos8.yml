@@ -1,0 +1,46 @@
+- name: update packages
+  yum:
+    name: '*'
+    state: latest
+
+- name: Enable EPEL repository
+  yum:
+    name: epel-release
+    state: latest
+
+- name: Install Python3 pip
+  yum:
+    name: python3-pip
+    state: installed
+
+- name: Install pip jinja2 library
+  pip:
+    name: jinja2
+    state: latest
+
+# RHEL 8 image doesn't include make
+- name: Install additional packages
+  yum:
+    name: make
+    state: installed
+
+- name: add copr to get gluster-ansible from sac
+  block:
+
+    - name: Install yum copr plugin
+      yum:
+        name: yum-plugin-copr
+        state: latest
+
+    - name: add copr to get gluster-ansible
+      command: yum -y copr enable sac/gluster-ansible
+
+- name: Install gluster-ansible
+  yum:
+    name:
+      - gluster-ansible-cluster
+      - gluster-ansible-features
+      - gluster-ansible-infra
+      - gluster-ansible-maintenance
+      - gluster-ansible-repositories
+    state: latest
