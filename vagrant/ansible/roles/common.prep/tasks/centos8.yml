@@ -1,0 +1,15 @@
+- name: Perform a complete update
+  yum:
+    name: '*'
+    state: latest
+
+- name: Enable EPEL repository
+  yum:
+    name: epel-release
+    state: latest
+
+- name: Enable GlusterFS nightly rpms repository
+  command: yum-config-manager --add-repo http://artifacts.ci.centos.org/gluster/nightly/master.repo
+
+- name: Enable Samba nightly rpms repository
+  command: yum-config-manager --add-repo http://artifacts.ci.centos.org/gluster/nightly-samba/samba-nightly-master.repo
