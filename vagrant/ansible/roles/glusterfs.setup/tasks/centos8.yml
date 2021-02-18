@@ -1,0 +1,5 @@
+# https://github.com/gluster/samba-integration/issues/123
+- name: Install glusterfs-geo-replication package.
+  yum:
+    name: glusterfs-geo-replication
+    state: latest
