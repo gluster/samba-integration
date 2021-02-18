@@ -1,19 +1,6 @@
-- name: Install required packages
-  yum:
-    name:
-      - glusterfs-fuse
-      - cifs-utils
-      - samba-test
-      - python-pip
-      - git
-    state: latest
-
-- name: Install Python 3 modules
-  pip:
-    executable: /usr/bin/pip3
-    name:
-      - PyYAML
-      - iso8601
+- name: Run distro specific tasks for client.prep
+  include_tasks:
+    file: "{{ distro.actions_file }}"
 
 - debug:
     msg: "{{ ctdb_network_public_interfaces }}"
