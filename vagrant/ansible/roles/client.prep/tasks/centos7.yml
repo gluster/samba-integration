@@ -14,3 +14,4 @@
     name:
       - PyYAML
       - iso8601
+    extra_args: --ignore-installed
