@@ -1,18 +1,3 @@
-- name: Install GlusterFS rpms
-  yum:
-    name: "{{ gluster_rpms }}"
-    state: latest
-  vars:
-    gluster_rpms:
-      - glusterfs-server
-
-- name: Install basic tools
-  yum:
-   name: "{{ tools }}"
-   state: latest
-  vars:
-    tools:
-      - lvm2
-      - firewalld
-      - libselinux-python
-
+- name: Run distro specific tasks for node.prep
+  include_tasks:
+    file: "{{ distro.actions_file }}"
