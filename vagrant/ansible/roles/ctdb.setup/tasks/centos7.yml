@@ -1,0 +1,13 @@
+- name: Add ctdb package
+  yum:
+    name: ctdb
+    state: present
+
+- name: Install libsemanage-python. This is needed for the seboolean ansible command
+  yum: name=libsemanage-python state=present
+
+- name: SELinux - Allow CTDB to access recovery lockfile from FUSE mount
+  seboolean:
+    name: use_fusefs_home_dirs
+    state: yes
+    persistent: yes
