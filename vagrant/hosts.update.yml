@@ -4,8 +4,7 @@
 - hosts: all
   become: yes
   become_method: sudo
-  tasks:
-    - name: Perform a complete update
-      yum:
-        name: '*'
-        state: latest
+  vars_files:
+    - ansible/distro-vars.yml
+  roles:
+    - hosts.update
