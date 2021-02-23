@@ -1,0 +1,2 @@
+vagrant_image: "centos/7"
+actions_file: "centos7.yml"
