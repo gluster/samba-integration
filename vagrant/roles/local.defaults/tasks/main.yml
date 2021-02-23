@@ -1,0 +1,12 @@
+---
+- set_fact:
+    use_distro: "centos7"
+  when: use_distro is undefined
+
+- name: Import distro specific defaults
+  include_vars:
+    file: "{{ use_distro }}.yml"
+    name: distro
+
+- debug:
+    var: distro
