@@ -1634,7 +1634,7 @@ fi
 
 %{_libdir}/samba/libtalloc.so.*
 %{_libdir}/samba/libpytalloc-util.*.so.*
-%{_mandir}/man3/talloc.3.gz
+%exclude %{_mandir}/man3/talloc.3.gz
 %{python3_sitearch}/talloc.*.so*
 
 %{_libdir}/samba/libtevent.so.*
@@ -1649,7 +1649,7 @@ fi
 
 %{_libdir}/samba/libldb.so.*
 %{_libdir}/samba/libpyldb-util.*.so.*
-%{_mandir}/man3/ldb.3.gz
+%exclude %{_mandir}/man3/ldb.3.gz
 %{python3_sitearch}/__pycache__/_ldb_text.*.pyc
 %{python3_sitearch}/_ldb_text.py*
 %{python3_sitearch}/ldb.*.so
