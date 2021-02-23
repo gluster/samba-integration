@@ -1,3 +1,12 @@
+- name: Generate distro-vars.yml in ansible directory
+  block:
+    - set_fact:
+        t:
+          distro: "{{ distro }}"
+    - copy:
+        content: '{{ t| to_nice_yaml }}'
+        dest: ./ansible/distro-vars.yml
+
 - name: copy vagrant generated inventory file - local machine
   copy:
     src: .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
