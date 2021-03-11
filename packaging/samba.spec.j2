@@ -2183,6 +2183,9 @@ fi
 %{python3_sitearch}/samba/descriptor.py
 %{python3_sitearch}/samba/dnsresolver.py
 %{python3_sitearch}/samba/drs_utils.py
+# pydsdb is built without ad dc but requires dc components
+%exclude %{python3_sitearch}/samba/dsdb.*.so
+%exclude %{python3_sitearch}/samba/dsdb_dns.*.so
 %{python3_sitearch}/samba/gensec.*.so
 %{python3_sitearch}/samba/getopt.py
 %{python3_sitearch}/samba/gpclass.py
@@ -2360,8 +2363,6 @@ fi
 
 %{python3_sitearch}/samba/dcerpc/dnsserver.*.so
 %{python3_sitearch}/samba/dckeytab.*.so
-%{python3_sitearch}/samba/dsdb.*.so
-%{python3_sitearch}/samba/dsdb_dns.*.so
 %{python3_sitearch}/samba/domain_update.py
 %{python3_sitearch}/samba/forest_update.py
 %{python3_sitearch}/samba/ms_forest_updates_markdown.py
