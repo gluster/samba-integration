@@ -33,6 +33,12 @@ $ cd samba-integration/
 $ make
 ```
 
+To run the CentOS8 version of test vms
+```
+$ cd samba-integration/
+$ EXTRA_VARS="use_distro=centos8" make
+```
+
 If you encounter failures bringing up the vagrant vms, you can check for more details by switching into the vagrant directory and manually bring up the machine.
 ```
 $ cd samba-integration/vagrant
