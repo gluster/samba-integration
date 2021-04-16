@@ -4,8 +4,9 @@
       - glusterfs-fuse
       - cifs-utils
       - samba-test
-      - python-pip
+      - python3-pip
       - git
+      - make
     state: latest
 
 - name: Install Python 3 modules
