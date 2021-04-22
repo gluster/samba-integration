@@ -41,12 +41,12 @@ client1.test:
 	@$(VSSH) client1 "sudo make -C /root/samba-integration-tests test"
 
 clean_vagrant:
-	@$(VAGRANT) destroy -f
-	@rm -rf .vagrant
+	-$(VAGRANT) destroy -f
+	-rm -rf .vagrant
 
 clean_generated_files:
-	@rm -f Vagrantfile ansible/distro-vars.yml ansible/vagrant_ansible_inventory ansible/ssh-config-setup vagrant_ansible_inventory ssh-config-host
+	-rm -f Vagrantfile ansible/distro-vars.yml ansible/vagrant_ansible_inventory ansible/ssh-config-setup vagrant_ansible_inventory ssh-config-host
 
-clean: clean_generated_files clean_vagrant
+clean: clean_vagrant clean_generated_files
 
-.PHONY: local hosts.update.only setup.prep.only setup.prep setup.test.only setup.cluster.only setup.cluster setup.clients client.test setup.site client1.test
+.PHONY: local hosts.update.only setup.prep.only setup.prep setup.test.only setup.cluster.only setup.cluster setup.clients client.test setup.site client1.test clean_vagrant clean_generated_files clean
