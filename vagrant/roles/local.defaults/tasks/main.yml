@@ -1,6 +1,6 @@
 ---
 - set_fact:
-    use_distro: "centos7"
+    use_distro: "centos8"
   when: use_distro is undefined
 
 - name: Import distro specific defaults
