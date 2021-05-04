@@ -5,3 +5,6 @@ fix_ssh:
 
 centos7_build_setup:
 	@ansible-playbook -i ${INVENTORY} centos7_build_setup.yml
+
+centos8_build_setup:
+	@ansible-playbook -i ${INVENTORY} centos8_build_setup.yml

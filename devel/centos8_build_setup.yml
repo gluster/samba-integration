@@ -1,0 +1,77 @@
+---
+- hosts: cluster
+  become: yes
+  tasks:
+
+    - name: Enable powertools repo
+      command: yum config-manager --set-enabled powertools
+
+    - name: Install required rpms
+      yum:
+        name:
+          - git
+          - gdb
+          - gcc
+          - python3
+          - perl
+          - automake
+          - autoconf
+          - libtool
+          - flex
+          - bison
+          - python3-pip
+          - openssl-devel
+          - libxml2-devel
+          - python3-devel
+          - libaio-devel
+          - libibverbs-devel
+          - librdmacm-devel
+          - readline-devel
+          - lvm2-devel
+          - glib2-devel
+          - userspace-rcu-devel
+          - libcmocka-devel
+          - libacl-devel
+          - sqlite-devel
+          - fuse-devel
+          - cups-devel
+          - dbus-devel
+          - docbook-style-xsl
+          - libarchive-devel
+          - libcap-devel
+          - libldb-devel
+          - libtalloc-devel
+          - libtdb-devel
+          - libtevent-devel
+          - libxslt
+          - openldap-devel
+          - pam-devel
+          - perl-ExtUtils-MakeMaker
+          - perl-Parse-Yapp
+          - perl-Test-Simple
+          - popt-devel
+          - python-tdb
+          - python-tevent
+          - gnutls-devel
+          - libtirpc
+          - libtirpc-devel
+          - libnsl2-devel
+          - rpcgen
+          - jansson-devel
+        state: latest
+
+    - name: Install python modules
+      pip:
+        executable: /usr/bin/pip3
+        name:
+          - iso8601
+          - pyasn1
+          - cryptography==3.3.1
+
+    - name: Install gluster devel packages
+      yum:
+        name:
+          - glusterfs-api-devel
+          - glusterfs-devel
+        state: present
+
