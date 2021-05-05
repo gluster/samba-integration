@@ -1,9 +1,12 @@
 - hosts: localhost
   connection: local
   become: no
+  vars:
+    refspec: "{{ refspec }}"
   vars_files:
     - vars.yml
   roles:
     - prep.dirs
+    - set.version
     - make.tarball
     - make.srpm

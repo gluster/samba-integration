@@ -1,6 +1,6 @@
 - name: create samba.spec from template
   template:
-    src: "{{ spec_dir }}/samba.spec.j2"
+    src: "{{ spec_dir }}/samba-{{ samba_major_version }}.spec.j2"
     dest: "{{ spec_dir }}/samba.spec"
 
 - name: make srpm
