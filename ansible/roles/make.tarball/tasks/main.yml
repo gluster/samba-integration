@@ -1,16 +1,3 @@
-- set_fact:
-    version_file: "{{ code_dir }}/VERSION"
-
-- name: clone samba repository
-  git:
-    # use the gitlab copy of the Samba git repo to allow for
-    # shallow clones, in order to spare time and bandwidth.
-    #repo: 'https://git.samba.org/samba.git'
-    repo: https://gitlab.com/samba-team/samba.git
-    dest: "{{ code_dir }}"
-    force: yes
-    depth: 1
-
 - name: git hash
   command: git log -1 --format=%h
   args:
@@ -33,7 +20,7 @@
     gitdate: "{{ gitdatecmd.stdout | regex_replace('-', '') | regex_replace(' [^ ]*$', '') | regex_replace('\\:', '') | regex_replace(' ', '.') }}"
 
 - set_fact:
-    samba_rpm_version: "{{ gitdate }}.{{ githash }}"
+    samba_rpm_version: "{{ gitdate + '.' + githash if ('master' in gitbranch.stdout) else release_version.stdout + '.' + gitdate + '.' + githash }}"
 
 - set_fact:
     samba_prefix: "samba-{{ samba_rpm_version }}"

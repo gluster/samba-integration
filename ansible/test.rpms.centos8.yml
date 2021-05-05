@@ -1,7 +1,19 @@
 ---
+- hosts: localhost
+  connection: local
+  become: no
+  vars:
+    refspec: "{{ refspec }}"
+  vars_files:
+    - vars.yml
+  roles:
+    - set.version
+
 - hosts: centos8
   become: yes
   become_method: sudo
+  vars:
+    vers: "{{ hostvars['localhost']['samba_major_version'] }}"
   vars_files:
     - vars.yml
   roles:

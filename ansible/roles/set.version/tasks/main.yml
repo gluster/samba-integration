@@ -1,0 +1,38 @@
+- set_fact:
+    chk_out: "{{ 'master' if (':' in refspec and refspec.split(':')[0] == 'h') else refspec }}"
+
+- name: clone samba repository
+  git:
+    repo: 'https://git.samba.org/samba.git'
+    version: "{{ chk_out }}"
+    dest: "{{ code_dir }}"
+    force: yes
+
+- name: Reset to git hash
+  block:
+    - name: Find git branch corresponding to git hash
+      shell: git branch -r --contains {{ refspec.split(":")[1] }} | head -1 | tr "/" "\n" | tail -1
+      args:
+        chdir: "{{ code_dir }}"
+      register: branch
+
+    - name: Switch to branch checkout at commit hash
+      command: git checkout -b {{ branch.stdout }}-{{ refspec.split(":")[1] }} {{ refspec.split(":")[1] }}
+      args:
+        chdir: "{{ code_dir }}"
+  when: (":" in refspec and refspec.split(":")[0] == "h")
+
+- name: Calculate version and release from VERSION file
+  shell: for i in SAMBA_VERSION_MAJOR SAMBA_VERSION_MINOR SAMBA_VERSION_RELEASE; do rel_ver+="$(grep ^$i= VERSION | tr -cd [[:digit:]])""."; done; echo ${rel_ver::-1}
+  args:
+    chdir: "{{ code_dir }}"
+  register: release_version
+
+- name: Retrieve current git branch
+  command: git rev-parse --abbrev-ref HEAD
+  args:
+    chdir: "{{ code_dir }}"
+  register: gitbranch
+
+- set_fact:
+    samba_major_version: "{{ 'master' if ('master' in gitbranch.stdout) else (release_version.stdout).split('.')[0] + '.' + (release_version.stdout).split('.')[1] }}"
