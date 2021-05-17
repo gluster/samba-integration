@@ -16,8 +16,8 @@
         chdir: "{{ code_dir }}"
       register: branch
 
-    - name: Switch to branch checkout at commit hash
-      command: git checkout -b {{ branch.stdout }}-{{ refspec.split(":")[1] }} {{ refspec.split(":")[1] }}
+    - name: Check and switch to branch checkout at commit hash
+      shell: git show-ref -q --heads {{ branch.stdout }}-{{ refspec.split(":")[1] }} || git checkout -b {{ branch.stdout }}-{{ refspec.split(":")[1] }} {{ refspec.split(":")[1] }}
       args:
         chdir: "{{ code_dir }}"
   when: (":" in refspec and refspec.split(":")[0] == "h")
