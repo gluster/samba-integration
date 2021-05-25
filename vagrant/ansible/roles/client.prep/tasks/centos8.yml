@@ -1,0 +1,18 @@
+- name: Install required packages
+  yum:
+    name:
+      - glusterfs-fuse
+      - cifs-utils
+      - samba-test
+      - python3-pip
+      - git
+      - make
+    state: latest
+
+- name: Install Python 3 modules
+  pip:
+    executable: /usr/bin/pip3
+    name:
+      - PyYAML
+      - iso8601
+    extra_args: --ignore-installed

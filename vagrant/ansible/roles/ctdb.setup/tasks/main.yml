@@ -1,4 +1,8 @@
 ---
+- name: Run distro specific tasks for ctdb.setup
+  include_tasks:
+    file: "{{ distro.actions_file }}"
+
 - name: Check for required variables
   block:
     - fail:
@@ -37,11 +41,6 @@
     opts: '_netdev,transport=tcp,xlator-option=*client*.ping-timeout=10'
     state: mounted
 
-- name: Add ctdb package
-  yum:
-    name: ctdb
-    state: present
-
 - name: Add ctdb rules to firewalld
   firewalld:
     service: ctdb
@@ -54,15 +53,6 @@
     line: "\trecovery lock = /gluster/lock/recovery.lock"
     regexp: "recovery lock"
     insertafter: '\[cluster\]'
-
-- name: Install libsemanage-python. This is needed for the seboolean ansible command
-  yum: name=libsemanage-python state=present
-
-- name: SELinux - Allow CTDB to access recovery lockfile from FUSE mount
-  seboolean:
-    name: use_fusefs_home_dirs
-    state: yes
-    persistent: yes
 
 - name: Enable check consistency of databases during startup
   command: '/bin/ctdb event script enable legacy 00.ctdb'

@@ -1,0 +1,13 @@
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- debug:
+    msg: "{{ item }} {{ ansible_facts.packages[item][0].version }}-{{ ansible_facts.packages[item][0].release }}"
+  when: ansible_facts.packages[item] is defined
+  loop:
+    - kernel
+    - samba-client
+    - samba
+    - ctdb
+    - glusterfs

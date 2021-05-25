@@ -1,0 +1,93 @@
+---
+- hosts: cluster
+  become: yes
+  tasks:
+
+    - name: Install required rpms
+      yum:
+        name:
+          - git
+          - gdb
+          - gcc
+          - python
+          - perl
+          - automake
+          - autoconf
+          - libtool
+          - flex
+          - bison
+          - openssl-devel
+          - libxml2-devel
+          - python-devel
+          - libaio-devel
+          - libibverbs-devel
+          - librdmacm-devel
+          - readline-devel
+          - lvm2-devel
+          - glib2-devel
+          - userspace-rcu-devel
+          - libcmocka-devel
+          - libacl-devel
+          - sqlite-devel
+          - fuse-devel
+          - cups-devel
+          - dbus-devel
+          - docbook-style-xsl
+          - libarchive-devel
+          - libcap-devel
+          - libxslt
+          - openldap-devel
+          - pam-devel
+          - perl-ExtUtils-MakeMaker
+          - perl-Parse-Yapp
+          - perl-Test-Simple
+          - popt-devel
+          - python-tdb
+          - python-tevent
+          - quota-devel
+          - gnutls-devel
+          - libtirpc
+          - libtirpc-devel
+          - jansson-devel
+          - python3-devel
+          - zlib-devel
+          - glusterfs-api-devel
+          - glusterfs-devel
+          - python36-pyasn1-modules.noarch
+          - python-setuptools
+        state: latest
+
+    - name: add copr to get compat-gnutls34
+      command: yum -y copr enable sergiomb/SambaAD
+
+    - name: modify copr repo to only use it for compat-gnutls packages
+      lineinfile:
+        dest: /etc/yum.repos.d/_copr_sergiomb-SambaAD.repo
+        line: "includepkgs=compat-gnutls34.* compat-nettle32.*"
+        insertafter: '\[copr:copr.fedorainfracloud.org:sergiomb:SambaAD\]'
+
+    - name: Remove RHEL 7 packages which are not needed
+      yum:
+        name:
+          - gnutls-dane
+          - nettle-devel
+          - gnutls-c++
+          - gnutls
+        state: absent
+
+    - name: Install latest devel packages from sergiomb/SambaAD
+      yum:
+        name:
+          - https://copr-be.cloud.fedoraproject.org/results/sergiomb/SambaAD/epel-7-x86_64/01637734-compat-gnutls34/compat-gnutls34-devel-3.4.17-7.el7.x86_64.rpm
+          - https://copr-be.cloud.fedoraproject.org/results/sergiomb/SambaAD/epel-7-x86_64/01637734-compat-gnutls34/compat-gnutls34-dane-3.4.17-7.el7.x86_64.rpm
+          - https://copr-be.cloud.fedoraproject.org/results/sergiomb/SambaAD/epel-7-x86_64/01637734-compat-gnutls34/compat-gnutls34-c++-3.4.17-7.el7.x86_64.rpm
+          - https://copr-be.cloud.fedoraproject.org/results/sergiomb/SambaAD/epel-7-x86_64/00839529-compat-nettle32/compat-nettle32-devel-3.2-3.el7.x86_64.rpm
+        state: present
+
+    - name: Install python modules
+      pip:
+        executable: /usr/bin/pip3
+        name:
+          - cryptography==3.3.1
+          - iso8601
+          - asn1

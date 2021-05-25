@@ -4,5 +4,7 @@
 - hosts: setup
   become: yes
   become_method: sudo
+  vars_files:
+    - ansible/distro-vars.yml
   roles:
     - setup.prep

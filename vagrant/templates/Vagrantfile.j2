@@ -16,7 +16,7 @@ CLIENT_IP = "#{PUBLIC_NETWORK_BASE}.5"
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
     config.vm.provider :libvirt do |v,override|
-        override.vm.box = "centos/7"
+      override.vm.box = "{{ distro.vagrant_image }}"
         override.vm.synced_folder '.', '/vagrant', disabled: true
 
         # We can not use qemu_use_session universally.

@@ -1,5 +1,6 @@
 INVENTORY := ./vagrant_ansible_inventory
 VSSH := ssh -F ssh-config-host
+VAGRANT := vagrant
 
 ifdef EXTRA_VARS
 	ANSIBLE_EXTRA_VARS := -e '${EXTRA_VARS}'
@@ -31,12 +32,24 @@ setup.cluster: setup.prep setup.test.only setup.cluster.only
 setup.clients:
 	@$(VSSH) setup "${SSH_EXTRA_VARS} make -C /home/vagrant/ansible setup.clients"
 
+generate.report:
+	@$(VSSH) setup "${SSH_EXTRA_VARS} make -C /home/vagrant/ansible generate.report"
+
 client.test:
 	@$(VSSH) setup "${SSH_EXTRA_VARS} make -C /home/vagrant/ansible client.test"
 
-setup.site: setup.cluster setup.clients client.test
+setup.site: setup.cluster setup.clients generate.report client.test
 
 client1.test:
 	@$(VSSH) client1 "sudo make -C /root/samba-integration-tests test"
 
-.PHONY: local hosts.update.only setup.prep.only setup.prep setup.test.only setup.cluster.only setup.cluster setup.clients client.test setup.site client1.test
+clean_vagrant:
+	-$(VAGRANT) destroy -f
+	-rm -rf .vagrant
+
+clean_generated_files:
+	-rm -f Vagrantfile ansible/distro-vars.yml ansible/vagrant_ansible_inventory ansible/ssh-config-setup vagrant_ansible_inventory ssh-config-host
+
+clean: clean_vagrant clean_generated_files
+
+.PHONY: local hosts.update.only setup.prep.only setup.prep setup.test.only setup.cluster.only setup.cluster setup.clients client.test setup.site client1.test clean_vagrant clean_generated_files clean

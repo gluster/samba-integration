@@ -1,0 +1,63 @@
+# Create an authorized_keys file in the local directory containing the public keys for ssh access to the remote machine.
+---
+- hosts: all
+  become: yes
+  tasks:
+
+    - name: Check if authorized_keys exist
+      local_action: stat path=authorized_keys
+      register: authorized_keys
+      become: no
+
+    - assert:
+        that:
+          - authorized_keys.stat.exists
+        fail_msg: "authorized_keys does not exist. Please add an authorized_keys file which will be copied over to the test vms."
+      run_once: true
+
+    - name: Allow all users to sudo
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        insertafter: EOF
+        line: 'ALL ALL=(ALL) NOPASSWD: ALL'
+
+    - name: allow password authentication
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^PasswordAuthentication no'
+        line: 'PasswordAuthentication yes'
+
+    - name: Restart sshd
+      service:
+        name: sshd
+        state: restarted
+
+    #Password: 'x'
+    - name: change root password
+      user:
+        name: root
+        update_password: always
+        password: "$6$wEc5aSnByo3LM51M$TQzO2oyTmHzSncT/SGdVJAbCpuMOwfJSE2dS9p.L0gcFiG5./PqBREtDMdmxFZsuj1M5sq7iGoeoaKmt661Zh1"
+
+    - name: Create /root/.ssh
+      file:
+        path: /root/.ssh
+        owner: root
+        group: root
+        mode: 0700
+        state: directory
+
+    - name: Copy authorized_keys to /root/.ssh
+      copy:
+        src: authorized_keys
+        dest: /root/.ssh/authorized_keys
+        owner: root
+        group: root
+        mode: 0600
+
+    - name: Install net-tools
+      yum:
+        name: net-tools
+        state: present
