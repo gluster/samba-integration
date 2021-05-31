@@ -2197,44 +2197,38 @@ fi
 
 %files -n python3-%{name}-test
 %dir %{python3_sitearch}/samba/tests
-%{python3_sitearch}/samba/tests/__init__.py
+%{python3_sitearch}/samba/tests/*.py
 %dir %{python3_sitearch}/samba/tests/__pycache__
 %{python3_sitearch}/samba/tests/__pycache__/*.*.pyc
-%{python3_sitearch}/samba/tests/*.py
 
 %dir %{python3_sitearch}/samba/tests/blackbox
-%{python3_sitearch}/samba/tests/blackbox/__init__.py
+%{python3_sitearch}/samba/tests/blackbox/*.py
 %dir %{python3_sitearch}/samba/tests/blackbox/__pycache__
 %{python3_sitearch}/samba/tests/blackbox/__pycache__/*.*.pyc
-%{python3_sitearch}/samba/tests/blackbox/*.py
 
 %dir %{python3_sitearch}/samba/tests/dcerpc
-%{python3_sitearch}/samba/tests/dcerpc/__init__.py
+%{python3_sitearch}/samba/tests/dcerpc/*.py
 %dir %{python3_sitearch}/samba/tests/dcerpc/__pycache__
 %{python3_sitearch}/samba/tests/dcerpc/__pycache__/*.*.pyc
-%{python3_sitearch}/samba/tests/dcerpc/*.py
 
 %dir %{python3_sitearch}/samba/tests/dns_forwarder_helpers
 %{python3_sitearch}/samba/tests/dns_forwarder_helpers/__pycache__/*.*.pyc
 %{python3_sitearch}/samba/tests/dns_forwarder_helpers/*.py
 
 %dir %{python3_sitearch}/samba/tests/emulate
-%{python3_sitearch}/samba/tests/emulate/__init__.py
+%{python3_sitearch}/samba/tests/emulate/*.py
 %dir %{python3_sitearch}/samba/tests/emulate/__pycache__
 %{python3_sitearch}/samba/tests/emulate/__pycache__/*.*.pyc
-%{python3_sitearch}/samba/tests/emulate/*.py
 
 %dir %{python3_sitearch}/samba/tests/kcc
-%{python3_sitearch}/samba/tests/kcc/__init__.py
+%{python3_sitearch}/samba/tests/kcc/*.py
 %dir %{python3_sitearch}/samba/tests/kcc/__pycache__
 %{python3_sitearch}/samba/tests/kcc/__pycache__/*.*.pyc
-%{python3_sitearch}/samba/tests/kcc/*.py
 
 %dir %{python3_sitearch}/samba/tests/samba_tool
-%{python3_sitearch}/samba/tests/samba_tool/__init__.py
+%{python3_sitearch}/samba/tests/samba_tool/*.py
 %dir %{python3_sitearch}/samba/tests/samba_tool/__pycache__
 %{python3_sitearch}/samba/tests/samba_tool/__pycache__/*.*.pyc
-%{python3_sitearch}/samba/tests/samba_tool/*.py
 
 %{python3_sitearch}/samba/tests/krb5/__pycache__/*.*.pyc
 %{python3_sitearch}/samba/tests/krb5/*.py
