@@ -8,6 +8,13 @@
 - name: Enable firewall rules for gluster
   firewalld: service=glusterfs permanent=yes state=enabled
 
+- name: Add firewalld ports
+  firewalld:
+    port: 49152-60999/tcp
+    permanent: true
+    state: enabled
+    zone: 'public'
+
 - name: Ensure glusterd service is enabled
   service: name=glusterd state=started enabled=yes
 
