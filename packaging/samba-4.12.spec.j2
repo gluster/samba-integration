@@ -208,11 +208,9 @@ BuildRequires: popt-devel
 BuildRequires: python3-devel
 BuildRequires: quota-devel
 BuildRequires: readline-devel
-%if %{defined rhel}
-%if %{rhel} >= 8
+%if ( ( 0%{?rhel} && 0%{?rhel} >= 8 ) || ( 0%{?fedora} ) )
 BuildRequires: rpcgen
 BuildRequires: rpcsvc-proto-devel
-%endif
 %endif
 BuildRequires: sed
 BuildRequires: libtasn1-devel
@@ -3688,6 +3686,7 @@ fi
 ### WINEXE
 %files winexe
 %{_bindir}/winexe
+%{_mandir}/man1/winexe.1.gz
 %endif
 
 %changelog

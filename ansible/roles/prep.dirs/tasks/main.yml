@@ -39,6 +39,13 @@
     - centos-8-Devel.tpl
     - glusterfs-nightly-repo.tpl
 
+- name: copy fedora mock config files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ mock_dir }}"
+  with_fileglob:
+    - "/etc/mock/fedora-*-x86_64.cfg"
+
 - name: adapt epel-7 mock config to use additional template
   lineinfile:
     path: "{{ mock_dir }}/epel-7-x86_64.cfg"

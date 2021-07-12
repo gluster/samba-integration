@@ -1,0 +1,40 @@
+---
+- name: Perform a complete update
+  yum:
+    name: '*'
+    state: latest
+
+- name : install createrepo package
+  yum:
+    name: createrepo_c
+    state: latest
+
+- name: sync test build rpm directory
+  synchronize:
+    src: "{{ rpms_dir }}/"
+    dest: "/tmp/testbuild"
+
+- name: create yum repo from test build
+  command: createrepo_c .
+  args:
+    chdir: "/tmp/testbuild/{{ vers }}/fedora/{{ ansible_distribution_major_version }}/x86_64"
+
+- name: enable test build yum repository
+  yum_repository:
+    name: samba-{{ vers }}-test-rpms
+    description: Samba {{ vers }} test rpms repository
+    baseurl: "file:///tmp/testbuild/{{ vers }}/fedora/$releasever/$basearch"
+    enabled: yes
+    gpgcheck: no
+
+# Since we do not have nightly GlusterFS packages built for Fedora, we make use
+# of official released versions from standard Fedora repositories
+
+- name: try installing our samba packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - samba
+    - samba-test
+    - samba-vfs-glusterfs

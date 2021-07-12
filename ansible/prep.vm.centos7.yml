@@ -5,6 +5,7 @@
   vars_files:
     - vars.yml
   vars:
-    vm: "centos7"
+    version: "7"
+    vm: "centos{{ version }}"
   roles:
     - prep.vm

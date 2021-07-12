@@ -5,7 +5,7 @@
   vars_files:
     - vars.yml
   vars:
-    version: "7"
-    vm: "centos{{ version }}"
+    version: "{{ version }}"
+    vm: "fedora{{ version }}"
   roles:
-    - del.vm
+    - prep.vm
