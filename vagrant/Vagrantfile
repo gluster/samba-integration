@@ -2,8 +2,9 @@
 # vi: set ft=ruby et ts=2 sts=2 sw=2 :
 
 nodes = [
-  { :hostname => "centos8", :box => "centos/8" },
-  { :hostname => "centos7", :box => "centos/7" },
+  { :hostname => "centos" + ENV['VERS'], :box => "centos/" + ENV['VERS'] },
+  { :hostname => "centos" + ENV['VERS'], :box => "centos/" + ENV['VERS'] },
+  { :hostname => "fedora" + ENV['VERS'], :box => "generic/fedora" + ENV['VERS'] },
 ]
 
 Vagrant.configure("2") do |config|

@@ -1,11 +1,11 @@
 ---
 - name: bring up {{ vm }} vm
-  command: vagrant up --no-provision {{ vm }}
+  shell: VERS={{ version }} vagrant up --no-provision {{ vm }}
   args:
     chdir: ../vagrant
 
 - name: generate ansible inventory
-  command: vagrant provision {{ vm }}
+  shell: VERS={{ version }} vagrant provision {{ vm }}
   args:
     chdir: ../vagrant
 
