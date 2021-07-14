@@ -1,5 +1,4 @@
 Scripts and modules copied over from the samba source tree.
 
 At the time of copy, the samba head is at
-232054c09b1 lib/util: remove extra safe_string.h file
-
+7938d94d12e s4-selftest: add net offlinejoin tests
