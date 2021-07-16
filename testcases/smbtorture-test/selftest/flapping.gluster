@@ -4,3 +4,6 @@
 ^samba3.smb2.session.*
 ^samba3.smb2.create.aclfile
 
+# This is a known fail for samba4 env. We explicitly mark env as
+# samba3 which means we don't ever match with this knownfail.
+^samba3.smb2.create.quota-fake-file
