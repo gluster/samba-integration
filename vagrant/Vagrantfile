@@ -4,7 +4,7 @@
 nodes = [
   { :hostname => "centos" + ENV['VERS'], :box => "centos/" + ENV['VERS'] },
   { :hostname => "centos" + ENV['VERS'], :box => "centos/" + ENV['VERS'] },
-  { :hostname => "fedora" + ENV['VERS'], :box => "generic/fedora" + ENV['VERS'] },
+  { :hostname => "fedora" + ENV['VERS'], :box => "fedora/" + ENV['VERS'] + "-cloud-base" },
 ]
 
 Vagrant.configure("2") do |config|
@@ -24,6 +24,9 @@ Vagrant.configure("2") do |config|
           # taken from:
           # https://github.com/heketi/heketi/pull/1008
           lv.cpu_mode = 'host-passthrough'
+          # default memory of 512MB is not sufficient for Fedora boxes as we
+          # always perform complete update to the system after it is up
+          lv.memory = 1024
       end # lv
 
 
