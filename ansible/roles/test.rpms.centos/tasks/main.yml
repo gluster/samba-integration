@@ -43,13 +43,13 @@
 - name: create yum repo from test build
   command: createrepo_c .
   args:
-    chdir: "/tmp/testbuild/{{ vers }}/{{ ansible_distribution_major_version }}/x86_64"
+    chdir: "/tmp/testbuild/{{ vers }}/centos/{{ ansible_distribution_major_version }}/x86_64"
 
 - name: enable test build yum repository
   yum_repository:
     name: samba-{{ vers }}-test-rpms
     description: Samba {{ vers }} test rpms repository
-    baseurl: "file:///tmp/testbuild/{{ vers }}/$releasever/$basearch"
+    baseurl: "file:///tmp/testbuild/{{ vers }}/centos/$releasever/$basearch"
     enabled: yes
     gpgcheck: no
 
