@@ -2242,7 +2242,10 @@ fi
 %{_mandir}/man1/masktest.1*
 %{_mandir}/man1/ndrdump.1*
 %{_mandir}/man1/smbtorture.1*
+%if %{with testsuite}
 %{_mandir}/man1/vfstest.1*
+#endif with_testsuite
+%endif
 
 %if %{with testsuite}
 # files to ignore in testsuite mode
