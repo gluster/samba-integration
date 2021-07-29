@@ -2,6 +2,9 @@
 # vi: set ft=ruby :
 #
 
+HOST_OS = "{{ host_os }}"
+HOST_OS_VERS = "{{ host_os_version }}"
+
 NODES = 2
 DISKS = 3
 NODE_RAM = 1024
@@ -19,19 +22,12 @@ Vagrant.configure("2") do |config|
       override.vm.box = "{{ distro.vagrant_image }}"
         override.vm.synced_folder '.', '/vagrant', disabled: true
 
-        # We can not use qemu_use_session universally.
-        # - On Fedora 31, it is required for me to start.
-        # - But on centos7, it must not be set.
-        # The best workarount I found is to put this setting into
-        # your ~/.vagrant.d/Vagrantfile like so:
-        # ```
-        # Vagrant.configure("2") do |config|
-        #   config.vm.provider :libvirt do |libvirt|
-        #     libvirt.qemu_use_session = false
-        #   end
-        # end
-        # ```
-        #v.qemu_use_session = false
+        # We can not use qemu_use_session universally. See section "Upgrade/compatibility impact"
+        # from the following Fedora doc:
+        # https://fedoraproject.org/wiki/Changes/Vagrant_2.2_with_QEMU_Session
+        if not HOST_OS == "CentOS" && HOST_OS_VERS == "7"
+          v.qemu_use_session = false
+        end
 
         # change cpu mode to passthrough as workaround for problems in the ci,
         # refer to bugs:
