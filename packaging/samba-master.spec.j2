@@ -1055,6 +1055,8 @@ for i in \
     %{python3_sitearch}/samba/dcerpc/dnsserver.*.so \
     %{python3_sitearch}/samba/dnsserver.py \
     %{python3_sitearch}/samba/domain_update.py \
+    %{python3_sitearch}/samba/dsdb.*.so \
+    %{python3_sitearch}/samba/dsdb_dns.*.so \
     %{python3_sitearch}/samba/forest_update.py \
     %{python3_sitearch}/samba/kcc/__init__.py \
     %{python3_sitearch}/samba/kcc/debug.py \
@@ -2090,10 +2092,6 @@ fi
 %{python3_sitearch}/samba/dcerpc/*.py
 %{python3_sitearch}/samba/dcerpc/*.*.so
 
-# pydsdb is built without ad dc but requires dc components
-%exclude %{python3_sitearch}/samba/dsdb.*.so
-%exclude %{python3_sitearch}/samba/dsdb_dns.*.so
-
 %dir %{python3_sitearch}/samba/emulate
 %dir %{python3_sitearch}/samba/emulate/__pycache__
 %{python3_sitearch}/samba/emulate/__pycache__/*.*.pyc
@@ -2151,6 +2149,8 @@ fi
 
 %{python3_sitearch}/samba/dcerpc/dnsserver.*.so
 %{python3_sitearch}/samba/dckeytab.*.so
+%{python3_sitearch}/samba/dsdb.*.so
+%{python3_sitearch}/samba/dsdb_dns.*.so
 %{python3_sitearch}/samba/domain_update.py
 %{python3_sitearch}/samba/forest_update.py
 %{python3_sitearch}/samba/ms_forest_updates_markdown.py
