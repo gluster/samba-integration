@@ -24,18 +24,21 @@
 %bcond_with winexe
 %endif
 
-# Build vfs_ceph module by default on 64bit Fedora
+# Build vfs_ceph module and ctdb ceph mutex helper by default on 64bit Fedora
 %if 0%{?fedora}
 
 %ifarch aarch64 ppc64le s390x x86_64
 %bcond_without vfs_cephfs
+%bcond_without ceph_mutex
 %else
 %bcond_with vfs_cephfs
+%bcond_with ceph_mutex
 #endifarch
 %endif
 
 %else
 %bcond_with vfs_cephfs
+%bcond_with ceph_mutex
 #endif fedora
 %endif
 
@@ -66,6 +69,13 @@
 %bcond_without pcp_pmda
 %else
 %bcond_with pcp_pmda
+%endif
+
+# Build the etcd helpers by default on Fedora
+%if 0%{?fedora}
+%bcond_without etcd_mutex
+%else
+%bcond_with etcd_mutex
 %endif
 
 %define samba_requires_eq()  %(LC_ALL="C" echo '%*' | xargs -r rpm -q --qf 'Requires: %%{name} = %%{epoch}:%%{version}\\n' | sed -e 's/ (none):/ /' -e 's/ 0:/ /' | grep -v "is not")
@@ -246,6 +256,14 @@ BuildRequires: liburing-devel >= 0.4
 
 %if %{with pcp_pmda}
 BuildRequires: pcp-libs-devel
+%endif
+
+%if %{with ceph_mutex}
+BuildRequires: librados-devel
+%endif
+
+%if %{with etcd_mutex}
+BuildRequires: python3-etcd
 %endif
 
 %if %{with dc} || %{with testsuite}
@@ -950,6 +968,27 @@ Performance Co-Pilot (PCP) support for CTDB
 #endif with pcp_pmda
 %endif
 
+%if %{with etcd_mutex}
+%package -n ctdb-etcd-mutex
+Summary: CTDB ETCD mutex helper
+Requires: ctdb = %{samba_depver}
+Requires: python3-etcd
+
+%description -n ctdb-etcd-mutex
+Support for using an existing ETCD cluster as a mutex helper for CTDB
+#endif with etcd_mutex
+%endif
+
+%if %{with ceph_mutex}
+%package -n ctdb-ceph-mutex
+Summary: CTDB ceph mutex helper
+Requires: ctdb = %{samba_depver}
+
+%description -n ctdb-ceph-mutex
+Support for using an existing CEPH cluster as a mutex helper for CTDB
+#endif with ceph_mutex
+%endif
+
 #endif {with clustering}
 %endif
 
@@ -1037,6 +1076,12 @@ export PKG_CONFIG_PATH="/usr/lib64/compat-gnutls34/pkgconfig:/usr/lib64/compat-n
 %endif
 %if %{with pcp_pmda}
         --enable-pmda \
+%endif
+%if %{with ceph_mutex}
+        --enable-ceph-reclock \
+%endif
+%if %{with etcd_mutex}
+        --enable-etcd-reclock \
 %endif
         --with-profiling-data \
         --with-systemd \
@@ -3280,6 +3325,20 @@ fi
 %{_localstatedir}/lib/pcp/pmdas/ctdb/pmdactdb
 %{_localstatedir}/lib/pcp/pmdas/ctdb/pmns
 #endif {with pcp_pmda}
+%endif
+
+%if %{with etcd_mutex}
+%files -n ctdb-etcd-mutex
+%{_libexecdir}/ctdb/ctdb_etcd_lock
+%{_mandir}/man7/ctdb-etcd.7.gz
+#endif with etcd_mutex
+%endif
+
+%if %{with ceph_mutex}
+%files -n ctdb-ceph-mutex
+%{_libexecdir}/ctdb/ctdb_mutex_ceph_rados_helper
+%{_mandir}/man7/ctdb_mutex_ceph_rados_helper.7.gz
+#endif with ceph_mutex
 %endif
 
 #endif {with clustering}
