@@ -3,7 +3,6 @@
 
 nodes = [
   { :hostname => "centos" + ENV['VERS'], :box => "centos/" + ENV['VERS'] },
-  { :hostname => "centos" + ENV['VERS'], :box => "centos/" + ENV['VERS'] },
   { :hostname => "fedora" + ENV['VERS'], :box => "fedora/" + ENV['VERS'] + "-cloud-base" },
 ]
 
