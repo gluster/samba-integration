@@ -1,0 +1,30 @@
+From 939aed0498269df3c1e012f3b68c314b583f25bd Mon Sep 17 00:00:00 2001
+From: Martin Schwenke <martin@meltin.net>
+Date: Tue, 27 Apr 2021 15:46:14 +1000
+Subject: [PATCH] utils: Use Python 3
+
+Due to the number of flake8 and pylint warnings it is unclear if the
+source has Python 3 incompatibilities.  These will be cleaned up in
+subsequent commits.
+
+Signed-off-by: "L.P.H. van Belle" <belle@bazuin.nl>
+Reviewed-by: Martin Schwenke <martin@meltin.net>
+Reviewed-by: David Disseldorp <ddiss@samba.org>
+Reviewed-by: Jose A. Rivera <jarrpa@samba.org>
+---
+ ctdb/utils/etcd/ctdb_etcd_lock | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ctdb/utils/etcd/ctdb_etcd_lock b/ctdb/utils/etcd/ctdb_etcd_lock
+index 000c6bb7208..7f5194eff0a 100755
+--- a/ctdb/utils/etcd/ctdb_etcd_lock
++++ b/ctdb/utils/etcd/ctdb_etcd_lock
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/env python3
+ #
+ #    This program is free software: you can redistribute it and/or modify
+ #    it under the terms of the GNU General Public License as published by
+-- 
+2.31.1
+
