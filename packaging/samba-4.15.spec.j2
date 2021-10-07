@@ -9,8 +9,12 @@
 # ctdb is enabled by default, you can disable it with: --without clustering
 %bcond_without clustering
 
-# DC build components are disabled  by default
+# Build with Active Directory Domain Controller support by default on Fedora
+%if 0%{?fedora} >= 34
+%bcond_without dc
+%else
 %bcond_with dc
+%endif
 
 # Build a libsmbclient package by default
 %bcond_without libsmbclient
@@ -107,7 +111,11 @@
 %global libwbc_alternatives_suffix -64
 %endif
 
+%if %{with dc} || %{with testsuite}
+%global required_mit_krb5 1.19
+%else
 %global required_mit_krb5 1.15.1
+%endif
 
 %global _systemd_extra "Environment=KRB5CCNAME=FILE:/run/samba/krb5cc_samba"
 
@@ -286,9 +294,9 @@ BuildRequires: perl(Parse::Yapp)
 
 # lmdb-devel is required for the mdb ldb module, if samba is configured
 # to build includelibs we need lmdb-devel for building that module on our own
-#BuildRequires: lmdb-devel
+BuildRequires: lmdb-devel
 
-%if %{with testsuite} || %{with dc}
+%if %{with dc} || %{with testsuite}
 BuildRequires: bind
 BuildRequires: krb5-server >= %{required_mit_krb5}
 BuildRequires: ldb-tools
@@ -1064,6 +1072,9 @@ export PKG_CONFIG_PATH="/usr/lib64/compat-gnutls34/pkgconfig:/usr/lib64/compat-n
         --private-libraries=%{_samba_private_libraries} \
 %endif
         --with-system-mitkrb5 \
+%if %{with dc} || %{with testsuite}
+        --with-experimental-mit-ad-dc \
+%endif
 %if %{without dc} && %{without testsuite}
         --without-ad-dc \
 %endif
@@ -1772,6 +1783,9 @@ fi
 
 %{_libdir}/samba/ldb/asq.so
 %{_libdir}/samba/ldb/ldb.so
+%if %{with dc} || %{with testsuite}
+%{_libdir}/samba/ldb/mdb.so
+%endif
 %{_libdir}/samba/ldb/paged_searches.so
 %{_libdir}/samba/ldb/rdn_name.so
 %{_libdir}/samba/ldb/sample.so
@@ -1900,6 +1914,10 @@ fi
 %{_mandir}/man8/samba.8*
 %{_mandir}/man8/samba_downgrade_db.8*
 %{_mandir}/man8/samba-gpupdate.8*
+%dir %{_datadir}/samba/admx
+%{_datadir}/samba/admx/samba.admx
+%dir %{_datadir}/samba/admx/en-US
+%{_datadir}/samba/admx/en-US/samba.adml
 
 %files dc-provision
 %license source4/setup/ad-schema/licence.txt
@@ -1936,11 +1954,11 @@ fi
 %files dc-bind-dlz
 %attr(770,root,named) %dir /var/lib/samba/bind-dns
 %dir %{_libdir}/samba/bind9
-%{_libdir}/samba/bind9/dlz_bind9.so
-%{_libdir}/samba/bind9/dlz_bind9_9.so
 %{_libdir}/samba/bind9/dlz_bind9_10.so
 %{_libdir}/samba/bind9/dlz_bind9_11.so
 %{_libdir}/samba/bind9/dlz_bind9_12.so
+%{_libdir}/samba/bind9/dlz_bind9_14.so
+%{_libdir}/samba/bind9/dlz_bind9_16.so
 #endif {with dc} || {with testsuite}
 %endif
 
@@ -2268,8 +2286,6 @@ fi
 %{python3_sitearch}/samba/__pycache__/schema.*.pyc
 %{python3_sitearch}/samba/__pycache__/uptodateness.*.pyc
 
-%{python3_sitearch}/samba/dcerpc/dnsserver.*.so
-%{python3_sitearch}/samba/dckeytab.*.so
 %{python3_sitearch}/samba/domain_update.py
 %{python3_sitearch}/samba/forest_update.py
 %{python3_sitearch}/samba/ms_forest_updates_markdown.py
