@@ -64,16 +64,9 @@
 %global with_mitkrb5 1
 %global with_dc 0
 
-%if 0%{?rhel}
-%global with_dc 0
-%endif
-
-%if %{with testsuite}
+%if 0%{?fedora} || %{with testsuite}
 %global with_dc 1
 %endif
-
-#attempt:
-%global with_dc 0
 
 %global required_mit_krb5 1.15.1
 
@@ -206,6 +199,10 @@ BuildRequires: perl(Archive::Tar)
 BuildRequires: perl(Test::More)
 BuildRequires: popt-devel
 BuildRequires: python3-devel
+%if %with_dc
+BuildRequires: python3-dns
+BuildRequires: python3-setuptools
+%endif
 BuildRequires: quota-devel
 BuildRequires: readline-devel
 %if ( ( 0%{?rhel} && 0%{?rhel} >= 8 ) || ( 0%{?fedora} ) )
@@ -235,6 +232,9 @@ BuildRequires: libcephfs-devel
 # Add python3-iso8601 to avoid that the
 # version in Samba is being packaged
 BuildRequires: python3-iso8601
+# lmdb-devel is required for the mdb ldb module, if samba is configured
+# to build includelibs we need lmdb-devel for building that module on our own
+BuildRequires: lmdb-devel
 
 BuildRequires: bind
 BuildRequires: krb5-server >= %{required_mit_krb5}
@@ -917,6 +917,9 @@ export PKG_CONFIG_PATH="/usr/lib64/compat-gnutls34/pkgconfig:/usr/lib64/compat-n
 %if %with_mitkrb5
         --with-system-mitkrb5 \
 %endif
+%if %with_dc
+        --with-experimental-mit-ad-dc \
+%endif
 %if ! %with_dc
         --without-ad-dc \
 %endif
@@ -1503,6 +1506,10 @@ fi
 # this is already contained above
 %{_libdir}/samba/ldb/paged_results.so
 %endif
+%if %with_dc || %{with testsuite}
+%{_libdir}/samba/ldb/mdb.so
+%{_libdir}/samba/libldb-mdb-int-samba4.so
+%endif
 %{_libdir}/samba/ldb/paged_searches.so
 %{_libdir}/samba/ldb/rdn_name.so
 %{_libdir}/samba/ldb/sample.so
@@ -1796,6 +1803,10 @@ fi
 %{_mandir}/man8/samba_downgrade_db.8*
 %{_mandir}/man8/samba-gpupdate.8*
 %{_mandir}/man8/samba-tool.8*
+%dir %{_datadir}/samba/admx
+%{_datadir}/samba/admx/samba.admx
+%dir %{_datadir}/samba/admx/en-US
+%{_datadir}/samba/admx/en-US/samba.adml
 
 %files dc-provision
 %license source4/setup/ad-schema/licence.txt
@@ -1838,6 +1849,8 @@ fi
 %{_libdir}/samba/bind9/dlz_bind9_10.so
 %{_libdir}/samba/bind9/dlz_bind9_11.so
 %{_libdir}/samba/bind9/dlz_bind9_12.so
+%{_libdir}/samba/bind9/dlz_bind9_14.so
+%{_libdir}/samba/bind9/dlz_bind9_16.so
 #endif with_dc
 %endif
 
