@@ -14,10 +14,11 @@ Few examples:
 - `$ make rpms.centos7 refspec=h:a0862d6d6de`
 - `$ make rpms.fedora vers=34 refspec=samba-4.14.4`
 
-As of now 4.12, 4.13, 4.14 and master branches are supported. In the absence of the
-_refspec_ argument, the master branch is built by default. The above format is also
-applicable for other `make` targets. The *vers* argument is only valid for
-Fedora related make targets and in its absence, the default version is set to *33*.
+As of now 4.12, 4.13, 4.14, 4.15 and master branches are supported. In the
+absence of *refspec* argument, the master branch is built by default. The above
+format is also applicable for other `make` targets. The *vers* argument is only
+valid for Fedora related make targets and in its absence, the default version is
+set to *33*.
 
 The RPMs contain the Samba file server pieces, including the glusterfs and
 glusterfs_fuse vfs modules. They do not contain the active directory domain
