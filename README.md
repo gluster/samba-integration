@@ -18,12 +18,12 @@ As of now 4.12, 4.13, 4.14, 4.15 and master branches are supported. In the
 absence of *refspec* argument, the master branch is built by default. The above
 format is also applicable for other `make` targets. The *vers* argument is only
 valid for Fedora related make targets and in its absence, the default version is
-set to *33*.
+set to *34*.
 
 The RPMs contain the Samba file server pieces, including the glusterfs and
 glusterfs_fuse vfs modules. They do not contain the active directory domain
 controller.
 
 This is automatically run as nightly jobs (initially) for CentOS 7/8 and Fedora
-33/34 under the centos-ci [Gluster space](https://ci.centos.org/view/Gluster/) and
+34/35 under the centos-ci [Gluster space](https://ci.centos.org/view/Gluster/) and
 published as [yum repositories](http://artifacts.ci.centos.org/gluster/nightly-samba/).
