@@ -1752,9 +1752,6 @@ fi
 %{_libdir}/samba/libsmbldaphelper-samba4.so
 %{_libdir}/samba/libsys-rw-samba4.so
 %{_libdir}/samba/libsocket-blocking-samba4.so
-%{_libdir}/samba/libtalloc-report-printf-samba4.so
-%{_libdir}/samba/libtalloc-report-samba4.so
-%{_libdir}/samba/libtdb-wrap-samba4.so
 %{_libdir}/samba/libtime-basic-samba4.so
 %{_libdir}/samba/libtorture-samba4.so
 %{_libdir}/samba/libtrusts-util-samba4.so
@@ -1774,10 +1771,9 @@ fi
 #endif {without libsmbclient}
 %endif
 
-%{_libdir}/samba/libtalloc.so.*
-%{_libdir}/samba/libtevent.so.*
-%{_libdir}/samba/libtdb.so.*
-%{_libdir}/samba/libldb.so.*
+%{_libdir}/samba/libtalloc-*.so
+%{_libdir}/samba/libtevent-*.so
+%{_libdir}/samba/libtdb-*.so
 %{_libdir}/samba/libldb-*.so
 
 %{_libdir}/samba/ldb/asq.so
@@ -2152,7 +2148,6 @@ fi
 %if %{with libwbclient}
 %files -n libwbclient
 %{_libdir}/samba/wbclient/libwbclient.so.*
-%{_libdir}/samba/libwinbind-client-samba4.so
 
 ### LIBWBCLIENT-DEVEL
 %files -n libwbclient-devel
@@ -2252,8 +2247,8 @@ fi
 %{_libdir}/samba/libsamba-net.*-samba4.so
 %{_libdir}/samba/libsamba-python.*-samba4.so
 
-%{_libdir}/samba/libpyldb-util.cpython*.so.*
-%{_libdir}/samba/libpytalloc-util.cpython*.so.*
+%{_libdir}/samba/libpyldb-util.cpython*.so
+%{_libdir}/samba/libpytalloc-util.cpython*.so
 
 %{python3_sitearch}/talloc.*.so*
 %{python3_sitearch}/__pycache__/tevent.*.pyc
