@@ -160,6 +160,7 @@ Requires: %{name}-common = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
 Requires: %{name}-common-tools = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
+Requires: %{name}-dcerpcd = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
 %if %{with libwbclient}
 Requires(post): libwbclient = %{samba_depver}
@@ -511,6 +512,26 @@ name server related details of Samba AD.
 #endif {with dc}
 %endif
 
+### DCERPCD
+%package dcerpcd
+Summary: Binaries for DCERPC services
+Requires: %{name}-dcerpcd-libs
+
+%description dcerpcd
+The %{name}-dcerpcd package contains samba-dcerpcd and other binaries providing
+DCERPC services.
+
+### DCERPCD-LIBS
+%package dcerpcd-libs
+Summary: Libraries for DCERPC services
+Requires: %{name}-client-libs
+Requires: %{name}-common-libs
+Requires: %{name}-libs
+
+%description dcerpcd-libs
+The %{name}-dcerpcd-libs package contains libraries required for binaries
+providing DCERPC services.
+
 ### DEVEL
 %package devel
 Summary: Developer tools for Samba libraries
@@ -803,6 +824,7 @@ Requires: %{name}-common = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
 Requires: %{name}-common-tools = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
+Requires: %{name}-dcerpcd = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
 Requires: %{name}-winbind-modules = %{samba_depver}
 
@@ -1635,9 +1657,6 @@ fi
 %{_mandir}/man8/samba-bgqd.8*
 %{_mandir}/man8/samba-regedit.8*
 %{_mandir}/man8/smbspool.8*
-%dir %{_datadir}/samba
-%dir %{_datadir}/samba/mdssvc
-%{_datadir}/samba/mdssvc/elasticsearch_mappings.json
 
 %{_bindir}/tdbbackup
 %{_bindir}/tdbdump
@@ -1957,6 +1976,25 @@ fi
 #endif {with dc} || {with testsuite}
 %endif
 
+### DCERPCD
+%files dcerpcd
+%{_libexecdir}/samba/rpcd_classic
+%{_libexecdir}/samba/rpcd_epmapper
+%{_libexecdir}/samba/rpcd_fsrvp
+%{_libexecdir}/samba/rpcd_lsad
+%{_libexecdir}/samba/rpcd_mdssvc
+%{_libexecdir}/samba/rpcd_rpcecho
+%{_libexecdir}/samba/rpcd_spoolss
+%{_libexecdir}/samba/rpcd_winreg
+%{_libexecdir}/samba/samba-dcerpcd
+
+%{_mandir}/man8/samba-dcerpcd.8*
+
+### DCERPCD-LIBS
+%files dcerpcd-libs
+%{_libdir}/samba/libRPC-SERVER-LOOP-samba4.so
+%{_libdir}/samba/libRPC-WORKER-samba4.so
+
 ### DEVEL
 %files devel
 %{_includedir}/samba-4.0/charset.h
@@ -2122,6 +2160,7 @@ fi
 %{_libdir}/libdcerpc-samr.so.*
 
 %{_libdir}/samba/libLIBWBCLIENT-OLD-samba4.so
+%{_libdir}/samba/libREG-FULL-samba4.so
 %{_libdir}/samba/libauth4-samba4.so
 %{_libdir}/samba/libauth-unix-token-samba4.so
 %{_libdir}/samba/libdcerpc-samba4.so
