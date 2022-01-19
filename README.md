@@ -1,6 +1,12 @@
-[![Build Status](https://ci.centos.org/buildStatus/icon?job=gluster_nightly-samba-rpm-builds)](https://ci.centos.org/view/Gluster/job/gluster_nightly-samba-rpm-builds/)
-
 # Samba CentOS/Fedora RPM Builds
+
+[![status](<https://jenkins-samba.apps.ocp.ci.centos.org/buildStatus/icon?job=samba_build-rpms-fedora35-master&subject=master / Fedora 35>)](https://jenkins-samba.apps.ocp.ci.centos.org/job/samba_build-rpms-fedora35-master/) [![status](<https://jenkins-samba.apps.ocp.ci.centos.org/buildStatus/icon?job=samba_build-rpms-fedora35-v4-15-test&subject=v4-15-test / Fedora 35>)](https://jenkins-samba.apps.ocp.ci.centos.org/job/samba_build-rpms-fedora35-v4-15-test/) [![status](<https://jenkins-samba.apps.ocp.ci.centos.org/buildStatus/icon?job=samba_build-rpms-fedora35-v4-14-test&subject=v4-14-test / Fedora 35>)](https://jenkins-samba.apps.ocp.ci.centos.org/job/samba_build-rpms-fedora35-v4-14-test/)
+
+[![status](<https://jenkins-samba.apps.ocp.ci.centos.org/buildStatus/icon?job=samba_build-rpms-fedora34-master&subject=master / Fedora 34>)](https://jenkins-samba.apps.ocp.ci.centos.org/job/samba_build-rpms-fedora34-master/) [![status](<https://jenkins-samba.apps.ocp.ci.centos.org/buildStatus/icon?job=samba_build-rpms-fedora34-v4-15-test&subject=v4-15-test / Fedora 34>)](https://jenkins-samba.apps.ocp.ci.centos.org/job/samba_build-rpms-fedora34-v4-15-test/) [![status](<https://jenkins-samba.apps.ocp.ci.centos.org/buildStatus/icon?job=samba_build-rpms-fedora34-v4-14-test&subject=v4-14-test / Fedora 34>)](https://jenkins-samba.apps.ocp.ci.centos.org/job/samba_build-rpms-fedora34-v4-14-test/)
+
+[![status](<https://jenkins-samba.apps.ocp.ci.centos.org/buildStatus/icon?job=samba_build-rpms-centos8-master&subject=master / CentOS 8>)](https://jenkins-samba.apps.ocp.ci.centos.org/job/samba_build-rpms-centos8-master/) [![status](<https://jenkins-samba.apps.ocp.ci.centos.org/buildStatus/icon?job=samba_build-rpms-centos8-v4-15-test&subject=v4-15-test / CentOS 8>)](https://jenkins-samba.apps.ocp.ci.centos.org/job/samba_build-rpms-centos8-v4-15-test/) [![status](<https://jenkins-samba.apps.ocp.ci.centos.org/buildStatus/icon?job=samba_build-rpms-centos8-v4-14-test&subject=v4-14-test / CentOS 8>)](https://jenkins-samba.apps.ocp.ci.centos.org/job/samba_build-rpms-centos8-v4-14-test/)
+
+[![status](<https://jenkins-samba.apps.ocp.ci.centos.org/buildStatus/icon?job=samba_build-rpms-centos7-master&subject=master / CentOS 7>)](https://jenkins-samba.apps.ocp.ci.centos.org/job/samba_build-rpms-centos7-master/) [![status](<https://jenkins-samba.apps.ocp.ci.centos.org/buildStatus/icon?job=samba_build-rpms-centos7-v4-15-test&subject=v4-15-test / CentOS 7>)](https://jenkins-samba.apps.ocp.ci.centos.org/job/samba_build-rpms-centos7-v4-15-test/) [![status](<https://jenkins-samba.apps.ocp.ci.centos.org/buildStatus/icon?job=samba_build-rpms-centos7-v4-14-test&subject=v4-14-test / CentOS 7>)](https://jenkins-samba.apps.ocp.ci.centos.org/job/samba_build-rpms-centos7-v4-14-test/)
 
 This repository contains automation to create RPMs for CentOS 7/8 and Fedora
 from Samba repository. In order to allow building from a variety of git refspecs,
@@ -24,6 +30,6 @@ The RPMs contain the Samba file server pieces, including the glusterfs and
 glusterfs_fuse vfs modules. They do not contain the active directory domain
 controller.
 
-This is automatically run as nightly jobs (initially) for CentOS 7/8 and Fedora
-34/35 under the centos-ci [Gluster space](https://ci.centos.org/view/Gluster/) and
-published as [yum repositories](http://artifacts.ci.centos.org/gluster/nightly-samba/).
+These are automatically run as nightly jobs for CentOS 7/8 and Fedora 34/35 on
+[centos-ci](https://jenkins-samba.apps.ocp.ci.centos.org/view/RPMs) and published
+as [yum repositories](http://artifacts.ci.centos.org/gluster/nightly-samba/).
