@@ -25,7 +25,7 @@
     - name: modify copr repo to only use it for compat-gnutls packages
       lineinfile:
         dest: /etc/yum.repos.d/_copr_sergiomb-SambaAD.repo
-        line: "includepkgs=compat-gnutls34.* compat-nettle32.*"
+        line: "includepkgs=compat-gnutls37.* compat-nettle37.* gmp.*"
         insertafter: '\[copr:copr.fedorainfracloud.org:sergiomb:SambaAD\]'
 
   when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'

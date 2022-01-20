@@ -201,7 +201,7 @@ BuildRequires: flex
 BuildRequires: gawk
 BuildRequires: gnupg2
 %if 0%{?centos} == 7
-BuildRequires: compat-gnutls34-devel
+BuildRequires: compat-gnutls37-devel
 %else
 BuildRequires: gnutls-devel >= 3.4.7
 %endif
@@ -1066,11 +1066,6 @@ export python_LDFLAGS="$(echo %{__global_ldflags} | sed -e 's/-Wl,-z,defs//g')"
 
 # Use the gold linker
 export LDFLAGS="%{__global_ldflags} -fuse-ld=gold"
-
-# centos 7 hack
-%if 0%{?centos} == 7
-export PKG_CONFIG_PATH="/usr/lib64/compat-gnutls34/pkgconfig:/usr/lib64/compat-nettle32/pkgconfig"
-%endif
 
 %configure \
         --enable-fhs \
