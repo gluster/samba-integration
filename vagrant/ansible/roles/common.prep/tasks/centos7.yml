@@ -27,4 +27,4 @@
     insertafter: '\[copr:copr.fedorainfracloud.org:sergiomb:SambaAD\]'
 
 - name: Enable Samba nightly rpms repository
-  command: yum-config-manager --add-repo http://artifacts.ci.centos.org/gluster/nightly-samba/master/centos/samba-nightly-master.repo
+  command: yum-config-manager --add-repo http://artifacts.ci.centos.org/samba/pkgs/master/centos/samba-nightly-master.repo
