@@ -1535,6 +1535,10 @@ fi
 %{_libdir}/samba/vfs/xattr_tdb.so
 %{_libdir}/samba/vfs/widelinks.so
 
+%dir %{_datadir}/samba
+%dir %{_datadir}/samba/mdssvc
+%{_datadir}/samba/mdssvc/elasticsearch_mappings.json
+
 %{_unitdir}/nmb.service
 %{_unitdir}/smb.service
 %attr(1777,root,root) %dir /var/spool/samba
