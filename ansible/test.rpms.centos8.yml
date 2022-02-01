@@ -9,7 +9,7 @@
   roles:
     - set.version
 
-- hosts: centos8
+- hosts: centosstream8
   become: yes
   become_method: sudo
   vars:
