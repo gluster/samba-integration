@@ -33,7 +33,7 @@ del.vm.centos8:
 	@ansible-playbook --inventory localhost, ./ansible/del.vm.centos8.yml
 
 test.rpms.centos8: prep.vm.centos8
-	@ansible-playbook --inventory ./ansible/vagrant_ansible_inventory.centos8 ./ansible/test.rpms.centos8.yml --extra-vars "refspec=$(refspec)"
+	@ansible-playbook --inventory ./ansible/vagrant_ansible_inventory.centosstream8 ./ansible/test.rpms.centos8.yml --extra-vars "refspec=$(refspec)"
 
 
 vers = 34
