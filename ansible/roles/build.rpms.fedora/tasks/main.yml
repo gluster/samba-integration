@@ -1,2 +1,2 @@
 - name: build fedora {{ version }} rpms
-  command: /usr/bin/mock --root {{ mock_dir }}/fedora-{{ version }}-x86_64.cfg --isolation=simple --resultdir {{ rpms_dir }}/{{ samba_major_version }}/fedora/{{ version }}/x86_64 --rebuild {{ srpm_dir }}/{{ samba_srpm }}
+  command: /usr/bin/mock --root {{ mock_dir }}/fedora-{{ version }}-x86_64.cfg --resultdir {{ rpms_dir }}/{{ samba_major_version }}/fedora/{{ version }}/x86_64 --rebuild {{ srpm_dir }}/{{ samba_srpm }}
