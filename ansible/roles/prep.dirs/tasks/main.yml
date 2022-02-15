@@ -35,7 +35,7 @@
   loop:
     - /etc/mock/epel-7-x86_64.cfg
     - epel-7-sergiomb.tpl
-    - /etc/mock/epel-next-8-x86_64.cfg
+    - /etc/mock/centos-stream+epel-next-8-x86_64.cfg
     - centos-8-Devel.tpl
     - glusterfs-nightly-repo.tpl
 
@@ -57,7 +57,7 @@
 
 - name: adapt epel-next-8 mock config to use additional template
   lineinfile:
-    path: "{{ mock_dir }}/epel-next-8-x86_64.cfg"
+    path: "{{ mock_dir }}/centos-stream+epel-next-8-x86_64.cfg"
     insertafter: EOF
     line: "{{ item }}"
   with_items:
