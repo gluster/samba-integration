@@ -64,7 +64,7 @@
 %global with_mitkrb5 1
 %global with_dc 0
 
-%if 0%{?fedora} || %{with testsuite}
+%if 0%{?rhel} >= 8 || 0%{?fedora} || %{with testsuite}
 %global with_dc 1
 %endif
 
