@@ -22,7 +22,6 @@
 - smb2.session-id
 - smb2.sharemode
 - smb2.tcon
-- smb2.twrp
 - smb2.winattr
 - smb2.durable-open-disconnect
 - smb2.openattr
