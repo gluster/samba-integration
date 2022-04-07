@@ -1202,10 +1202,6 @@ install -m 0644 ctdb/config/ctdb.conf %{buildroot}%{_sysconfdir}/ctdb/ctdb.conf
 
 install -m 0644 %{SOURCE201} packaging/README.downgrade
 
-%if %{with clustering}
-install -m 0644 ctdb/config/ctdb.service %{buildroot}%{_unitdir}
-%endif
-
 # NetworkManager online/offline script
 install -d -m 0755 %{buildroot}%{_prefix}/lib/NetworkManager/dispatcher.d/
 install -m 0755 packaging/NetworkManager/30-winbind-systemd \
@@ -2511,7 +2507,6 @@ fi
 %config(noreplace) %{_sysconfdir}/ctdb/nfs-checks.d/50.rquotad.check
 
 %{_sbindir}/ctdbd
-%{_sbindir}/ctdbd_wrapper
 %{_bindir}/ctdb
 %if %{with testsuite}
 %{_bindir}/ctdb_local_daemons
@@ -2547,7 +2542,6 @@ fi
 %{_mandir}/man1/onnode.1.gz
 %{_mandir}/man1/ltdbtool.1.gz
 %{_mandir}/man1/ping_pong.1.gz
-%{_mandir}/man1/ctdbd_wrapper.1.gz
 %{_mandir}/man5/ctdb.conf.5.gz
 %{_mandir}/man5/ctdb-script.options.5.gz
 %{_mandir}/man5/ctdb.sysconfig.5.gz
@@ -3142,7 +3136,6 @@ fi
 %{_datadir}/ctdb/tests/UNIT/onnode/stubs/ssh
 %dir %{_datadir}/ctdb/tests/UNIT/shellcheck
 %{_datadir}/ctdb/tests/UNIT/shellcheck/base_scripts.sh
-%{_datadir}/ctdb/tests/UNIT/shellcheck/ctdbd_wrapper.sh
 %{_datadir}/ctdb/tests/UNIT/shellcheck/ctdb_helpers.sh
 %{_datadir}/ctdb/tests/UNIT/shellcheck/event_scripts.sh
 %{_datadir}/ctdb/tests/UNIT/shellcheck/functions.sh
