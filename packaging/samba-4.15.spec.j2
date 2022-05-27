@@ -219,7 +219,9 @@ BuildRequires: libcmocka-devel
 BuildRequires: libtirpc-devel
 BuildRequires: libuuid-devel
 BuildRequires: libxslt
+%if %{with dc} || %{with testsuite}
 BuildRequires: lmdb
+%endif
 %if %{with winexe}
 BuildRequires: mingw32-gcc
 BuildRequires: mingw64-gcc
@@ -434,8 +436,10 @@ Provides: bundled(libreplace)
 Requires: python3-%{name} = %{samba_depver}
 # samba-tool needs tdbbackup
 Requires: tdb-tools
-# samba-tool needs mdb_copy
+%if %{with dc} || %{with testsuite}
+# samba-tool needs mdb_copy for domain backup or upgrade provision
 Requires: lmdb
+%endif
 
 %description common-tools
 The samba-common-tools package contains tools for Samba servers and
