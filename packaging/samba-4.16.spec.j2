@@ -104,6 +104,12 @@
 #
 # https://src.fedoraproject.org/rpms/redhat-rpm-config/blob/master/f/buildflags.md
 %undefine _strict_symbol_defs_build
+# Disable .package_note file generation, see bug for details
+#
+# https://bugzilla.redhat.com/show_bug.cgi?id=2043178
+%if 0%{?fedora} >= 36
+%undefine _package_note_file
+%endif
 
 %global libwbc_alternatives_version 0.15
 %global libwbc_alternatives_suffix %nil
