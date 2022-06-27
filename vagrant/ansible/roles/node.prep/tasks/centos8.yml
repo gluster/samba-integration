@@ -15,3 +15,4 @@
       - lvm2
       - firewalld
       - python3-libsemanage
+      - python3-pexpect

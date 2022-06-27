@@ -24,7 +24,7 @@
     name: make
     state: installed
 
-- name: add copr to get gluster-ansible from sac
+- name: add copr to get gluster-ansible from godas
   block:
 
     - name: Install yum copr plugin
@@ -33,7 +33,7 @@
         state: latest
 
     - name: add copr to get gluster-ansible
-      command: yum -y copr enable sac/gluster-ansible
+      command: yum -y copr enable godas/gluster-ansible
 
 - name: Install gluster-ansible
   yum:
@@ -44,3 +44,20 @@
       - gluster-ansible-maintenance
       - gluster-ansible-repositories
     state: latest
+
+- name: Install required ansible collections and dependencies
+  block:
+
+    - name: Install ansible collections
+      become: no
+      shell: ansible-galaxy collection install {{ item }}
+      loop:
+        - ansible.posix
+        - gluster.gluster
+        - ovirt.ovirt
+
+    - name: Install ansible collection dependencies
+      pip:
+        name: jmespath
+        executable: pip3.8
+        state: latest
