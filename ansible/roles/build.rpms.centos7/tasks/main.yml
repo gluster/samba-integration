@@ -1,2 +1,0 @@
-- name: build centos 7 rpms
-  command: /usr/bin/mock --root {{ mock_dir }}/epel-7-x86_64.cfg --resultdir {{ rpms_dir }}/{{ samba_major_version }}/centos/7/x86_64 --rebuild {{ srpm_dir }}/{{ samba_srpm }}

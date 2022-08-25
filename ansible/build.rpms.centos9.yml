@@ -10,4 +10,4 @@
     - set.version
     - make.tarball
     - make.srpm
-    - build.rpms.centos7
+    - build.rpms.centos9
