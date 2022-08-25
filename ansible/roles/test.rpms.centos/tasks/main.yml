@@ -9,27 +9,6 @@
     name: epel-release
     state: latest
 
-- name: add copr to get compat-gnutls34 (needed for centos 7)
-  block:
-
-    - name: Install yum copr plugin
-      yum:
-        name: yum-plugin-copr
-        state: latest
-
-    - name: add copr to get compat-gnutls34
-      command: yum -y copr enable sergiomb/SambaAD
-      args:
-        warn: false
-
-    - name: modify copr repo to only use it for compat-gnutls packages
-      lineinfile:
-        dest: /etc/yum.repos.d/_copr_sergiomb-SambaAD.repo
-        line: "includepkgs=compat-gnutls37.* compat-nettle37.* gmp.*"
-        insertafter: '\[copr:copr.fedorainfracloud.org:sergiomb:SambaAD\]'
-
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
-
 - name : install createrepo package
   yum:
     name: createrepo_c
@@ -59,13 +38,6 @@
 - name: Detect samba test build version
   command: dnf repoquery -q --disablerepo='*' --enablerepo=samba-{{ vers }}-test-rpms --arch x86_64 --qf '%{version}-%{release}' samba
   register: test_build_vers
-
-- name: Fix GlusterFS nightly repository baseurl for CentOS 7
-  replace:
-    path: /etc/yum.repos.d/master.repo
-    regexp: '\$stream'
-    replace: '$releasever'
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
 
 - name: try installing our samba packages
   yum:
