@@ -56,6 +56,10 @@
 - name: Enable GlusterFS nightly rpms repository
   command: yum-config-manager --add-repo http://artifacts.ci.centos.org/gluster/nightly/master.repo
 
+- name: Detect samba test build version
+  command: dnf repoquery -q --disablerepo='*' --enablerepo=samba-{{ vers }}-test-rpms --arch x86_64 --qf '%{version}-%{release}' samba
+  register: test_build_vers
+
 - name: Fix GlusterFS nightly repository baseurl for CentOS 7
   replace:
     path: /etc/yum.repos.d/master.repo
@@ -68,6 +72,6 @@
     name: "{{ item }}"
     state: latest
   loop:
-    - samba
-    - samba-test
-    - samba-vfs-glusterfs
+    - samba-{{ test_build_vers.stdout }}
+    - samba-test-{{ test_build_vers.stdout }}
+    - samba-vfs-glusterfs-{{ test_build_vers.stdout }}

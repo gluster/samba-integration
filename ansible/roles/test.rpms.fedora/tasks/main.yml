@@ -27,6 +27,10 @@
     enabled: yes
     gpgcheck: no
 
+- name: Detect samba test build version
+  command: dnf repoquery -q --disablerepo='*' --enablerepo=samba-{{ vers }}-test-rpms --arch x86_64 --qf '%{version}-%{release}' samba
+  register: test_build_vers
+
 # Since we do not have nightly GlusterFS packages built for Fedora, we make use
 # of official released versions from standard Fedora repositories
 
@@ -35,6 +39,6 @@
     name: "{{ item }}"
     state: latest
   loop:
-    - samba
-    - samba-test
-    - samba-vfs-glusterfs
+    - samba-{{ test_build_vers.stdout}}
+    - samba-test-{{ test_build_vers.stdout }}
+    - samba-vfs-glusterfs-{{ test_build_vers.stdout }}
