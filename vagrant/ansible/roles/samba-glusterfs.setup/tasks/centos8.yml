@@ -11,6 +11,9 @@
 
 - name: Selinux - Allow Samba to access glusterfs services
   seboolean:
-    name: samba_load_libgfapi
+    name: "{{ item }}"
     state: yes
     persistent: yes
+  with_items:
+    - samba_load_libgfapi
+    - samba_export_all_rw
