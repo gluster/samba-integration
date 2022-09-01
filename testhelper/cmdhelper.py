@@ -1,6 +1,6 @@
 import os
 
-def cifs_mount(mount_params, mount_point, opts="vers=2.1"):
+def cifs_mount(mount_params, mount_point, opts=None):
     """Use the cifs module to mount a share.
 
     Parameters:
@@ -11,7 +11,11 @@ def cifs_mount(mount_params, mount_point, opts="vers=2.1"):
     Returns:
     int: return value of the mount command.
     """
-    mount_options = opts + ",username=" + mount_params["username"] + ",password=" + mount_params["password"]
+
+    if not opts:
+        mount_options = "username=" + mount_params["username"] + ",password=" + mount_params["password"]
+    else:
+        mount_options = opts + ",username=" + mount_params["username"] + ",password=" + mount_params["password"]
     share = "//" + mount_params["host"] + "/" + mount_params["share"]
     cmd = "mount -t cifs -o " + mount_options + " " + share + " " + mount_point
     ret = os.system(cmd)
