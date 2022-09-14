@@ -168,6 +168,7 @@ Requires: %{name}-common-tools = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: %{name}-dcerpcd = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
+Requires: libnetapi = %{samba_depver}
 %if %{with libwbclient}
 Requires(post): libwbclient = %{samba_depver}
 Requires: libwbclient = %{samba_depver}
@@ -431,6 +432,8 @@ Summary: Tools for Samba servers and clients
 Requires: samba-common-libs = %{samba_depver}
 Requires: samba-client-libs = %{samba_depver}
 Requires: samba-libs = %{samba_depver}
+Requires: samba-ldb-ldap-modules = %{samba_depver}
+Requires: libnetapi = %{samba_depver}
 %if %{with libwbclient}
 Requires: libwbclient = %{samba_depver}
 %endif
@@ -455,6 +458,9 @@ SMB/CIFS clients.
 %package dc
 Summary: Samba AD Domain Controller
 Requires: %{name} = %{samba_depver}
+Requires: %{name}-client-libs = %{samba_depver}
+Requires: %{name}-common-libs = %{samba_depver}
+Requires: %{name}-common-tools = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
 Requires: %{name}-dc-provision = %{samba_depver}
 Requires: %{name}-dc-libs = %{samba_depver}
@@ -547,7 +553,10 @@ providing DCERPC services.
 Summary: Developer tools for Samba libraries
 Requires: %{name}-libs = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
-
+%if %{with dc}
+Requires: %{name}-dc-libs = %{samba_depver}
+%endif
+Requires: libnetapi = %{samba_depver}
 Provides: samba4-devel = %{samba_depver}
 Obsoletes: samba4-devel < %{samba_depver}
 
@@ -605,6 +614,21 @@ Provides: bundled(libreplace)
 Samba VFS module for GlusterFS integration.
 %endif
 
+### GPUPDATE
+%if %{with dc}
+%package gpupdate
+Summary: Samba GPO support for clients
+Requires: cepces
+Requires: certmonger
+Requires: %{name}-ldb-ldap-modules = %{samba_depver}
+Requires: python3-%{name} = %{samba_depver}
+
+%description gpupdate
+This package provides the samba-gpupdate tool to apply Group Policy Objects
+(GPO) on Samba clients.
+#endif with dc
+%endif
+
 ### KRB5-PRINTING
 %package krb5-printing
 Summary: Samba CUPS backend for printing with Kerberos
@@ -619,6 +643,15 @@ Requires(postun): %{_sbindir}/update-alternatives
 If you need Kerberos for print jobs to a printer connection to cups via the SMB
 backend, then you need to install that package. It will allow cups to access
 the Kerberos credentials cache of the user issuing the print job.
+
+### LDB-LDAP-MODULES
+%package ldb-ldap-modules
+Summary: Samba ldap modules for ldb
+Requires: %{name}-client-libs = %{samba_depver}
+
+%description ldb-ldap-modules
+This package contains the ldb ldap modules required by samba-tool and
+samba-gpupdate.
 
 ### LIBS
 %package libs
@@ -637,6 +670,25 @@ Provides: bundled(libreplace)
 %description libs
 The %{name}-libs package contains the libraries needed by programs that link
 against the SMB, RPC and other protocols provided by the Samba suite.
+
+### LIBNETAPI
+%package -n libnetapi
+Summary: The NETAPI library
+Requires(pre): %{name}-common = %{samba_depver}
+Requires: %{name}-common = %{samba_depver}
+Requires: %{name}-common-libs = %{samba_depver}
+Requires: %{name}-client-libs = %{samba_depver}
+
+%description -n libnetapi
+This contains the NETAPI library from the Samba suite.
+
+%package -n libnetapi-devel
+Summary: Developer tools for the NETAPI library
+Requires: libnetapi = %{samba_depver}
+
+%description -n libnetapi-devel
+The libnetapi-devel package contains the header files and libraries needed to
+develop programs that link against the NETAPI library in the Samba suite.
 
 ### LIBSMBCLIENT
 %if %{with libsmbclient}
@@ -690,7 +742,6 @@ library.
 ### PYTHON3
 %package -n python3-%{name}
 Summary: Samba Python3 libraries
-Requires: %{name} = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
@@ -790,6 +841,7 @@ Requires: %{name}-test-libs = %{samba_depver}
 Requires: %{name}-dc-libs = %{samba_depver}
 %endif
 Requires: %{name}-libs = %{samba_depver}
+Requires: libnetapi = %{samba_depver}
 %if %{with libsmbclient}
 Requires: libsmbclient = %{samba_depver}
 %endif
@@ -1231,8 +1283,6 @@ for i in \
     %{_mandir}/man8/samba.8 \
     %{_mandir}/man8/samba_downgrade_db.8 \
     %{_mandir}/man8/samba-gpupdate.8 \
-    %{_libdir}/samba/ldb/ildap.so \
-    %{_libdir}/samba/ldb/ldbsamba_extensions.so \
     %{_unitdir}/samba.service \
     %{python3_sitearch}/samba/dcerpc/dnsserver.*.so \
     %{python3_sitearch}/samba/dnsserver.py \
@@ -1694,7 +1744,6 @@ fi
 %{_libdir}/libndr-krb5pac.so.*
 %{_libdir}/libndr-nbt.so.*
 %{_libdir}/libndr-standard.so.*
-%{_libdir}/libnetapi.so.*
 %{_libdir}/libsamba-credentials.so.*
 %{_libdir}/libsamba-errors.so.*
 %{_libdir}/libsamba-passdb.so.*
@@ -1872,7 +1921,6 @@ fi
 %{_sbindir}/samba
 %{_sbindir}/samba_dnsupdate
 %{_sbindir}/samba_downgrade_db
-%{_sbindir}/samba-gpupdate
 %{_sbindir}/samba_kcc
 %{_sbindir}/samba_spnupdate
 %{_sbindir}/samba_upgradedns
@@ -1897,10 +1945,8 @@ fi
 %{_libdir}/samba/ldb/extended_dn_out.so
 %{_libdir}/samba/ldb/extended_dn_store.so
 %{_libdir}/samba/ldb/group_audit_log.so
-%{_libdir}/samba/ldb/ildap.so
 %{_libdir}/samba/ldb/instancetype.so
 %{_libdir}/samba/ldb/lazy_commit.so
-%{_libdir}/samba/ldb/ldbsamba_extensions.so
 %{_libdir}/samba/ldb/linked_attributes.so
 %{_libdir}/samba/ldb/new_partition.so
 %{_libdir}/samba/ldb/objectclass.so
@@ -1934,7 +1980,6 @@ fi
 %dir /var/lib/samba/sysvol
 %{_mandir}/man8/samba.8*
 %{_mandir}/man8/samba_downgrade_db.8*
-%{_mandir}/man8/samba-gpupdate.8*
 %dir %{_datadir}/samba/admx
 %{_datadir}/samba/admx/samba.admx
 %dir %{_datadir}/samba/admx/en-US
@@ -2054,7 +2099,6 @@ fi
 %{_includedir}/samba-4.0/ndr/ndr_krb5pac.h
 %{_includedir}/samba-4.0/ndr/ndr_svcctl.h
 %{_includedir}/samba-4.0/ndr/ndr_nbt.h
-%{_includedir}/samba-4.0/netapi.h
 %{_includedir}/samba-4.0/param.h
 %{_includedir}/samba-4.0/passdb.h
 %{_includedir}/samba-4.0/policy.h
@@ -2097,7 +2141,6 @@ fi
 %{_libdir}/libndr-nbt.so
 %{_libdir}/libndr-standard.so
 %{_libdir}/libndr.so
-%{_libdir}/libnetapi.so
 %{_libdir}/libsamba-credentials.so
 %{_libdir}/libsamba-errors.so
 %{_libdir}/libsamba-hostconfig.so
@@ -2111,7 +2154,6 @@ fi
 %{_libdir}/pkgconfig/ndr_krb5pac.pc
 %{_libdir}/pkgconfig/ndr_nbt.pc
 %{_libdir}/pkgconfig/ndr_standard.pc
-%{_libdir}/pkgconfig/netapi.pc
 %{_libdir}/pkgconfig/samba-credentials.pc
 %{_libdir}/pkgconfig/samba-hostconfig.pc
 %{_libdir}/pkgconfig/samba-util.pc
@@ -2159,10 +2201,22 @@ fi
 %{_mandir}/man8/vfs_glusterfs.8*
 %endif
 
+### GPUPDATE
+%if %{with dc}
+%files gpupdate
+%{_mandir}/man8/samba-gpupdate.8*
+%{_sbindir}/samba-gpupdate
+%endif
+
 ### KRB5-PRINTING
 %files krb5-printing
 %attr(0700,root,root) %{_libexecdir}/samba/smbspool_krb5_wrapper
 %{_mandir}/man8/smbspool_krb5_wrapper.8*
+
+### LDB-LDAP-MODULES
+%files ldb-ldap-modules
+%{_libdir}/samba/ldb/ldbsamba_extensions.so
+%{_libdir}/samba/ldb/ildap.so
 
 ### LIBS
 %files libs
@@ -2177,6 +2231,16 @@ fi
 %{_libdir}/samba/libshares-samba4.so
 %{_libdir}/samba/libsmbpasswdparser-samba4.so
 %{_libdir}/samba/libxattr-tdb-samba4.so
+
+### LIBNETAPI
+%files -n libnetapi
+%{_libdir}/libnetapi.so.*
+
+### LIBNETAPI-DEVEL
+%files -n libnetapi-devel
+%{_includedir}/samba-4.0/netapi.h
+%{_libdir}/libnetapi.so
+%{_libdir}/pkgconfig/netapi.pc
 
 ### LIBSMBCLIENT
 %if %{with libsmbclient}
