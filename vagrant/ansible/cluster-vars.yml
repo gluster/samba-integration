@@ -6,9 +6,9 @@ gluster_infra_volume_groups:
   - { vgname: 'vg_vdd', pvname: '/dev/vdd' }
 
 gluster_infra_thinpools:
-  - {vgname: 'vg_vdb', thinpoolname: 'vg_vdb_thinpool', thinpoolsize: '9G', poolmetadatasize: '100M' }
-  - {vgname: 'vg_vdc', thinpoolname: 'vg_vdc_thinpool', thinpoolsize: '9G', poolmetadatasize: '100M' }
-  - {vgname: 'vg_vdd', thinpoolname: 'vg_vdd_thinpool', thinpoolsize: '9G', poolmetadatasize: '100M' }
+  - { vgname: 'vg_vdb', thinpoolname: 'vg_vdb_thinpool', thinpoolsize: '9G', poolmetadatasize: '100M' }
+  - { vgname: 'vg_vdc', thinpoolname: 'vg_vdc_thinpool', thinpoolsize: '9G', poolmetadatasize: '100M' }
+  - { vgname: 'vg_vdd', thinpoolname: 'vg_vdd_thinpool', thinpoolsize: '9G', poolmetadatasize: '100M' }
 
 gluster_infra_lv_logicalvols:
   - { vgname: 'vg_vdb', thinpool: 'vg_vdb_thinpool', lvname: 'ctdblv', lvsize: '20M' }
