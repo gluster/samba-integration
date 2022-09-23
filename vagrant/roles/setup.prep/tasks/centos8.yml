@@ -38,6 +38,9 @@
 - name: Install gluster-ansible
   yum:
     name:
+      # Restricting to Ansible v2.12.x
+      # See https://github.com/gluster/gluster-ansible-infra/issues/135
+      - ansible-core-2.12*
       - gluster-ansible-cluster
       - gluster-ansible-features
       - gluster-ansible-infra
@@ -59,5 +62,5 @@
     - name: Install ansible collection dependencies
       pip:
         name: jmespath
-        executable: pip3.9
+        executable: pip3.8
         state: latest
