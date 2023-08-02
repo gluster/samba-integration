@@ -1,3 +1,11 @@
+# This repository has been split and the resulting repositories moved to 
+## - [https://github.com/samba-in-kubernetes/sit-environment](https://github.com/samba-in-kubernetes/sit-environment)
+## - [https://github.com/samba-in-kubernetes/sit-test-cases](https://github.com/samba-in-kubernetes/sit-test-cases)
+## Please use the new repository locations for the latest updates on the projects.
+
+
+
+
 # Samba-Gluster Integration Test Environment
 
 The purpose of this project is to provide a generic mechanism to set up a
